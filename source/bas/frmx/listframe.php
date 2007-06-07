@@ -175,11 +175,8 @@ class bas_frmx_listframe extends bas_frmx_frame{
 				$aux[$this->components[$ix]['select-order']]= $this->components[$ix];
 			}
 		}
-		global $_LOG;
-		$_LOG->debug("Componeentes",$this->components);
 		unset($this->components);
 		$this->components = $aux;
-		$_LOG->debug("Componeentes Luego",$this->components);
 	}
 	
 	public function saveConfig(){
@@ -304,10 +301,12 @@ class bas_frmx_listframe extends bas_frmx_frame{
 				if (($pos=$this->getComponentPos($data['field'])) >= 0) {
 					$this->components[$pos]['width']= $data['width'];
 					$this->saveConfig();
+					return array();
 				} // ELSE LOG INVALID COMPONENT.
 				break;
 			case 'setColOrder':
 				$this->setOrderComponents($data["order"]);
+				return array();
 				break;
 		}
 	}
