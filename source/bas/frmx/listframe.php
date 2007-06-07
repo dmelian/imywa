@@ -165,7 +165,7 @@ class bas_frmx_listframe extends bas_frmx_frame{
 	}
 
 	public function loadConfig(){
-		$config= $this->loadConfigFile();
+		if (!$config= $this->loadConfigFile()) return;
 		$aux = array();
 		for($ix=0; $ix<count($this->components); $ix++){
 			if (isset($config[$this->components[$ix]['id']])){

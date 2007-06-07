@@ -57,7 +57,8 @@ class bas_frmx_frame{
 	public function loadConfigFile($id=''){
 		if (!$this->formClassName) return array();
 		$filename= $this->defaultConfigFilename($id);
-		return parse_ini_file($filename, true);
+		if (file_exists($filename)) return parse_ini_file($filename, true);
+		else return false;
 	}
 	
 	public function defaultConfigFilename($id, $createFolders=false){
