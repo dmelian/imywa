@@ -1,0 +1,19 @@
+drop procedure if exists {$_tb}_insert;;
+create procedure {$_tb}_insert(
+<!fields separator=",\n" terminator="\n" patern="in i$_fd $_implement">
+)
+begin
+<!fields patern="\tset i$_fd = lower(i$_fd);\n">
+
+	insert into $_tb(<!fields separator="," patern="$_fb">)
+		values (<!fields separator="," patern="i$_fd">);
+
+	select 0 as error, '$_caption $_tb inserted.' as message, i$_tb as $_tb;
+end
+;;
+
+Esperamos por un <! Luego:
+
+<grm> ::= <id:command> { <id:property> = <string:value> } $.
+
+El dolar es >.

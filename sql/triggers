@@ -1,0 +1,5 @@
+create trigger <name> [BEFORE | AFTER] [INSERT | UPDATE | DELETE] on <table> for each row begin ... end;
+En el código se pueden utilizar dos records (tablas) NEW y OLD, con los datos nuevos y previos.
+
+
+

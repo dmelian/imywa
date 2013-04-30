@@ -1,0 +1,12 @@
+create user <usuario> identified by '<password>';
+drop user <usuario>;
+grant all on *.* to <usuario> [with grant option];
+revoke all on *.* from <usuario>;
+revoke all , grant option from <usuario>;
+set password for <usuario> = password('<password>');
+
+
+create user dmelian;
+create user eugonzalez@localhost;
+grant all on *.* to eugonzalez@localhost;
+grant all on database.table to user;

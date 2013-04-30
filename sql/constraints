@@ -1,0 +1,9 @@
+primary key  [name] (fields...)
+
+(index | key) [name] (fields...)
+
+unique [name] (fields...)
+
+foreign key [name] (fields...) references table (fields) 
+	[on delete [RESTRIC | CASCADE | SET NULL]] 
+	[on update [RESTRIC | CASCADE | SET NULL]] 
