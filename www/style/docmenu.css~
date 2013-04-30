@@ -1,0 +1,47 @@
+#horizontalmenu{
+	margin:10px;
+}
+
+#horizontalmenu{
+	margin:10px;
+}
+	
+#horizontalmenu > ul > input{
+	
+	padding:8px;
+	
+	text-decoration:none;
+	-webkit-border-radius:3px;
+	-moz-border-radius:3px;
+	font-family: Frutiger, "Frutiger Linotype", Univers, Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans serif;
+	//font-family:Tahoma, Geneva, sans-serif;
+	font-size:15px;
+	color:#666;
+	//font-weight:bold;
+	text-shadow:1px 1px 1px #fff;
+	border-radius:3px;
+	float:left;
+	color: #555;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #fff #ccc #999 #eee;
+	background: #c1c1c1;
+	background: -moz-linear-gradient(#f5f5f5, #c1c1c1);
+	background: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#c1c1c1));
+	background: -webkit-linear-gradient(#f5f5f5, #c1c1c1);
+	background: -o-linear-gradient(#f5f5f5, #c1c1c1);
+	background: -ms-linear-gradient(#f5f5f5, #c1c1c1);
+	background: linear-gradient(#f5f5f5, #c1c1c1);     
+}
+
+#horizontalmenu > ul > input:hover{
+	background-color:#e3e3e3;
+	text-shadow:1px 1px 1px #fff;
+	border-radius:3px;
+}
+
+#horizontalmenu > ul > input.alone{
+	float:right;
+	display:block;
+	margin-right:150px;
+}

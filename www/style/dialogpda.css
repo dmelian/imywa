@@ -1,0 +1,74 @@
+@CHARSET "UTF-8";
+
+*{
+	margin: 		0;
+	padding: 		0;
+}
+
+div#maindlg{
+	position: 		absolute;
+	left: 			18px;
+	top: 			17px;
+	width: 			256px;
+	height: 		192px;
+}
+
+div.warning{
+	background-image: url('../image/dialog_warning.gif');
+}
+
+div.info{
+	background-image: url('../image/dialog_.gif');
+}
+
+div.error{
+	background-image: url('../image/dialog_error.gif');
+}
+
+div#contentbody img{
+	float:			left;	
+}
+
+div#contentbody{
+	position:		absolute;
+	left:			0px;
+	top: 			32px;
+	width: 			256px;
+	height:			160px;
+	text-align:		center;
+	font-size:		10pt;
+}
+
+div#titlebar{
+	position:		absolute;
+	left:			0;
+	top:			0;
+	height:			32px;
+	width:			256px;
+	}
+	
+div#titlebar h1{
+	margin-top:		6px;
+	width:			256px;
+	color: 			white;
+	font-weight:	bold;
+	font-size:		12pt;
+	text-align:		center;
+}
+
+div#dialogbuttons{
+	position:		absolute;
+	left:			0px;
+	top: 			120px;
+	width:			256px;
+	height:			32px;
+}
+
+div.buttonbar {
+	float:			right;
+}
+	
+div.buttonbar input{
+	margin-right:	12px;
+}
+	

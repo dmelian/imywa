@@ -1,0 +1,76 @@
+*{
+	font-family: serif;
+	font-size: 14px; 
+	margin:0 ;
+}
+
+.dialog, .error, .warning{
+	width: 500px;
+	margin-left: 150px;
+	margin-top: 150px;
+	border-width: thin;
+	border-style: solid;
+}
+.error { border-color: red;}
+.dialog, .warning{ border-color: gray;}
+
+.dialog #titlebar{
+	padding-left: 5px;
+	background-color: navy;
+	color: white;
+}
+
+.error #titlebar{
+	padding-left: 5px;
+	background-color: red;
+	color: white;
+}
+
+.warning #titlebar{
+	padding-left: 5px;
+	background-color: yellow;
+	color: black;
+}
+
+h1 {
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.lefticon{
+	float: Left;
+	padding: 5px 5px 0px 5px;
+}
+
+
+#msgbox{
+	padding: 20px;
+}
+
+.contentbody{
+}
+
+.buttonbar{
+	padding: 5px;
+	text-align: right;
+}
+
+
+.dialog #statusbar{
+	padding-left: 5px;
+	background-color: navy;
+	color: white;
+}
+
+.error #statusbar{
+	padding-left: 5px;
+	background-color: red;
+	color: white;
+}
+
+.warning #statusbar{
+	padding-left: 5px;
+	background-color: yellow;
+	color: black;
+}
+

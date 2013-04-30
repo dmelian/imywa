@@ -1,0 +1,5 @@
+se ha modificado la clase ui-sortable-placeholder, incorporandole el display inline. Fichero frame.less
+
+	".ui-sortable-placeholder { border: 1px dotted black; visibility: visible !important; height: 50px !important;display:inline; }"
+	
+	

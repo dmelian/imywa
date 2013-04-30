@@ -1,0 +1,112 @@
+@CHARSET "UTF-8";
+
+*{
+	font-family: serif;
+	font-size: 14px; 
+	margin:0 ;
+}
+
+tr.rowhead {
+	background-color: black;
+	color: white;
+}
+
+tr.rowfoot {
+	background-color: black;
+	color: white;
+}
+
+tr.row2n{
+	background-color: gray;
+	color: yellow;
+}
+
+tr.row2n1{
+	background-color: gray;
+	color: orange;
+}
+
+.dialog, .error, .warning{
+	width: 500px;
+	margin-left: 150px;
+	margin-top: 150px;
+	border-width: thin;
+	border-style: solid;
+}
+
+h1 {
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.contentbody{
+}
+
+.buttonbar{
+	padding: 5px;
+	text-align: left;
+}
+
+
+
+ul.tabs {
+	border-bottom: 1px solid #589901; 
+	margin: 0; 
+	padding-bottom: 19px; 
+	padding-left: 10px
+}
+
+ul.tabs li {
+	display: inline; 
+	list-style-type: none; 
+	margin: 0; 
+	padding: 0
+}
+
+ul.tabs li a {
+	background: #A0B75A; 
+	border: 1px solid #589901; 
+	color: #000000; 
+	float: left; 
+	font-family: arial; 
+	font-size: 12px; 
+	font-weight: bold; 
+	line-height: 14px; 
+	margin-right: 2px; 
+	padding: 2px 10px 2px 10px; 
+	text-decoration: none
+}
+
+ul.tabs a:link.active, ul.tabs a:visited.active {
+	background: #E0F7AA; 
+	border-bottom: 1px solid #ffffff; 
+	color: #000000
+}
+
+ul.tabs a:hover {
+	color: #E0F7AA
+}
+
+ul.tabs li.selected a {
+	background: #E0F7AA; 
+	border-bottom: 1px solid #E0F7AA; 
+	color: #000000; 
+	font-weight: bold
+}
+
+div.tabcontainer {
+	border: 1px solid #589901; 
+	border-top: 0px
+}
+
+div.tabcontent {
+	padding: 5px; 
+	display: none
+}
+
+div.tabcontentSelected {
+	border: 1px solid #E0F7AA; 
+	padding: 5px; 
+	display: block; 
+	background: #E0F7AA
+}

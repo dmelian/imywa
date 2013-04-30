@@ -1,0 +1,233 @@
+@CHARSET "UTF-8";
+
+*{
+	font-family: arial;
+	font-size: 12px; 
+	margin:0 ;
+}
+
+/* divs */
+
+div#titlebar{
+background-color: blue;
+background-image: url('../image/titleback2.png');
+color: white;
+padding-left: 5px;
+padding-top: 2px;
+height: 25px;
+}
+
+div#titlebar h1{
+font-size: 16px;
+font-weight: bold;
+}
+
+
+div#menubar{
+background-color: white;
+}
+
+div#menus{
+background-color: white;
+}
+
+div#toolbar{
+background-color: silver;
+}
+
+div#content{
+background-color: whitesmoke;
+overflow: auto;
+}
+
+div#statusbar{
+background-color: blue;
+background-image: url('../image/titleback2.png');
+color: white;
+padding-left: 5px;
+padding-top: 2px;
+height: 25px;
+}
+
+/* tables */
+
+tr {
+	height: 25px;
+}
+
+tr.rowhead {
+	font-weight: bold;
+	background-color: silver;
+	color: black;
+}
+
+tr.rowfoot {
+	background-color: silver;
+	color: black;
+}
+
+tr.row2n{
+	background-color: white;
+	color: black;
+}
+
+tr.row2n1{
+	background-color: whitesmoke;
+	color: black;
+}
+
+tr.errorrow{
+	background-color: red; 
+	color: white;
+	font-weight: bold;
+}
+
+/* tabs */
+
+ul.tabs {
+	border-bottom: 1px solid gray; 
+	margin: 0; 
+	padding-bottom: 19px; 
+	padding-left: 10px
+}
+
+ul.tabs li {
+	display: inline; 
+	list-style-type: none; 
+	margin: 0; 
+	padding: 0
+}
+
+ul.tabs li a {
+	background: silver; 
+	border: 1px solid gray; 
+	color: #000000; 
+	float: left; 
+	font-weight: bold; 
+	line-height: 14px; 
+	margin-right: 2px; 
+	padding: 2px 10px 2px 10px; 
+	text-decoration: none
+}
+
+ul.tabs a:link.active, ul.tabs a:visited.active {
+	background: white; 
+	border-bottom: 1px solid #ffffff; 
+	color: #000000
+}
+
+ul.tabs a:hover {
+	color: white
+}
+
+ul.tabs li.selected a {
+	background: white; 
+	border-bottom: 1px solid white; 
+	color: #000000; 
+	font-weight: bold
+}
+
+div.tabcontainer {
+	border: 1px solid gray; 
+	border-top: 0px
+}
+
+div.tabcontent {
+	padding: 5px; 
+	display: none
+}
+
+div.tabcontentSelected {
+	border: 0; 
+	padding: 5px; 
+	display: block; 
+	background: white
+}
+
+/* menus */
+
+
+div#menubar a{
+padding-left: 0.5em;
+padding-right: 2em;
+font-weight: bold;
+}
+
+div#menubar a:active, div#menubar a:visited, div#menubar a:link {
+background-color: white;
+color: black;
+text-decoration: none;
+}
+div#menubar a:hover{
+background-color: navy;
+color: white;
+text-decoration: none;
+}
+
+
+div#menus ul{
+margin: 0;
+padding: 2px;
+width: 180px;
+list-style-type: none;
+position: absolute;
+background-color: white;
+visibility: hidden;
+z-index: 1;
+}
+
+div#menus li{
+top: -2px;
+position: relative;
+display: inline;
+}
+
+div#menus a{
+width: 100%;
+display: inline-block;
+}
+
+div#menus a:active, div#menus a:visited, div#menus a:link {
+background-color: white;
+color: black;
+text-decoration: none;
+}
+
+div#menus a:hover {
+text-decoration: none;
+background-color: navy;
+color: white;
+}
+
+
+
+div#menus .checked{
+background: red url(menuchecked.gif) no-repeat center right;
+}
+
+
+/* toolbars */
+.bartext {
+	border: 1px solid gray;
+	padding: 2px;
+	margin-left: 2px;
+	margin-right: 2px;
+}
+
+/* card */
+.card_caption {
+	font-weight: bold;
+}
+
+.card_content {
+	background-color: whitesmoke;
+}
+
+.column {
+	float:left;
+	margin-right:50px;
+}
+
+.column_end {
+	clear: both;
+}

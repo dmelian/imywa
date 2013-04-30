@@ -1,0 +1,167 @@
+#cssmenu ul,
+#cssmenu li,
+#cssmenu input {
+  margin: .25;
+  padding: 0;
+  position: right;
+}
+
+
+#cssmenu:after,
+#cssmenu ul:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+
+#cssmenu input {
+ // text-decoration: none;
+  text-shadow: 0 -1px 0 #0066CC;
+ // min-width: 35px;
+  //font-family: 'Lucida Grande', 'Lucida Sans Unicode', Helvetica, Arial, Verdana, sans-serif;
+  display: inline-block;
+  color: #a2a2a2;
+  font-family: Frutiger, "Frutiger Linotype", Univers, Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva,    			"Helvetica Neue", Helvetica, Arial, sans serif;
+  font-size: 15px;
+  text-align: center;
+  border-radius:1px;
+  width:19.5%;
+  height:4%;
+}
+
+
+#cssmenu ul {
+  padding: 20;
+  
+  //width: 50%;
+  left:0;
+ // margin: 0 490;
+  text-align: center;
+ // position:relative;
+  list-style: none;
+}
+
+
+#cssmenu > ul > li {
+  float: center;
+}
+
+#cssmenu > ul > li input:hover {
+/*  background: -moz-linear-gradient(top, #36c 0%, #09c 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #36c), color-stop(100%, #09c));
+  background: -webkit-linear-gradient(top, #36c 0%, #09c 100%);
+  background: -o-linear-gradient(top, #36c 0%, #09c 100%);
+  background: -ms-linear-gradient(top, #36c 0%, #09c 100%);
+  background: linear-gradient(to bottom, #36c 0%, #09c 100%);
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#36c', endColorstr='#09c', GradientType=0);
+  filter: none;*/
+
+outline: 0;
+	color: #fff;
+	text-shadow: 0 1px 0 rgba(0,0,0,.2);
+	background: #6699FF;
+	background: -moz-linear-gradient(#2e638e, #2e6385);
+	background: -webkit-gradient(linear, left top, left bottom, from(#2e638e), to(#2e6385));
+	background: -webkit-linear-gradient(#2e638e, #2e6385);
+	background: -o-linear-gradient(#2e638e, #2e6385);
+	background: -ms-linear-gradient(#2e638e, #2e6385);
+	background: linear-gradient(#2e638e, #2e6385);
+}
+#cssmenu > ul > li input {
+
+
+  /*background: -moz-linear-gradient(top, #06f 0%, #09c 50%, #09c 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #06f), color-stop(50%, #09c), color-stop(51%, #09c), color-stop(100%, #09c));
+  background: -webkit-linear-gradient(top, #06f 0%, #09c 50% , #09c 100%);
+  background: -o-linear-gradient(top, #06f 0%, #09c 50%,  #09c 100%);
+  background: -ms-linear-gradient(top, #06f 0%, #09c 50%, #09c 100%);
+  background: linear-gradient(to bottom, #06f 0%, #09c 50%, #09c 100%);
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#06c', endColorstr='06c', GradientType=0);
+  //border-bottom: 1px solid #5d5d5d;
+  //border-top: 1px solid #5d5d5d;
+ // border-right: 1px solid #5d5d5d;
+  line-height: 34px;
+  padding: 0 35px;
+  filter: none;
+  border-radius:5px;*/
+
+	float:left;
+	color: #555;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #fff #ccc #999 #eee;
+	background: #c1c1c1;
+	background: -moz-linear-gradient(#f5f5f5, #c1c1c1);
+	background: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#c1c1c1));
+	background: -webkit-linear-gradient(#f5f5f5, #c1c1c1);
+	background: -o-linear-gradient(#f5f5f5, #c1c1c1);
+	background: -ms-linear-gradient(#f5f5f5, #c1c1c1);
+	background: linear-gradient(#f5f5f5, #c1c1c1);        
+}
+
+
+
+.lineapag{
+	border-bottom:1px groove #fff;
+	
+	
+	//margin: 0 500;
+	//text-align: right;
+}
+
+#mapa{
+
+  height: 100%;
+
+}
+
+.galicia img:hover {
+
+	
+}	
+
+.espana{
+	float: left;
+	position: relative;
+	left: 0px;
+	
+}
+.islas{
+
+	position:absolute;
+	left:700px;
+	height:100%;
+	width:100%
+
+}
+
+.canarias{
+
+	//float: left;
+	//right: 10%;
+	position: absolute;
+	top: 45%;
+}
+
+.baleares{
+
+	//float: left;
+	position: relative;
+	top: 10%;
+	left: 10%;
+}
+
+body{
+	/*background-image: linear-gradient(bottom, rgb(70,103,191) 17%, rgb(111,117,113) 97%);
+	background-image: -o-linear-gradient(bottom, rgb(70,103,191) 17%, rgb(111,117,113) 97%);
+	background-image: -moz-linear-gradient(bottom, rgb(70,103,191) 17%, rgb(111,117,113) 97%);
+	background-image: -webkit-linear-gradient(bottom, rgb(70,103,191) 17%, rgb(111,117,113) 97%);
+	background-image: -ms-linear-gradient(bottom, rgb(70,103,191) 17%, rgb(111,117,113) 97%);*/
+
+}
+a{
+	
+	text-decoration:none;
+}
+

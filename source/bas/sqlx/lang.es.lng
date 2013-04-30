@@ -1,0 +1,14 @@
+#bas_sqlx
+
+
+[error]
+
+mysqliError		ERROR DE INICIALIZACIÓN :: La librería mysqli de acceso a la base de datos, no ha podido ser inicializada
+unknownHost		SERVIDOR NO ENCONTRADO :: El servidor "$_host" no responde o no ha sido configurado
+accessDenied	ACCESO DENEGADO :: No se concede el acceso al usuario "$_user"
+unknownDatabase	BASE DE DATOS DESCONOCIDA :: No se encuentra la base de datos "$_database"
+dbGenericError	ERROR DE BASE DE DATOS :: Error "$_errno": "$_error"
+defaultSuccess	ACCIÓN TERMINADA :: $_message
+defaultError	ERROR EN LA ACCIÓN :: $_message
+
+[connection]

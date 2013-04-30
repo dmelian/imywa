@@ -1,0 +1,36 @@
+#horizontalmenu{
+	margin:10px;
+}
+
+#horizontalmenu{
+	margin:10px;
+}
+	
+#horizontalmenu > ul >  button{
+	float:left;
+	padding:8px;
+	background-color:#eeeeee;
+	display:block;
+	margin-right:9px;
+	text-decoration:none;
+	-webkit-border-radius:7px;
+	-moz-border-radius:7px;
+	font-family:Tahoma, Geneva, sans-serif;
+	font-size:15px;
+	color:#666;
+	font-weight:bold;
+	text-shadow:1px 1px 1px #fff;
+	border-radius:7px;
+}
+
+#horizontalmenu > ul > button:hover{
+	background-color:#e3e3e3;
+	text-shadow:1px 1px 1px #fff;
+	border-radius:7px;
+}
+
+#horizontalmenu > ul > button.alone{
+	float:right;
+	display:block;
+	margin-right:150px;
+}

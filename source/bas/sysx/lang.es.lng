@@ -1,0 +1,21 @@
+#bas_sysx
+
+login		ENTRADA AL SISTEMA :: Introduce tu código de usuario y contraseña
+begin		INICIANDO IMYWA
+
+[login]
+user		Usuario :: Código de usuario
+password	Contraseña :: Contraseña de acceso al sistema
+
+[begin]
+login		ENTRADA AL SISTEMA :: Introduce tu código de usuario y contraseña
+user		Usuario :: Código de usuario
+password	Contraseña :: Contraseña de acceso al sistema
+bye			ENTRADA CANCELADA :: Que pases buen día
+relogin		Entrar :: Entrada al sistema
+
+[actions]
+ok			Aceptar :: Acepta la operación actual
+cancel		Cancelar :: Cancela la operación actual
+
+[session]

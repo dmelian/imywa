@@ -1,0 +1,10 @@
+[action]
+ok			aceptar
+cancel		cancelar
+
+[data]
+user		Usuario
+password	Contraseña
+
+[form]
+login		ENTRADA AL SISTEMA :: Introduce tu usuario y contraseña

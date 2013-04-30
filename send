@@ -1,0 +1,49 @@
+#! /bin/bash
+# Copy all the project files to the local web server folders. 
+
+# declare -a themes=(amedita blitzer cupertino dark-hive eggplant excite-bike flick hot-sneaks humanity le-frog overcast pepper-grinder redmond smoothness south-street start sunny ui-darkness ui-lightness vader)
+declare -a themes=(amedita blitzer cupertino)
+uglify=false
+sourceDir=imywa
+webDir=apps
+
+# Delete the run dir and logs
+rm -Rf /usr/local/$sourceDir/run/*
+cat /dev/null > /usr/local/$sourceDir/log
+cat /dev/null > /usr/local/$sourceDir/access.log
+cat /dev/null > /usr/local/$sourceDir/imywa.log
+chmod 666 /usr/local/$sourceDir/imywa.log
+
+# copy the source, www and config folder to their destination
+rsync -avPz --delete --force --exclude .svn --delete-excluded source/bas 	/usr/local/$sourceDir/source
+rsync -avPz --delete --force --exclude .svn --delete-excluded source/imywa 	/usr/local/$sourceDir/source
+rsync -avPz --delete --force --exclude .svn --delete-excluded source/lib 	/usr/local/$sourceDir/source
+rsync -avPz --delete --force --exclude .svn --delete-excluded source/sysadmin 	/usr/local/$sourceDir/source
+rsync -avPz --delete --force --exclude .svn --delete-excluded source/sysdb 	/usr/local/$sourceDir/source
+rsync -avPz --delete --force --exclude .svn --delete-excluded source/syslogin 	/usr/local/$sourceDir/source
+rsync -avPz --delete --force --exclude .svn --delete-excluded source/test 	/usr/local/$sourceDir/source
+rsync -avPz --force --exclude .svn www/ /var/www/$webDir
+
+echo 
+# Create the theme css
+for theme in ${themes[@]}; do
+	echo lessing $theme
+	lessc source/themes/$theme/theme.less > /var/www/$webDir/theme/$theme/$theme.css
+done
+
+if $uglify ; then 
+	echo uglifying ...
+	cat /dev/null > /var/www/$webDir/script/frmxlib.js
+	for jsfile in www/script/frmx/*.js; do
+		cat $jsfile >> /var/www/$webDir/script/frmxlib.js
+	done
+	uglifyjs --overwrite /var/www/$webDir/script/frmxlib.js
+	echo uglified.
+
+else
+	echo moving js...
+	cat /dev/null > /var/www/$webDir/script/frmxlib.js
+	for jsfile in www/script/frmx/*.js; do
+		cat $jsfile >> /var/www/$webDir/script/frmxlib.js
+	done	
+fi

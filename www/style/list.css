@@ -1,0 +1,188 @@
+@CHARSET "UTF-8";
+
+*{
+	font-family: arial;
+	font-size: 12px; 
+	margin:0 ;
+}
+
+/* divs */
+
+div#titlebar{
+background-color: blue;
+background-image: url('../image/titleback2.png');
+color: white;
+padding-left: 5px;
+padding-top: 2px;
+height: 25px;
+}
+
+div#titlebar h1{
+font-size: 16px;
+font-weight: bold;
+}
+
+
+div#menubar{
+background-color: white;
+}
+
+div#menus{
+background-color: white;
+}
+
+div#menubar a{
+padding-left: 0.5em;
+padding-right: 2em;
+font-weight: bold;
+}
+
+div#menubar a:active, div#menubar a:visited, div#menubar a:link {
+background-color: white;
+color: black;
+text-decoration: none;
+}
+div#menubar a:hover{
+background-color: navy;
+color: white;
+text-decoration: none;
+}
+
+
+div#menus ul{
+margin: 0;
+padding: 2px;
+width: 180px;
+list-style-type: none;
+position: absolute;
+background-color: white;
+visibility: hidden;
+z-index: 1;
+}
+
+div#menus li{
+top: -2px;
+position: relative;
+display: inline;
+}
+
+div#menus a{
+width: 100%;
+display: inline-block;
+}
+
+div#menus a:active, div#menus a:visited, div#menus a:link {
+background-color: white;
+color: black;
+text-decoration: none;
+}
+
+div#menus a:hover {
+text-decoration: none;
+background-color: navy;
+color: white;
+}
+
+
+
+div#menus .checked{
+background: red url(menuchecked.gif) no-repeat center right;
+}
+
+div#toolbar{
+background-color: silver;
+}
+
+div#statusbar{
+position: relative;
+background-color: blue;
+background-image: url('../image/titleback2.png');
+color: white;
+padding-left: 5px;
+padding-top: 2px;
+height: 25px;
+}
+
+div#header{
+background-color: silver;
+}
+
+
+div.tableContainer{
+	overflow: hidden;
+}
+
+div.tableContainer div.tableView{
+	position: relative;
+}
+
+div.tableContainer div.scrollTableView{
+	position: relative;
+	overflow: hidden;
+}
+
+div.tableContainer div.tableContent{
+	position: relative;
+}
+
+
+div.tableContainer div.scrollTableContent{
+	position: relative;
+	overflow: hidden;
+}
+
+div.tableContainer div.vscroll{
+	position: relative;
+	width: 20px; 
+	overflow: auto;
+	z-index: 1;
+	background-color: whitesmoke;
+	color: whitesmoke;
+}
+
+
+div.tableContainer div.hscroll{
+	position: relative;
+	height: 20px;
+	overflow: auto;
+	background-color: whitesmoke;
+	color: whitesmoke; 
+	z-index: 1;
+}
+
+div.tableContainer div.vscrollsize{
+	width: 20px;
+}
+
+div.tableContainer div.hscrollsize{
+	height: 20px;
+}
+
+div.tableContainer div.tableHeader {
+font-size: 14px;
+font-weight: bold;
+}
+
+div.tableContainer div.tableContent div.tableRowerrorrow{
+	height: 22px; 
+	overflow: hidden; 
+	background-color: red; 
+	color: white;
+	font-weight: bold;
+}
+
+div.tableContainer div.tableCell {
+	overflow: hidden;
+}
+
+div.widthPull {
+	float: right;
+	width: 12px;
+	height: 25px;
+	background-color: silver;
+	background-position: center-top;
+	background-image: url('../image/widthpull.png');
+	background-repeat: repeat-y;
+	cursor: ew-resize;
+}
+

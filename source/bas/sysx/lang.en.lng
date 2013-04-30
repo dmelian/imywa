@@ -1,0 +1,7 @@
+#bas_sysx
+
+login		SYSTEM LOGIN :: Write your user id and password
+
+[login]
+user		User :: User identifier
+password	Password :: Current login password

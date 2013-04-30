@@ -1,0 +1,128 @@
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+.header_columStatic, .ia_header_column{
+	text-align: center; 
+	background:  @bgColorDefault;
+	color:#fff;
+	border-rigth:solid #D4D998 2px;
+	-webkit-box-shadow: inset 0 1px 0 #1D2C4D, 0 2px 0 #1F3053, 0 4px 3px 0 #111;
+	box-shadow: inset 0 1px 0 #1D2C4D, 0 2px 0 #1F3053, 0 4px 3px 0 #111;
+}
+.header_columDinamic, .ia_header_column{
+	background: @bgColorDefault;
+	
+	font-size: 0.8em;
+	font-family: Arial;
+	font-weight: bold;
+	text-align: center; 
+	//background: -webkit-gradient(linear, 0% 0%, 0% 20%, from(#EDEDED), to(#E8EAEB));
+	//background:  @bgColorDefault;
+	color:#fff;
+	border-rigth:solid #D4D998 2px;
+	-webkit-box-shadow: inset 0 1px 0 #1D2C4D, 0 2px 0 #1F3053, 0 4px 3px 0 #111;
+box-shadow: inset 0 1px 0 #1D2C4D, 0 2px 0 #1F3053, 0 4px 3px 0 #111;
+	
+} 
+
+
+.icon{
+	
+	overflow:hidden;
+	background:url(images/mover.png) left top no-repeat;
+	border-radius:10px;
+	
+}
+
+.columStatic,.columDinamic {//, .ui-resizable{
+	border-right: solid #D4D998 2px;
+// 	float: left;
+	
+	//border-bottom: solid #D4D998 22px
+}
+.ui-selected { background: rgba(224,194,71,0.5);}//#F39814; }
+
+.ia_selected_box{ background: #F39814;}
+.ia_select_box{ background: #C0C0C0; background:@bgColorHover;}
+.selector_row{ width:20px;height:20px;}
+
+
+//.list_row:nth-child(odd){background-color:oldLace;}
+
+//.list_row:nth-child(even){background-color:#F0F0F0;}
+
+/*.ia_selector{
+	background:#F5C040 url(ui-bg_flat_0_2d5d8e_40x100.png) 50% 50% repeat-x;
+	border-rigth:solid #D4D998 2px;
+	color:#fff;
+}*/
+.selector_colom{
+	
+	background:#F5C040 url(ui-bg_flat_0_2d5d8e_40x100.png) 50% 50% repeat-x;
+	border-rigth:solid #D4D998 2px;
+	color:#fff;
+	-webkit-box-shadow:  0 1px 0 #1D2C4D, 0 2px 0 #1F3053, 0 4px 3px 0 #111;
+	box-shadow: inset  0 1px 0 #1D2C4D, 0 2px 0 #1F3053, 0 4px 3px 0 #111;
+	
+}
+
+
+// ### Clase tomada como ejemplo desde la nueva versión de bootstrap
+@gray:                  #555;
+@gridGutterWidth:         20px;
+@baseLineHeight:        20px;
+@baseBorderRadius:      4px;
+@linkColor:             #08c;
+
+
+.clearfix() {  // ### Podría eliminarse esta funcion
+  *zoom: 1;
+  &:before,
+  &:after {
+    display: table;
+    content: "";
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+.thumbnails {
+  margin-left: -@gridGutterWidth;
+  list-style: none;
+  .clearfix();
+}
+// Fluid rows have no left margin
+.row-fluid .thumbnails {
+  margin-left: 0;
+}
+
+// The actual thumbnail (can be `a` or `div`)
+.thumbnail {
+  display: block;
+  padding: 4px;
+  line-height: @baseLineHeight;
+  border: 1px solid #ddd;
+  border-radius: @baseBorderRadius;
+  box-shadow: 0 1px 3px rgba(0,0,0,.055);
+//  .transition(all .2s ease-in-out);
+}
+
+// Add a hover state for linked versions only
+thumbnail:hover {
+  border-color: @linkColor;
+  box-shadow: 0 1px 4px rgba(0,105,214,.25);
+}
+
+// Images and captions
+.thumbnail > img {
+  display: block;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.thumbnail .caption {
+  padding: 9px;
+  color: @gray;
+}
+

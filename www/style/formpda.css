@@ -1,0 +1,110 @@
+@CHARSET "UTF-8";
+
+*{
+	margin: 		0;
+	padding: 		0;
+}
+
+div#displaycdad{
+	width: 			145px;
+	margin-left: 	73px;
+	padding-left: 	30px;
+	font-size: 		40pt;
+	line-height:	56px;
+	font-weight: 	bold;
+	color: 			#ffff00;
+	background-color: #808000;
+}
+
+div#fondoholiday{
+	background-image: url('../image/holiday/pda/fondo_holiday.gif');
+	width: 			293px;
+	height: 		227px;
+}
+
+div#frmviaje{
+	background-image: url('../image/holiday/pda/frm_viaje.gif');
+	width: 			293px;
+	height: 		227px;
+}
+
+div#btatraccion{
+	position: 	absolute;
+	left:		5px;
+	top:		51px;
+	z-index:	1;
+}
+
+div#btcantidad{
+	position: 	absolute;
+	left:		218px;
+	top:		167px;
+	z-index:	1;
+}
+
+div#btexit{
+	position: 	absolute;
+	left:		218px;
+	top:		3px;
+	z-index:	1;
+}
+
+div#msgicon{
+	position: 	absolute;
+	left:		4px;
+	top:		27px;
+	z-index:	1;
+}
+
+div#closeicon{
+	position: 	absolute;
+	left:		4px;
+	top:		108px;
+	z-index:	1;
+}
+
+
+
+div#msgmsg{
+	position: 	absolute;
+	left:		80px;
+	top:		31px;
+	z-index:	1;
+}
+
+div#msgmsg1{
+	position: 	absolute;
+	left:		80px;
+	top:		99px;
+	z-index:	1;
+}
+
+div#msgmsg1 > p{
+	padding-top: 8px;
+	width:		208px;
+	text-align:	center;	
+	font-family: "Lucida Console" , Arial;
+	font-weight: bold;
+}
+
+
+div#msgmsg2{
+	position: 	absolute;
+	left:		80px;
+	top:		139px;
+	z-index:	1;
+}
+
+div#msgmsg2 > p{
+	padding-top: 8px;
+	width:		208px;
+	text-align:	center;
+	font-family: "Lucida Console" , Arial;
+	font-weight: bold;
+}
+
+div#frmmensaje{
+	background-image: url('../image/holiday/pda/frm_mensaje.gif');
+	width: 			293px;
+	height: 		227px;
+}

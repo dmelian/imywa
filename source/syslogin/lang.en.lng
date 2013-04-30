@@ -1,0 +1,10 @@
+[action]
+ok			Ok
+cancel		Cancel
+
+[data]
+user		User
+password	Password
+
+[form]
+login		SYSTEM LOGIN :: Input your username and password

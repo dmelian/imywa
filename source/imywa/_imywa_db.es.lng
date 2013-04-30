@@ -1,0 +1,17 @@
+[databases]
+id	Código :: Código interno asignado a la base de datos para sus actualizaciones y control de versiones. Este código no se puede cambiar.
+version	Nº. Versión ::  El sistema es capaz de ver las diferencias entre dos versiones de la base de datos.
+name	Nombre :: Nombre de la base de datos. Es el identificador por el que la vamos a encontrar en motor de base de datos.
+deleted	Borrada
+
+[tables]
+id	Códido :: Código interno para la tabla.
+version	Nº. Versión :: Número de versión integer not null,
+databaseid	Base de datos :: Base de datos a la que pertenece la tabla
+name	Nombre
+perCompany	Datos por Empresa :: Indica que la tabla tiene datos privados por cada empresa. No son datos compartidos o comunes a todas las empresas.
+perYear	Datos por Años :: Indica que la tabla de parte por años. 
+perYearField	Campo División Años :: Indica el campo de la tabla que se utiliza para dividir los datos de la misma entre los diferentes años.
+deleted	Borrada
+
+
