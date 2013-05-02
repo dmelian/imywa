@@ -20,9 +20,13 @@ class bas_pdf_miclase extends bas_pdf_form{
 		$resultindex=0;
 		$_LOG->log("filas:".$this->mix);
 		$_LOG->log("columnas".$this->miy);
+// 		$text = new bas_sqlx_fieldtext();
 		for($i=0;$i<$this->miy;$i++){
 			$component=$frame->getComponent($i);
-			$this->myhead[$i]= $this->transformData($component->Onformat($component->caption));
+			$_LOG->log("Caption de las columnas: ".$component->caption);
+// 			$this->myhead[$i]= $this->transformData($component->Onformat($component->caption));
+            $this->myhead[$i]= $this->transformData($component->caption);
+
 			for($j=0;$j<$this->mix;$j++){
 				if (isset($rows[$j]) && isset($rows[$j][$component->id])){
 					$this->Resultquery[$j][$i]= $this->transformData($component->OnFormat($rows[$j][$component->id]));
