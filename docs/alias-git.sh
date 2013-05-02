@@ -1,0 +1,16 @@
+git config --add alias.st status
+
+git config --global alias.update 'pull -v'
+git config --global alias.up 'pull -v'
+
+git config --global alias.co checkout
+git config --global alias.ci 'commit -v'
+git config --global alias.ci 'commit -v -a'
+
+git config --global alias.modify 'add -v --update'
+
+git config --global alias.br branch
+git config --global alias.hist 'log --pretty=format:"%h %ad | %s%d [%an]" --graph --date=short'
+
+git config --global alias.type 'cat-file -t'
+git config --global alias.dump 'cat-file -p'
