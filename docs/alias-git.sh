@@ -5,7 +5,7 @@ git config --global alias.up 'pull -v'
 
 git config --global alias.co checkout
 git config --global alias.ci 'commit -v'
-git config --global alias.ci 'commit -v -a'
+git config --global alias.ci-a 'commit -v -a'
 
 git config --global alias.modify 'add -v --update'
 

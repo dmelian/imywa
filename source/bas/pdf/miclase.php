@@ -23,7 +23,7 @@ class bas_pdf_miclase extends bas_pdf_form{
 // 		$text = new bas_sqlx_fieldtext();
 		for($i=0;$i<$this->miy;$i++){
 			$component=$frame->getComponent($i);
-			$_LOG->log("Caption de las columnas: ".$component->caption);
+// 			$_LOG->log("Caption de las columnas: ".$component->caption);
 // 			$this->myhead[$i]= $this->transformData($component->Onformat($component->caption));
             $this->myhead[$i]= $this->transformData($component->caption);
 

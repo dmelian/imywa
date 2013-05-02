@@ -3,7 +3,7 @@ delimiter $$
 drop procedure if exists createCronoHeaders$$
 create procedure createCronoHeaders(
 	in istartingDate date,
-	in iinterval enum('day','week','month','year'),
+	in iinterval enum('day','week','month','year')
 -- 	in icount integer 
 )
 begin
@@ -25,13 +25,15 @@ begin
 			set istartingDate = concat(year(istartingDate),'-',month(istartingDate),'-01');
 			set icount = DAY(LAST_DAY(istartingDate));
 		when 'week' then 
-			set istartingDate = concat(year(istartingDate),'-01-01');
-			set icount = week(concat(year(istartingDate),'-12-31'));
+			set istartingDate =  concat(year(istartingDate),'-01-04');
+			set istartingDate = date_sub(istartingDate, interval weekday(istartingDate) day);
+-- 			set icount = week(concat(year(istartingDate),'-12-31'),3);
+			set icount = week(concat(year(istartingDate),'-12-28'),3);
 		when 'month' then 
 			set istartingDate = concat(year(istartingDate),'-01-01');
 			set icount = 12;
 		when 'year' then 
-			set istartingDate = concat(extract(year from istartingDate),'0101');
+			set istartingDate = concat(year(istartingDate),'0101');
 	end case;
 
 	-- temporary table created.
