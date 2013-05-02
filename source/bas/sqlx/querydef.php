@@ -28,7 +28,7 @@ class bas_sqlx_querydef extends bas_sqlx_basicquery {
 	protected $pivot;
 	protected $sorting = array();
 	protected $conditions = array(); // condiciones directas a where sin pasar por filtros.
-	
+	protected $group = array();
 	public $order;
 // 	public $db;
 
@@ -61,6 +61,15 @@ class bas_sqlx_querydef extends bas_sqlx_basicquery {
 	public function getAllfield(){
 		return $this->cols;
 	}
+	
+	protected function getTable($item){
+        foreach ($this->tables as $table){
+            if ($table["table"] == $item) return $table;
+        }
+        return NULL;
+	
+	}
+	
 	/*
 	Campos a tener en field_type:
 		filter
@@ -180,14 +189,17 @@ class bas_sqlx_querydef extends bas_sqlx_basicquery {
 		$this->order = $order;
 	}
 	
-	
-	
+// Group by
+    public function setGroup($field){
+        $this->group[]=array("field"=>$field);
+    }
+
+
 	/*
-select prueba_record.N_Factura, prueba_record.id_Cliente, prueba_record.cantidad
- from prueba_record
- where ((prueba_record.N_Factura > 1))
-order by 
-id_Cliente asc, cantidad desc, N_Factura ASC, N_Linea ASC  limit 0, 10;
+select linfactura.comercializadora,linfactura.poliza,linfactura.nofactura, cronoHeaders.name, sum(linfactura.valor)
+from contaluz.linfactura left join contaluz.factura on linfactura.nofactura = factura.nofactura inner 
+join cronoHeaders on factura.fechafactura between cronoHeaders.fromDate  and cronoHeaders.untilDate 
+group by linfactura.nofactura, cronoHeaders.name limit 15;
 
 	*/
 	
@@ -205,7 +217,7 @@ id_Cliente asc, cantidad desc, N_Factura ASC, N_Linea ASC  limit 0, 10;
 		global $CONFIG;
 		//if(!$nolimits && $CONFIG['LSTTYPE'] == constant('LT_FULL_LIST')) $nolimits = false;
 		$nolimits= false;
-		$qry = $this->selectclause() . $this->fromclause() . $this->whereclause();
+		$qry = $this->selectclause() . $this->fromclause() . $this->whereclause() . $this->groupclause();
 		if ($order)$qry = $qry. $this->orderclause();
 // 		if (!$nolimits) $qry .= $this->limitclause();
 		return $qry;
@@ -233,6 +245,30 @@ id_Cliente asc, cantidad desc, N_Factura ASC, N_Linea ASC  limit 0, 10;
 		if ($ret) return "select $ret";//return "select SQL_CALC_FOUND_ROWS $ret"; //###
 		else return "select *"; //select 0
 	}
+	
+// 	public function groupclause($all = false){  // ### Pivot¿?¿?
+//         $ret = $prefix = '';
+//         foreach ($this->group as $col){
+//             $table = $this->getTable($col["table"]);
+//             $ret .= $prefix."{$table['db']}.{$table['table']}";
+//         }
+//         if ($ret) return " Group By $ret";//return "select SQL_CALC_FOUND_ROWS $ret"; //###
+//         else return ""; //select 0
+//     }
+    
+    
+    
+    public function groupclause(){  // ### Pivot¿?¿?
+        $ret = $prefix = '';
+        foreach ($this->group as $item){
+            $col = $this->getField($item["field"]);
+            $ret .= "$prefix{$col->db}.{$col->table}.{$col->id}";
+            $prefix = ', ';
+        }
+        if ($ret) return " Group By $ret";//return "select SQL_CALC_FOUND_ROWS $ret"; //###
+        else return ""; //select 0
+    }
+    
 
 // FROM
 	

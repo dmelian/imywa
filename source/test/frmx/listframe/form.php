@@ -67,6 +67,10 @@ class test_frmx_listframe_form extends bas_frmx_form {
 		$list->addComponent($width, $height,"N_Linea");
 		$list->addComponent($width, $height,"cantidad");
 		$list->addComponent($width, $height,"id_Cliente");
+		
+		$list->query->setGroup("N_Factura");
+		$list->query->setGroup("N_Linea");
+		
 		$list->setRecord();	
 		
 		$this->addFrame($list);
