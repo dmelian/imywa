@@ -68,8 +68,6 @@ class bas_sqlx_fielddate extends bas_sqlx_fielddef {
 			$date_ini=array();
 			$date_ini=explode('-',$value);
 			$value=$date_ini[2].'-'.$date_ini[1].'-'.$date_ini[0];
-		}else{
-			$value='00-00-000';		
 		}
 		return $value;
 	}
