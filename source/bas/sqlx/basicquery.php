@@ -84,6 +84,23 @@ class bas_sqlx_basicquery {
 		$this->lasttable = $table;
 	}
 	
+	public function addrelatedExp($table, $relatedfields='', $relatedtable='',$db='', $expresion='',$jointype='left'){//###
+        global $_SESSION;
+        if (!$db) $db=$this->maindb; else $bd= $_SESSION->apps[$_SESSION->currentApp]->getDbName($db);
+        if (!$relatedtable) $relatedtable = $this->lasttable;
+        if (!$relatedfields){
+            $relatedfields = array(array('field'=>$table, 'db'=>$db,'relatedfield'=>$table));
+        } elseif (!is_array($relatedfields)) {
+            $fields = array();
+            foreach(explode(',', $relatedfields) as $field){
+                $fields[]=array('field'=>trim($field), 'db'=>$db,'relatedfield'=>trim($field));
+            }
+            $relatedfields = $fields;
+        }
+        $this->tables[] = array('table'=>$table, 'relatedtable'=>$relatedtable,'db'=>$db, 'relatedfields'=>$relatedfields, 'jointype'=>$jointype, 'expresion'=>$expresion);
+        $this->lasttable = $table;
+    }
+	
 	public function addmanual($table, $condition, $db='',$jointype='left'){
 		global $_SESSION;
 		if (!$db) $db=$this->maindb; else $bd= $_SESSION->apps[$_SESSION->currentApp]->getDbName($db);

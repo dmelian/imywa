@@ -286,8 +286,14 @@ group by linfactura.nofactura, cronoHeaders.name limit 15;
 				$prefix='';
 				$condition = '';
 				foreach($table['relatedfields'] as $field){
-					$condition .= $prefix.$this->getdb($table['relatedtable']).'.'.$table['relatedtable'].'.'.$field['relatedfield']
-					.' = '.$table['db'].'.'.$table['table'].'.'.$field['field'];
+                   if (isset($table['expresion'])){
+                        $condition .= $prefix.$this->getdb($table['relatedtable']).'.'.$table['relatedtable'].'.'.$field['relatedfield']." ".$table['expresion'];
+                   }
+                   else{
+                        $condition .= $prefix.$this->getdb($table['relatedtable']).'.'.$table['relatedtable'].'.'.$field['relatedfield']
+                        .' = '.$table['db'].'.'.$table['table'].'.'.$field['field'];
+                        
+					}
 					$prefix = ' and ';
 				} 
 				if ($condition) {  
