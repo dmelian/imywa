@@ -38,6 +38,7 @@ class bas_sqlx_fielddef {
 	
 	public $lookup,$lookupcaption;
 	public $db;
+	public $indexTab;
 	
 	//($id,$table,$aliasof,$pk,$caption)
 	public function __construct($id,$table,$db="",$pk=false,$caption="",$aliasof=NULL,$editable=true,$visible=true,$selected=true){
@@ -52,7 +53,7 @@ class bas_sqlx_fielddef {
 	    $this->visible = $visible;	   
 	    $this->selected = $selected;
 	    $this->lookup = $this->lookupcaption = "";
-	    $this->description = $this->reference = $this->expression= "";
+	    $this->indexTab = $this->description = $this->reference = $this->expression= "";
 	    
 	    $this->name = $id;
 	    $this->db = $db;

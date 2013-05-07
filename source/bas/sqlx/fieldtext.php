@@ -48,6 +48,7 @@ class bas_sqlx_fieldtext extends bas_sqlx_fielddef {
 	protected function OnPaintInPut($value,$mode,$list=false){
 		if ($list)	echo " <input class=\"ia_inputfield\" type=\"text\" style=\"background-color: white;width:100%;text-align:{$this->align}\"name=\"".$this->name."\" value=\"".$value."\"";
 		else 	echo " <input class=\"ia_inputfield\" type=\"text\" style=\"background-color: white;text-align:{$this->align}\"name=\"".$this->name."\" value=\"".$value."\"";
+		if ($this->indexTab) echo "tabindex=\"{$this->indexTab}\"";
 	    if (!$this->editable || $mode =="read"){
 	      echo "disabled=\"disabled\"";	    
 	    }

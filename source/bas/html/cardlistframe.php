@@ -47,10 +47,11 @@ class bas_html_cardlistframe{
 	
 	}
 	
-	private function ContentColum($component,$rows, $type){
+	private function ContentColum($component,$rows, $type,$Poscolum=0){
 		if ($type) $class="header_columStatic ";
 		else $class="header_columDinamic ";
 		
+		$nelem = count($this->frame->colComponents);
 		
 		$margin_left= 20;
 		$nelem = count($rows);
@@ -116,7 +117,7 @@ class bas_html_cardlistframe{
 				else echo "\"";
 				echo "style=\"position:relative;width:100%;text-align:{$component->align};overflow:hidden; top:".($index+1)*$this->top ."{$this->measure};height:".$this->height."{$this->measure};\">";
 						if (isset($rows[$index]) && isset($rows[$index][$currentID]))
-							$this->paintValue($rows[$index][$currentID],$component);
+							$this->paintValue($rows[$index][$currentID],$component,(($nelem*$index)+$Poscolum));
 						else
 							$this->paintValue("",$component);
 				echo "</div>";
@@ -126,9 +127,11 @@ class bas_html_cardlistframe{
 	
 	}
 	
-	private function paintValue($value,$component){
-		if($this->frame->getMode()!= "read")
-			$component->OnPaintList($value,"edit");
+	private function paintValue($value,$component,$indexTab=0){
+		if($this->frame->getMode()!= "read"){
+            $component->indexTab= $indexTab;
+            $component->OnPaintList($value,"edit");
+        }
 		else
 			echo $component->OnFormat($value);
 	}
@@ -139,7 +142,7 @@ class bas_html_cardlistframe{
 			    echo "<div class=\"columStatic\" style=\"position:relative; top:0{$this->measure};height:100%;vertical-align:top;width:";
 			    if (!isset($this->autosize)) echo $this->frame->getComponentWidth($index)."{$this->measure};display:inline-block;overflow:hidden;\">";
 			    else echo $this->autosize."%;display:inline-block;overflow:hidden;\">";
-				   $this->ContentColum($this->frame->getComponent($index),$rows,true);
+				   $this->ContentColum($this->frame->getComponent($index),$rows,true,$index);
 			    echo "</div>";
 		}
 	}
@@ -152,7 +155,7 @@ class bas_html_cardlistframe{
 			    else echo $this->autosize."%;display:inline-block;overflow:hidden;\">";
 					global $_LOG;
 					$_LOG->log("se alcanza la posicion: $index");
-				  $this->ContentColum( $this->frame->getComponent($index),$rows,false);
+				  $this->ContentColum( $this->frame->getComponent($index),$rows,false,$index);
 			    echo "</div>";
 		}
 	}
