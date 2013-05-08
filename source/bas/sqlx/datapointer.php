@@ -116,23 +116,11 @@ class bas_sqlx_datapointer{
 		$this->current = array();
 		$_LOG->log("Datapointer::Query: Consulta ejecutada: $query");
 		if ($result != false){
-			if ($limit ==1){
-				while($row = $result->fetch_assoc())
-				{
-					foreach($row as $field => $value){
-						$this->current[$field] = $value;
-					}
-				}
-			}
-			else{
+			if ($limit == 1) $this->current= $result->fetch_assoc();
+			else {
 				$pos = 0;
-				while($row = $result->fetch_assoc())
-				{
-					foreach($row as $field => $value){
-						$this->current[$pos][$field] = $value;
-					}
-				$pos++;
-				} 	
+				while($this->current[$pos++] = $result->fetch_assoc());
+				unset($this->current[--$pos]);
 				$this->size = $pos;
 			}
 			if (isset($this->pivot)) $this->pivotFormat();
@@ -144,9 +132,11 @@ class bas_sqlx_datapointer{
 		}
 		if (!isset($this->connect))$con->close();
 	}
+	
 	public function setPivot($pivot,$value){
 		$this->pivot = array("pivot"=>$pivot, "value"=>$value);
 	}
+	
 	protected function pivotFormat(){
 		$container = array();
 		$pos = 0;
