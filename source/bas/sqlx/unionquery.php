@@ -94,6 +94,11 @@ class bas_sqlx_unionquery{
 	public function getautokeyRecord($record){ // $record = asociative vector
 		return $this->querys[0]->getautokeyRecord($record);
 	}
+	
+    public function getfilters(){
+        return $this->querys[0]->getfilters();
+    }
+	
 }
 
 ?>
