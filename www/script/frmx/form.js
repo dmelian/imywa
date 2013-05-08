@@ -506,7 +506,6 @@ function addhidden(hidname, hidvalue, hidform){
 };
 
 function submitaction(action){
-	alert("submit con "+action);
 	addhidden('action', action);
 	var item = select_item();
 	if (item != undefined) addhidden('selected', item,action);
