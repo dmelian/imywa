@@ -39,14 +39,14 @@ class bas_sql_myextprocedure{
 	private $rolledback;
 	private $rollbackatclose;
 	
-	public function __construct(){
+	public function __construct($database=''){
 		global $_SESSION;
 		global $_LOG;
 		
 		$_SESSION->apps[$_SESSION->currentApp]->getMainDb($hostname, $databasename);
 		//$databasename = $_SESSION->apps[$_SESSION->currentApp]->mainDb;
 		//$hostname = $_SESSION->apps[$_SESSION->currentApp]->dbServer;
-				
+		if($database) $databasename = $database;
 		$this->connection = mysqli_init();
 		
 		$this->rolledback = false;
@@ -64,13 +64,14 @@ class bas_sql_myextprocedure{
 		}
 	}
 	
-	public function call($procedure, $params=array()){
+	public function call($procedure, $params=array(),$database=''){
 		global $_SESSION;
 		global $_LOG;
 		
 		$databasename = $_SESSION->apps[$_SESSION->currentApp]->mainDb;
 		$hostname = $_SESSION->apps[$_SESSION->currentApp]->dbServer;
-		
+        if($database) $databasename = $database;
+
 		if ($this->success){
 			$query = "call $procedure" . $this->expand($params);
 			$_LOG->log("mysql.exec.procedure_ext host:$hostname database:$databasename user:$_SESSION->user query:$query",3);

@@ -20,10 +20,10 @@ along with imywa.  If not, see <http://www.gnu.org/licenses/>.
 class bas_html_listframe{
 
 	public $frame;
-	private $top;
-	private $measure;
-	private $height;
-	private $selector;
+	protected $top;
+	protected $measure;
+	protected $height;
+	protected $selector;
 	protected $cssComp;
 	protected $autosize;
 	public $initialrowcount=10;
@@ -45,7 +45,7 @@ class bas_html_listframe{
 	}
 	
 	
-	private function PaintSelector($nelem){
+	protected function PaintSelector($nelem){
 	
 		echo "<div class =\" selector_colom \"style=\"position:relative; top 0{$this->measure};height:".$this->height."{$this->measure};\">";
 // 		      echo "Nº fila";
@@ -59,7 +59,7 @@ class bas_html_listframe{
 		}
 	}
 	
-	private function ContentColum($component,$rows, $type){
+	protected function ContentColum($component,$rows, $type){
 		if ($type) $class="header_columStatic ";
 		else $class="header_columDinamic ";
 		
@@ -91,7 +91,7 @@ class bas_html_listframe{
 	
 	}
 	
-	private function Paintfixed($rows){
+	protected function Paintfixed($rows){
 		//$nelem = count($this->fixedColums);
 		for($index=0;$index < $this->frame->fixedColums;$index++){
 			    echo "<div class=\"columStatic\" style=\"position:relative; top:0{$this->measure};height:100%;vertical-align:top;width:";
@@ -102,7 +102,7 @@ class bas_html_listframe{
 		}
 	}
 	
-	private function PaintDinamic($rows){
+	protected function PaintDinamic($rows){
 		$nelem = count($this->frame->components);
 		for($index=$this->frame->fixedColums;$index < $nelem;$index++){
 			    echo "<div class=\"columDinamic\" style=\"position:relative; top:0{$this->measure};height:100%;vertical-align:top;width:";
@@ -114,7 +114,7 @@ class bas_html_listframe{
 	}
 	
 	
-	private function sizeColumns($begin,$end){
+	protected function sizeColumns($begin,$end){
 		$size = 0;
 		for ($ind=$begin;$ind<$end;$ind++){
 			$size = $size + $this->frame->getComponentWidth($ind)+2;
