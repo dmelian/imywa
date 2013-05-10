@@ -25,12 +25,6 @@
  * Esto salió por primera vez en vigilancia. Las visitas activas.
  */
 class bas_sqlx_cronoQuery extends bas_sqlx_querydef {
-	protected $pivot;
-	protected $sorting = array();
-	protected $conditions = array(); // condiciones directas a where sin pasar por filtros.
-	protected $group = array();
-	public $order;
-// 	public $db;
 
 	public function __construct($caption="", $id=""){
 		global $CONFIG;
