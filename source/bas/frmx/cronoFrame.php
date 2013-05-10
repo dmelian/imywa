@@ -17,55 +17,51 @@
 	You should have received a copy of the GNU General Public License
 	along with imywa.  If not, see <http://www.gnu.org/licenses/>.
 */
-class bas_frmx_listframe extends bas_frmx_frame{
+class bas_frmx_cronoFrame extends bas_frmx_listframe{
 
 	public $jsClass= "bas_frmx_listframe";
 	public $dataset;
-	public $query;
-	public $n_item;
-	protected $cssComp;
-	protected $autosize;
-	protected $selector;
-	protected $footer;
 	
-	public $fixedColums; // Número de columnas fijas dentro de components. Se tomarán los primeros X componentes.
-	public $components = array();  // Vector con todos los campos que representarán las columnas de la lista
-						  // el orden de este vector representará el orden visual final.
+	public $periods=array();
+	
+	public $curPeriod;
+	public $curDate;
+	
+    public $cronoHeader = array(); // se trata de un array simple->("prmero","segundo","tercero"), donde cada posicion representa el orden y valor del encabezado del cronograma propiamente dicho.
 
 	public function __construct($id, $title="",$query=""){
 		parent::__construct($id,$title);
 		$this->fixedColums = 0;
-		if ($query == "")$this->query = new bas_sqlx_querydef();
+		if ($query == "")$this->query = new bas_sqlx_cronoQuery();
 		else $this->query = $query;
 		$this->n_item = 10;
 		$this->cssComp = null;
 		$this->selector = true;
+		
+		$this->periods = array("day"=>"Diario","week"=>"Semanal","month"=>"Mensual","year"=>"Anual");
+		$this->curPeriod = "year";
+		
 	}
 	public function setRecord($con=""){
-		$this->dataset = new bas_sqlx_dataview($this->query);
+		$this->dataset = new bas_sqlx_cronoPointer($this->query);
 		if ($con)$this->dataset->setConnection($con);
 		$this->dataset->SetViewWidth($this->n_item);
-		$this->dataset->load_data();
-		$this->SetViewPos(0);		
+		$this->cronoHeader = $this->dataset->load_data($this->curDate,$this->curPeriod);
+
+		$this->SetViewPos(0);
 	}
 	
 	public function initRecord(){
-	  	$this->dataset = new bas_sqlx_dataview($this->query);		
+	  	$this->dataset = new bas_sqlx_cronoPointer($this->query);		
 		$this->dataset->initRecord();
-		
 	}
 	
-	public function setMaxItem($nelem){
-		$this->n_item = $nelem;
-	}
-	
-	public function setFooter($value){
-        $this->footer = $value;
-    }
-	
-	public function getQuerySize(){
-		if (isset($this->dataset)) return $this->dataset->getQuerySize(); else return null;
-	}
+	 public function getPeriods(){
+        return $this->periods;
+	 }
+     public function periodSelected(){
+        return $this->curPeriod;
+     }
 	
 	public function addComponent($width=50, $height, $id_field){ 
 		array_push($this->components,array("width"=>$width,"height"=>$height,"id"=>$id_field));
@@ -78,18 +74,6 @@ class bas_frmx_listframe extends bas_frmx_frame{
 	public function getCssComponent(){
 		return $this->cssComp;
 	}
-	
-	public function autoSize(){
-		$this->autosize=true;
-	}
-	
-	public function showSelector($selector = true){
-		$this->selector = $selector;
-	}
-	
-// 	public function getComponent($pos){
-// 		return $this->query->cols[$this->components[$pos]["id"]];	
-// 	}
 
 	public function getComponent($pos){
 		if ($this->query->existField($this->components[$pos]["id"]))	return $this->query->getField($this->components[$pos]["id"]);	
@@ -99,15 +83,6 @@ class bas_frmx_listframe extends bas_frmx_frame{
 	public function getComponentWidth($pos){
 		return $this->components[$pos]["width"];
 	}
-	
-	
-	public function setFixed($nelem){
-		$this->fixedColums = $nelem;
-	}
-	
-	
-// 	private function OnPrepareData(){
-// 	}
 	
 	public function setAttr($id,$attr,$value){
 		if ($this->query->existField($id)){
@@ -119,47 +94,26 @@ class bas_frmx_listframe extends bas_frmx_frame{
 	    }
 	}
 	
-	
 	public function SetViewPos($pos){
-// 	    return $this->dataset->SetViewPos($pos);	setSelected
 	    return $this->dataset->SetViewPos($pos);	
-
 	}
 	
 	public function Reload($paint=false){
 		$this->dataset->query = $this->query;
-		$this->dataset->load_data();
+		$this->cronoHeader = $this->dataset->load_data($this->curDate,$this->curPeriod);
+		
 		$this->dataset->SetViewPos(0);
 		$this->setSelected(-1);  // WARNING: Debemos mirar si tiene sentido hacerlo siempre. Desaparecera el seleccionado, útil en el borrado
 		if ($paint)	$this->sendContent();
 	}
 	
 	public function createRecord(){
-		$this->dataset = new bas_sqlx_dataview($this->query);
+		$this->dataset = new bas_sqlx_cronoPointer($this->query);
 		$this->dataset->SetViewWidth($this->n_item);
 	}
 	
-	public function setSelected($pos){
-// 	    return $this->dataset->SetViewPos($pos);	setSelected
-	    return $this->dataset->setSelected($pos-1); // Es necesario porque tratamos los datos desde el indice 0. Otra posibilidad es cambiar esta posición.	
-
-	}
-	public function getSelected(){
-	    return $this->dataset->getSelected();
-	}
-	
-	public function getkeySelected(){
-		return $this->query->getautokeyRecord($this->getSelected());
-	}
-	
-	public function existSelected(){
-	    return $this->dataset->exitSelected();
-	}
-	
-	
 	public function OnCommand($command, $data){
 		switch($command){
-			
 			case 'gettabledef':
 				echo "JSON:[\"setTableDef\",". json_encode($this->tabledef->export()). ']';
 				break;
@@ -169,28 +123,24 @@ class bas_frmx_listframe extends bas_frmx_frame{
 				$ds= new bas_sql_myqrydataset($this->tabledef);
 				echo "JSON:[\"setData\",". json_encode($ds->export()). ']';
 				break;
-			
 		}
-	
 	}
-		
 	
 	public function OnPaintContent(){
-		$html = new bas_html_listframe($this,$this->selector);
+		$html = new bas_html_cronoFrame($this,$this->selector);
 		if ($this->autosize) $html->autoSize();
-		if (isset($this->footer)) $html->setFooter($this->footer);
 		$html->OnPaint();
 	}
 	
-	public function get_rows(){
-		if (isset($this->dataset)) return $this->dataset->current; else return array(); 
-		//Nota: ¿Que elementos pintamos? Tenemos que conocer cuantos caben en la ventana.
-										// ### Plantearse
-	}
-	
-	public function get_Allrows(){
-		return $this->dataset->Allrows();
-	}
+	public function setDate($date){
+        $this->curDate = $date;
+//         $this->dataset->setDate($date);
+    }
+    
+    public function setPeriod($period){
+        $this->curPeriod = $period;
+//         $this->dataset->setPeriod($period);
+    }
 	
 	public function OnAction($action, $data){
 		switch($action){
@@ -258,6 +208,55 @@ class bas_frmx_listframe extends bas_frmx_frame{
 		$csvlist->Onprint($csv);
 	}
 	
+	public function next(){
+      $aux = $aux = explode('-',$this->curDate);
+        global $_LOG;
+
+      switch($this->curPeriod){
+            case "day":
+                $aux[1] = (($aux[1]+1)%13);
+                $_LOG->log("NEXT:Antes del if ".$aux[1]);
+
+                if ($aux[1] == 0) {
+                    $aux[0]++;
+                    $aux[1]++;
+                }
+                $_LOG->log("NEXT:DEspues del if ".$aux[1]);
+            break;
+            case "week": case "month":
+                $aux[0]++;
+            break;
+            case "year":
+//                 $aux = explode('-',$this->curDate);
+            break;
+        
+       }
+       $this->setDate("$aux[0]-$aux[1]-$aux[2]");
+	}
+	
+	
+	public function previous(){
+        $aux = $aux = explode('-',$this->curDate);
+        global $_LOG;
+        switch($this->curPeriod){
+              case "day":
+                  $aux[1] = ($aux[1]-1)%13;
+                  $_LOG->log("Antes del if ".$aux[1]);
+                  if ($aux[1] == 0) {
+                      $aux[1] = 12; $aux[0]--;
+                  }
+                  $_LOG->log("DEspues del if ".$aux[1]);
+              break;
+              case "week": case "month":
+                  $aux[0]--;
+              break;
+              case "year":
+  //                 $aux = explode('-',$this->curDate);
+              break;
+          
+        }
+        $this->setDate("$aux[0]-$aux[1]-$aux[2]");
+	}
 	
 }
 ?>

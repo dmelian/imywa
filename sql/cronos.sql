@@ -26,9 +26,11 @@ begin
 			set icount = DAY(LAST_DAY(istartingDate));
 		when 'week' then 
 			set istartingDate =  concat(year(istartingDate),'-01-04');
+			set icount = week(concat(year(istartingDate),'-12-28'),3);
+
 			set istartingDate = date_sub(istartingDate, interval weekday(istartingDate) day);
 -- 			set icount = week(concat(year(istartingDate),'-12-31'),3);
-			set icount = week(concat(year(istartingDate),'-12-28'),3);
+			
 		when 'month' then 
 			set istartingDate = concat(year(istartingDate),'-01-01');
 			set icount = 12;
