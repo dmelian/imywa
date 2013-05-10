@@ -60,6 +60,7 @@ class test_frmx_listframe_form extends bas_frmx_form {
 		// ### Codigo de prueba
 		
 		$list->setFixed(2);
+		$list->setFooter(15);
 	
 	// field type:   ($id,$type,$name, $caption, $editable, $value,$visible)
 	

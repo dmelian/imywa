@@ -21,8 +21,8 @@
 
 class bas_sqlx_cronoPointer extends bas_sqlx_dataview{
 	protected $cronoHeaders=array();
-	protected $period;
-	protected $date;
+// 	protected $period;
+// 	protected $date;
 	
 // 	protected function pivotFormat(){
 //         $container = array();
@@ -51,15 +51,44 @@ class bas_sqlx_cronoPointer extends bas_sqlx_dataview{
 //         $this->current = $container;
 //     }
 	
-	public function setDate($date){
+	/*public function setDate($date){
         $this->date = $date;
 	}
 	
 	public function setPeriod($period){
         $this->period = $period;
-	}
+	}*/
 	
-    public function load_data(){
+    public function load_data($date,$period){
+        $proc = new bas_sql_myextprocedure('imywa');
+        $this->connect = $proc->connection;
+        if ($proc->success){ 
+            $proc->call('createCronoHeaders', array($date, $period),'imywa'); 
+//             $proc->call('createCronoHeaders', array('2010-05-05', 'week'),'imywa');
+            
+            $qry = "select name from imywa.cronoHeaders";
+
+            $ds = new bas_sql_myqrydataset($qry,'','',$this->connect);       
+            $rec = $ds->reset();
+            
+            while ($rec){ // obtenemos los periodos por factura
+                $this->cronoHeaders[]= $rec["name"];
+                $rec = $ds->next();         
+            }         
+            
+            parent::load_data();
+            $proc->commit();
+
+            $aux = $this->cronoHeaders;
+            $this->cronoHeaders = array();
+            return $aux;
+        }
+        else    
+            return array();
+    }
+    
+    /*
+    public function load_data($date,$period){
         $proc = new bas_sql_myextprocedure('imywa');
         $this->connect = $proc->connection;
         if ($proc->success){ 
@@ -86,6 +115,11 @@ class bas_sqlx_cronoPointer extends bas_sqlx_dataview{
         else    
             return array();
     }
+    
+    */
+    
+    
+    
 }
 
 ?>

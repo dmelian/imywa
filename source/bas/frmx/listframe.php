@@ -26,6 +26,7 @@ class bas_frmx_listframe extends bas_frmx_frame{
 	protected $cssComp;
 	protected $autosize;
 	protected $selector;
+	protected $footer;
 	
 	public $fixedColums; // Número de columnas fijas dentro de components. Se tomarán los primeros X componentes.
 	public $components = array();  // Vector con todos los campos que representarán las columnas de la lista
@@ -57,6 +58,10 @@ class bas_frmx_listframe extends bas_frmx_frame{
 	public function setMaxItem($nelem){
 		$this->n_item = $nelem;
 	}
+	
+	public function setFooter($value){
+        $this->footer = $value;
+    }
 	
 	public function getQuerySize(){
 		if (isset($this->dataset)) return $this->dataset->getQuerySize(); else return null;
@@ -173,6 +178,7 @@ class bas_frmx_listframe extends bas_frmx_frame{
 	public function OnPaintContent(){
 		$html = new bas_html_listframe($this,$this->selector);
 		if ($this->autosize) $html->autoSize();
+		if (isset($this->footer)) $html->setFooter($this->footer);
 		$html->OnPaint();
 	}
 	

@@ -25,6 +25,7 @@ class bas_frmx_cronoFrame extends bas_frmx_listframe{
 	public $periods=array();
 	
 	public $curPeriod;
+	public $curDate;
 	
     public $cronoHeader = array(); // se trata de un array simple->("prmero","segundo","tercero"), donde cada posicion representa el orden y valor del encabezado del cronograma propiamente dicho.
 
@@ -45,9 +46,8 @@ class bas_frmx_cronoFrame extends bas_frmx_listframe{
 		$this->dataset = new bas_sqlx_cronoPointer($this->query);
 		if ($con)$this->dataset->setConnection($con);
 		$this->dataset->SetViewWidth($this->n_item);
-		$this->cronoHeader = $this->dataset->load_data();
-		global $_LOG;
-		$_LOG->debug("cronoHeader devuelto: ",$this->cronoHeader);
+		$this->cronoHeader = $this->dataset->load_data($this->curDate,$this->curPeriod);
+
 		$this->SetViewPos(0);
 	}
 	
@@ -100,10 +100,8 @@ class bas_frmx_cronoFrame extends bas_frmx_listframe{
 	
 	public function Reload($paint=false){
 		$this->dataset->query = $this->query;
-		$this->cronoHeader = $this->dataset->load_data();
+		$this->cronoHeader = $this->dataset->load_data($this->curDate,$this->curPeriod);
 		
-		global $_LOG;
-        $_LOG->debug("cronoHeader devuelto: ",$this->cronoHeader);
 		$this->dataset->SetViewPos(0);
 		$this->setSelected(-1);  // WARNING: Debemos mirar si tiene sentido hacerlo siempre. Desaparecera el seleccionado, útil en el borrado
 		if ($paint)	$this->sendContent();
@@ -135,11 +133,13 @@ class bas_frmx_cronoFrame extends bas_frmx_listframe{
 	}
 	
 	public function setDate($date){
-        $this->dataset->setDate($date);
+        $this->curDate = $date;
+//         $this->dataset->setDate($date);
     }
     
     public function setPeriod($period){
-        $this->dataset->setPeriod($period);
+        $this->curPeriod = $period;
+//         $this->dataset->setPeriod($period);
     }
 	
 	public function OnAction($action, $data){
@@ -208,6 +208,55 @@ class bas_frmx_cronoFrame extends bas_frmx_listframe{
 		$csvlist->Onprint($csv);
 	}
 	
+	public function next(){
+      $aux = $aux = explode('-',$this->curDate);
+        global $_LOG;
+
+      switch($this->curPeriod){
+            case "day":
+                $aux[1] = (($aux[1]+1)%13);
+                $_LOG->log("NEXT:Antes del if ".$aux[1]);
+
+                if ($aux[1] == 0) {
+                    $aux[0]++;
+                    $aux[1]++;
+                }
+                $_LOG->log("NEXT:DEspues del if ".$aux[1]);
+            break;
+            case "week": case "month":
+                $aux[0]++;
+            break;
+            case "year":
+//                 $aux = explode('-',$this->curDate);
+            break;
+        
+       }
+       $this->setDate("$aux[0]-$aux[1]-$aux[2]");
+	}
+	
+	
+	public function previous(){
+        $aux = $aux = explode('-',$this->curDate);
+        global $_LOG;
+        switch($this->curPeriod){
+              case "day":
+                  $aux[1] = ($aux[1]-1)%13;
+                  $_LOG->log("Antes del if ".$aux[1]);
+                  if ($aux[1] == 0) {
+                      $aux[1] = 12; $aux[0]--;
+                  }
+                  $_LOG->log("DEspues del if ".$aux[1]);
+              break;
+              case "week": case "month":
+                  $aux[0]--;
+              break;
+              case "year":
+  //                 $aux = explode('-',$this->curDate);
+              break;
+          
+        }
+        $this->setDate("$aux[0]-$aux[1]-$aux[2]");
+	}
 	
 }
 ?>

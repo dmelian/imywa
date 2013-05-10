@@ -26,6 +26,9 @@ class bas_html_listframe{
 	protected $selector;
 	protected $cssComp;
 	protected $autosize;
+	
+    protected $footer;
+    
 	public $initialrowcount=10;
 
 	public function __construct($list,$selector=true){
@@ -36,6 +39,7 @@ class bas_html_listframe{
 		$this->measure = "pt";
 		$this->height = 18;
 		$this->cssComp = $this->frame->getCssComponent();
+		$this->footer = null;
 	}
 	
 	
@@ -125,54 +129,75 @@ class bas_html_listframe{
 	}
 	
 	public function OnPaint(){
-		// Calculamos el ancho total de cada división para evitar el conflicto del position relative.
+		$this->OnPaintBlock();
 		
-		$size_components = count($this->frame->components);
-		$fixed_width = $this->sizeColumns(0,$this->frame->fixedColums);
-		$dinamic_width = $this->sizeColumns($this->frame->fixedColums,$size_components);
-		
-// 		$size_components = count($this->frame->components);
-// 		$fixed_width = (100+2)*$this->frame->fixedColums ;
-// 		$dinamic_width = (100 +10)*($size_components - $this->frame->fixedColums);
-
-	// Obtenemos los registros a mostrar.
-		$rows = $this->frame->get_rows();
-
-		
-		if ($size_components < $this->frame->fixedColums){
-			$this->frame->fixedColums= $size_components; // Lo hacemos mediante la funcion¿? o Solo lo almacenamos en local¿?
-			global $_LOG;
-			$_LOG->log("html_listFrame::OnPaint - Se han solicitado un número inexistente de columnas fijas");
+		if(isset($this->footer)){
+            $this->OnPaintFooter();	
 		}
 		
-		
-		
-		echo "<div class=\"ia_list\" style=\"position:relative;white-space:nowrap;height:";//TODO: A revisar correctamente (presentacion amedita)
-		$nreg = $this->initialrowcount;//count($rows);
-		if( $nreg >= 5)echo (7+($this->frame->n_item+1)*($this->height+$this->top))."{$this->measure};width:100%;\">";
-		else  echo (7+($nreg+1)*($this->height+$this->top))."{$this->measure};width:100%;\">";
-		
-			if ($this->selector){
-				// Se crea el encapsulado de los selectores de fila.
-				echo "<div class=\"ia_selector\" style=\"position:absolute;overflow:left:0px;hidden;height:100%; width:25{$this->measure};\">"; // Mostrará la fila seleccionada.
-					$this->PaintSelector($nreg);
-				echo "</div>";
-			}
-			
-			echo "<div class=\"ia_list_container\" style=\"position:absolute;white-space:nowrap;height:100%;";
-			if ($this->selector) echo "left:25{$this->measure};";
-			else echo "left:0{$this->measure};";
-			echo "right:16{$this->measure};\">";
-				$this->OnPaintList($rows);
-			echo "</div>";
-			
-			echo "<div class=\"scroll_List\"style=\"position:absolute;top:0px;right: 0px;overflow:auto;width:16{$this->measure};height:100%\">";//($this->frame->n_item+1)*$this->height."{$this->measure};\">";
-				echo "<div style=\"width:1px;height:".($this->frame->getQuerySize()+1)*($this->height+$this->top)."{$this->measure};\"></div>";
-			echo "</div>";
+	}
+	
+	protected function OnPaintFooter(){
+         echo "<div style=\"margin-left: 40%;\">";
+            echo "<button onclick=\"ajaxaction('listPrev',{'idFrame':{$this->frame->id}});\" ><span class=\"ui-icon ui-icon-triangle-1-w\"></span></button>";
+            echo "<input type='text' value='{$this->footer}' disabled=\"disabled\">";
+            echo "<button onclick=\"ajaxaction('listNext',{'idFrame':{$this->frame->id}});\"><span class=\"ui-icon ui-icon-triangle-1-e\"></span></button>";
+        echo "</div>";
+	
+	}
+	
+	public function setFooter($value){
+        $this->footer = $value;
+	}
+	
+	protected function OnPaintBlock(){
+        // Calculamos el ancho total de cada división para evitar el conflicto del position relative.
+        
+        $size_components = count($this->frame->components);
+        $fixed_width = $this->sizeColumns(0,$this->frame->fixedColums);
+        $dinamic_width = $this->sizeColumns($this->frame->fixedColums,$size_components);
+        
+//      $size_components = count($this->frame->components);
+//      $fixed_width = (100+2)*$this->frame->fixedColums ;
+//      $dinamic_width = (100 +10)*($size_components - $this->frame->fixedColums);
 
-		echo "</div>";
-		
-		
+    // Obtenemos los registros a mostrar.
+        $rows = $this->frame->get_rows();
+
+        
+        if ($size_components < $this->frame->fixedColums){
+            $this->frame->fixedColums= $size_components; // Lo hacemos mediante la funcion¿? o Solo lo almacenamos en local¿?
+            global $_LOG;
+            $_LOG->log("html_listFrame::OnPaint - Se han solicitado un número inexistente de columnas fijas");
+        }
+        
+        
+        
+        echo "<div class=\"ia_list\" style=\"position:relative;white-space:nowrap;height:";//TODO: A revisar correctamente (presentacion amedita)
+        $nreg = $this->initialrowcount;//count($rows);
+        if( $nreg >= 5)echo (7+($this->frame->n_item+1)*($this->height+$this->top))."{$this->measure};width:100%;\">";
+        else  echo (7+($nreg+1)*($this->height+$this->top))."{$this->measure};width:100%;\">";
+        
+            if ($this->selector){
+                // Se crea el encapsulado de los selectores de fila.
+                echo "<div class=\"ia_selector\" style=\"position:absolute;overflow:left:0px;hidden;height:100%; width:25{$this->measure};\">"; // Mostrará la fila seleccionada.
+                    $this->PaintSelector($nreg);
+                echo "</div>";
+            }
+            
+            echo "<div class=\"ia_list_container\" style=\"position:absolute;white-space:nowrap;height:100%;";
+            if ($this->selector) echo "left:25{$this->measure};";
+            else echo "left:0{$this->measure};";
+            echo "right:16{$this->measure};\">";
+                $this->OnPaintList($rows);
+            echo "</div>";
+            
+            echo "<div class=\"scroll_List\"style=\"position:absolute;top:0px;right: 0px;overflow:auto;width:16{$this->measure};height:100%\">";//($this->frame->n_item+1)*$this->height."{$this->measure};\">";
+                echo "<div style=\"width:1px;height:".($this->frame->getQuerySize()+1)*($this->height+$this->top)."{$this->measure};\"></div>";
+            echo "</div>";
+
+        echo "</div>";
+	
 	}
 	
 	public function OnPaintList($rows){
