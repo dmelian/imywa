@@ -116,6 +116,41 @@ class bas_sqlx_rafdatapointer{
 		$this->current = array();
 		$_LOG->log("Datapointer::Query: Consulta ejecutada: $query");
 		if ($result != false){
+			
+			///////////////////////////////////////////////////////////////
+			// Testing the mysqli fectch_fields functions.
+			$_LOG->log("<<<<<< BEGIN - MYSQLI FIELDS INFO");
+			$maxlength=0;
+			for ($fd=0; $fd < $result->field_count; $fd++){
+				$fdi=$result->fetch_field_direct($fd);
+				$maxlength+= $fdi->max_length; 
+				$_LOG->debug("Field $fd:", $fdi );
+			}
+			$_LOG->log("----------------------------");
+			$_LOG->log("MaxLength $maxlength");
+			
+			while($row = $result->fetch_assoc()) {
+				$_LOG->debug("row:",$row);
+				$srow=serialize($row);
+				$_LOG->log("serializaed-row:$srow");
+				$length= strlen($srow); $lengthdiff= $maxlength - $length;
+				$_LOG->log("length: $length maxlength: $maxlength diff: $lengthdiff");
+				$_LOG->log('serialize " '.serialize('"'));
+				$_LOG->log('serialize " '.serialize('";i:3;'));
+				$_LOG->log('serialize " '.serialize("\""));
+				$_LOG->log('serialize \n\t '.serialize("\n\t"));
+				$_LOG->log('serialize \'\"\n\t '.serialize("'\\\"\n\t"));
+				$_LOG->log('serialize null '.serialize(null));
+				$_LOG->log('serialize "" '.serialize(''));
+				
+			}
+			
+			$_LOG->log("END >>>>>>>>>>>>>>>>");
+			
+			
+			///////////////////////////////////////////////////////////////
+			
+			
 			if ($limit == 1) $this->current= $result->fetch_assoc();
 			else {
 				$pos = 0;
