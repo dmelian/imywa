@@ -17,16 +17,16 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with imywa.  If not, see <http://www.gnu.org/licenses/>.
 */
-class bas_html_cardlistframe{
+class bas_html_cardlistframe extends bas_html_listframe{
 
 	public $frame;
-	private $top;
-	private $measure;
-	private $height;
+	protected $top;
+	protected $measure;
+	protected $height;
 
 	protected $cssComp;
 	protected $autosize;
-	private $contenido;
+	protected $contenido;
 
 	public function __construct($list){
 		$this->frame = $list;
@@ -47,7 +47,7 @@ class bas_html_cardlistframe{
 	
 	}
 	
-	private function ContentColum($component,$rows, $type,$Poscolum=0){
+	protected function ContentColum($component,$rows, $type,$Poscolum=0){
 		if ($type) $class="header_columStatic ";
 		else $class="header_columDinamic ";
 		
@@ -127,7 +127,7 @@ class bas_html_cardlistframe{
 	
 	}
 	
-	private function paintValue($value,$component,$indexTab=0){
+	protected function paintValue($value,$component,$indexTab=0){
 		if($this->frame->getMode()!= "read"){
             $component->indexTab= $indexTab;
             $component->OnPaintList($value,"edit");
@@ -136,7 +136,7 @@ class bas_html_cardlistframe{
 			echo $component->OnFormat($value);
 	}
 	
-	private function Paintfixed($rows){
+	protected function Paintfixed($rows){
 		//$nelem = count($this->fixedColums);
 		for($index=0;$index < $this->frame->fixedColums;$index++){
 			    echo "<div class=\"columStatic\" style=\"position:relative; top:0{$this->measure};height:100%;vertical-align:top;width:";
@@ -147,7 +147,7 @@ class bas_html_cardlistframe{
 		}
 	}
 	
-	private function PaintDinamic($rows){
+	protected function PaintDinamic($rows){
 		$nelem = count($this->frame->colComponents);
 		for($index=$this->frame->fixedColums;$index < $nelem;$index++){
 			    echo "<div class=\"columDinamic\" style=\"position:relative; top:0{$this->measure};height:100%;vertical-align:top;width:";
@@ -161,7 +161,7 @@ class bas_html_cardlistframe{
 	}
 	
 	
-	private function sizeColumns($begin,$end){
+	protected function sizeColumns($begin,$end){
 		$size = 0;
 		for ($ind=$begin;$ind<$end;$ind++){
 			$size = $size + $this->frame->getComponentWidth($ind)+2;
@@ -171,7 +171,7 @@ class bas_html_cardlistframe{
 		return $size;	
 	}
 	
-	public function OnPaint(){
+	public function OnPaintBlock(){
 		// Calculamos el ancho total de cada división para evitar el conflicto del position relative.
 		
 	// Obtenemos los registros a mostrar.

@@ -17,7 +17,7 @@
 	You should have received a copy of the GNU General Public License
 	along with imywa.  If not, see <http://www.gnu.org/licenses/>.
 */
-class bas_frmx_cardlistframe extends bas_frmx_frame{
+class bas_frmx_cardlistframe extends bas_frmx_listframe{
 	public $jsClass= "bas_frmx_listframe";
 	public $dataview;
 	public $query;
@@ -237,6 +237,8 @@ class bas_frmx_cardlistframe extends bas_frmx_frame{
 	public function OnPaintContent($page){
 		$html = new bas_html_cardlistframe($this);
 		if ($this->height)  $html->setHeight($this->height);
+        if ($this->footer)  $html->setFooter($this->footer);
+
 		$html->OnPaint($page);	
 	}
 	
