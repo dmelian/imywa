@@ -105,6 +105,30 @@ class bas_html_cronoFrame extends bas_html_listframe{
 		}	
 	}
 	
+    public function OnPaint(){
+        parent::OnPaint();
+        echo "<div style=\"margin-left: 40%;\">";
+            echo "<button ><span class=\"ui-icon ui-icon-triangle-1-w\"></span></button>";
+            echo "<input type='text' value='PEPE'></input>";
+            echo "<button ><span class=\"ui-icon ui-icon-triangle-1-e\"></span></button>";
+
+            
+            echo "<select name=\"PEPE\" >";
+            $enum= $this->frame->getPeriods();
+            $curEnum = $this->frame->periodSelected();
+            foreach ($enum as $field => $caption){      
+                echo "<option name=\"$field\" value=\"".$field."\"";
+                if ($curEnum == $field){
+                    echo " selected=\"selected\"";
+                }
+                echo ">".$caption."</option>";
+            }
+            echo "</select>";
+
+        echo "</div>";
+        
+    }
+	
 
 }
 ?>

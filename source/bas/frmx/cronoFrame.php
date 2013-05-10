@@ -21,16 +21,11 @@ class bas_frmx_cronoFrame extends bas_frmx_listframe{
 
 	public $jsClass= "bas_frmx_listframe";
 	public $dataset;
-	public $query;
-	public $n_item;
-	protected $cssComp;
-	protected $autosize;
-	protected $selector;
 	
-	public $fixedColums; // Número de columnas fijas dentro de components. Se tomarán los primeros X componentes.
-	public $components = array();  // Vector con todos los campos que representarán las columnas de la lista
-						  // el orden de este vector representará el orden visual final.
-                        
+	public $periods=array();
+	
+	public $curPeriod;
+	
     public $cronoHeader = array(); // se trata de un array simple->("prmero","segundo","tercero"), donde cada posicion representa el orden y valor del encabezado del cronograma propiamente dicho.
 
 	public function __construct($id, $title="",$query=""){
@@ -41,6 +36,10 @@ class bas_frmx_cronoFrame extends bas_frmx_listframe{
 		$this->n_item = 10;
 		$this->cssComp = null;
 		$this->selector = true;
+		
+		$this->periods = array("day"=>"Diario","week"=>"Semanal","month"=>"Mensual","year"=>"Anual");
+		$this->curPeriod = "year";
+		
 	}
 	public function setRecord($con=""){
 		$this->dataset = new bas_sqlx_cronoPointer($this->query);
@@ -56,6 +55,13 @@ class bas_frmx_cronoFrame extends bas_frmx_listframe{
 	  	$this->dataset = new bas_sqlx_cronoPointer($this->query);		
 		$this->dataset->initRecord();
 	}
+	
+	 public function getPeriods(){
+        return $this->periods;
+	 }
+     public function periodSelected(){
+        return $this->curPeriod;
+     }
 	
 	public function addComponent($width=50, $height, $id_field){ 
 		array_push($this->components,array("width"=>$width,"height"=>$height,"id"=>$id_field));
