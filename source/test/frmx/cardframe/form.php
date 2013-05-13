@@ -35,6 +35,8 @@ class test_frmx_cardframe_form extends bas_frmx_form{
 		$this->buttonbar->addMenu("prueba",$menu);
 // 		$this->buttonbar->addMenu("eliminar",array("primero","segundo","tercero"));
 // 		$this->buttonbar->addMenu("eliminar > primero",array("A","B","C"));
+        $card = new bas_frmx_gridFrame("grid",array("grid"));
+        $this->addFrame($card);
 	}
 	
 	public function OnAction($action, $data=""){
