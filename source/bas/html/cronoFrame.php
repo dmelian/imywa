@@ -111,7 +111,7 @@ class bas_html_cronoFrame extends bas_html_listframe{
 //         parent::OnPaint();
         echo "<div style=\"margin-left: 40%;\">";
             echo "<button onclick=\"ajaxaction('cronoPrev');\" ><span class=\"ui-icon ui-icon-triangle-1-w\"></span></button>";
-            echo "<input type='text' onchange=\"ajaxaction('changePeriod',{'value':this.value});\" value='{$this->frame->curDate}'></input>";
+            echo "<input type='date' onchange=\"ajaxaction('changePeriod',{'value':this.value});\" value='{$this->frame->curDate}'></input>";
             echo "<button onclick=\"ajaxaction('cronoNext');\"><span class=\"ui-icon ui-icon-triangle-1-e\"></span></button>";
 
             

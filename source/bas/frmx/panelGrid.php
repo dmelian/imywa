@@ -17,32 +17,30 @@
 	You should have received a copy of the GNU General Public License
 	along with imywa.  If not, see <http://www.gnu.org/licenses/>.
 */
-class bas_frmx_gridFrame extends bas_frmx_frame{
+class bas_frmx_panelGrid {
 	public $jsClass= "bas_frmx_cardframe";
 	public $record;
 	public $query;
 	public $labelwidth;
 	
-	public $tabs;// Sugerencia: vector asociativo con clave como nombre y valor true o false (indicando si está activo o no)
 	public $grid;
 	public $components=array();
 	
 	public $classMain;
 	public $classSuper;
 	public $classSub;
+	public $id;
 	
 	protected $mode;
+	public $type;
 // 	protected $actions=array();
 	
-	public function __construct($id,$tabs,$grid="",$query="") {
-		parent::__construct($id);
-		if ($query == "")$this->query = new bas_sqlx_querydef();
-		else $this->query = $query;
-		if ($grid=="") $grid=array('width'=>4,'height'=>5);
-		$this->grid= $grid;
-		$this->tabs= $tabs;
+	public function __construct($id,$grid=array('width'=>4,'height'=>5)) {
+		$this->id = $id;
+		$this->grid= array('width'=>4,'height'=>5);
 		$this->labelwidth = 30;
 		$this->mode = "edit";
+		$this->type = "normal";
 	}
 	
 	public function SetMode($mode="edit"){
@@ -109,10 +107,8 @@ class bas_frmx_gridFrame extends bas_frmx_frame{
 		$this->labelwidth = $width;
 	}
 	
-	public function getComponent($pos){
-		if ($this->query->existField($this->components[$pos]["id"]))	return $this->query->getField($this->components[$pos]["id"]);	
-		
-// 		if (isset($this->query->cols[$this->components[$pos]["id"]]))	return $this->query->cols[$this->components[$pos]["id"]];	
+	public function getComponent($y,$x){
+		if (isset($this->components[$y][$x]))	return $this->components[$y][$x]["id"];	
 		return NULL;
 	}
 	
@@ -129,13 +125,13 @@ class bas_frmx_gridFrame extends bas_frmx_frame{
 	    }
 	}
 
-	public function OnPaint($page){
-		$html = new bas_html_gridFrame($this);
-		$html->OnPaint($page);	
+	public function OnPaint(){
+		$html = new bas_html_panelGrid($this);
+		$html->OnPaint();	
 	}
 	
-	public function addComponent( $field_id,$obj,$y=0, $x=0,$width=1,$height=1,$paintCaption=true){
-          $this->components[$y][$x] = array("id"=>$field_id,"obj"=>$obj,"width"=>$width,"height"=>$height,"caption"=>$paintCaption);
+	public function addComponent($y=0, $x=0, $field_id,$paintCaption=true){
+		$this->components[$y][$x] = array("x"=>$x,"y"=>$y,"id"=>$field_id,"caption"=>$paintCaption);
 	}
 	
 	
@@ -185,58 +181,6 @@ class bas_frmx_gridFrame extends bas_frmx_frame{
 		$pdfcard->OnPdf($pdf,$this);
 		
 	}
-
-
-	
-/*
-###################################################################################################
-#######		funciones utilizadas para la organización de los componentes ordenados.  ##########
-###################################################################################################
-*/
-	private function initGrid(){
-	   // $table = array();
-	    for($row = 1; $row<=$this->grid["height"];$row++){
-		for($colom = 1; $colom<=$this->grid["width"];$colom++){
-		    $table[$row][$colom]= -2;
-		}
-	    }
-	    return $table;
-	}
-	private function conflictPos($tab,$x,$y,$id){
-		global $_LOG;
-		$_LOG->log("Existe solapamiento en el tab:$tab. En la fila $y y columna $x, con el component $id. FRMX_CardFrame::sortComponents");
-	
-	
-	}
-	public function sortComponents(){
-	    $grid = $this->initGrid();
-	    $nelem = count($this->tabs);
-	    $sort=array();
-	    $componets_temp = $this->components;
-	    
-	    for ($index = 0; $index<$nelem;$index++){
-			$tabCurrent = $this->tabs[$index];
-			$sort[$tabCurrent] = $grid;
-			$ncomp = count($this->components);
-			
-			for($indComp=0;$indComp<$ncomp;$indComp++){
-				if ($tabCurrent==$this->components[$indComp]["tab"]){
-					$x = $this->components[$indComp]["x"];
-					$y = $this->components[$indComp]["y"];
-					if ($sort[$tabCurrent][$y][$x] != -2) $this->conflictPos($tabCurrent,$x,$y,$this->components[$indComp]["id"]);
-					$sort[$tabCurrent][$y][$x] = $indComp;
-					$size =  $this->components[$indComp]["width"];
-					
-					for ($indice = 1; $indice<$size;$indice++){
-						if ($sort[$tabCurrent][$y][$x+$indice] != -2) $this->conflictPos($tabCurrent,$x,$y,$this->components[$indComp]["id"]);
-						$sort[$tabCurrent][$y][$x+$indice] = -1;
-					}
-				}
-			}	
-	    }
-	    return $sort;	
-	}
-	
 }
 
 ?>

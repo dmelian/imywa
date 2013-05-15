@@ -6,8 +6,13 @@ class test_frmx_cardframe_form extends bas_frmx_form{
 		parent::OnLoad();
 		$this->toolbar= new bas_frmx_toolbar('pdf,csv,config,close');
 		$this->title= 'Card Frame Test';
-		$this->loadFrame('test_frmx_cardframe_form_frame1');
-		$this->loadFrame('test_frmx_cardframe_form_frame2');
+// 		$this->loadFrame('test_frmx_cardframe_form_frame1');
+// 		$this->loadFrame('test_frmx_cardframe_form_frame2');
+
+
+
+
+
 		//$this->addFrame(new test_frmx_cardframe_form_frame1('frame1','Testing Card Frame 1'));
 		//$this->addFrame(new test_frmx_cardframe_form_frame1('frame1','Testing Card Frame 2-0'));
 		//$this->addFrame(new test_frmx_cardframe_form_frame2('frame2','Testing Card Frame 2'));
@@ -36,6 +41,13 @@ class test_frmx_cardframe_form extends bas_frmx_form{
 // 		$this->buttonbar->addMenu("eliminar",array("primero","segundo","tercero"));
 // 		$this->buttonbar->addMenu("eliminar > primero",array("A","B","C"));
         $card = new bas_frmx_gridFrame("grid",array("grid"));
+        $gid = new bas_frmx_panelGrid("pepe");
+        $gid->addComponent(1,1,"AMIGO");
+        $card->addComponent("pepe",$gid,1,1, 2,2);
+        $card->addComponent("pepe2",new bas_frmx_panelGrid("pepe"),1,3, 2,2);
+        $card->addComponent("pepe3",new bas_frmx_panelGrid("pepe"),3,1, 4,2);
+
+
         $this->addFrame($card);
 	}
 	

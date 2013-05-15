@@ -309,7 +309,6 @@ bas_frmx_form.prototype.executeJsCommand= function(data){
 // 		break;
 		
 	case "download":
-		alert("llega a download");
 		submitaction(data.action);
 		break;
 	

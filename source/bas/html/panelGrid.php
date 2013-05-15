@@ -17,7 +17,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with imywa.  If not, see <http://www.gnu.org/licenses/>.
 */
-class bas_html_gridFrame{
+class bas_html_panelGrid{
 
 	public $card;
 	private $top,$size_height;
@@ -29,37 +29,34 @@ class bas_html_gridFrame{
 		$this->measure = "%";
 	}
 	
-	public function OnPaint($page){
+	public function OnPaint(){
 		global $_SESSION;
-		$page->addDiv('ia_cardframe', $this->card->id);
-		$page->addDiv('ia_tabs');
-
-		$this->includeTabs();
-		$page->addDiv('ia_frame_content');
-            $this->OnPaintContent();
-		$page->closeDiv('ia_cardframe');
+		
+		echo "<div style=\"width:100%;height:100%;\">";
+            $this->paintComponents();
+		echo "</div>";
 	}
 	
 	private function paintComponents(){
 	   
-	    $percentX=(100/$this->card->grid["width"])-1;
-        $percentY=(100/$this->card->grid["height"])-1;
+	    $percentX=(100 - $this->card->grid["width"])/$this->card->grid["width"];
+        $percentY=100/$this->card->grid["height"];
         global $_LOG;
 
 	    for($row = 1; $row<=$this->card->grid["height"];$row++){
 			for($colom = 1; $colom<=$this->card->grid["width"];$colom++){
-			
-                if (isset($this->card->components[$row][$colom])){
-                    $width = $this->card->components[$row][$colom]["width"] *$percentX;
-                    $height = $percentY * $this->card->components[$row][$colom]["height"];
-                    echo "<div class=\"\" style=\"border-style: solid;display: inline-table;top:".(($row-1) * $percentY) ."{$this->measure};height:{$height}{$this->measure};left:".($colom-1)*$percentX."%;width:".$width."%\">";
-                        //$id = $this->card->getComponent($pos)->id;
+                
+                echo "<div class=\"\" style=\"float:left;top:".(($row-1) * $percentY) ."{$this->measure};height:{$percentY}{$this->measure};left:".($colom-1)*$percentX."%;width:".$percentX."%\">";
+                    if (isset($this->card->components[$row][$colom])){
+                            //$id = $this->card->getComponent($pos)->id;
 //                         echo "<button style=\"height:100%;width:100%;\"> </button>";
-                        $this->card->components[$row][$colom]["obj"]->OnPaint();
-                    echo "</div>";                
-                }
-				
-				
+                        echo "<button style=\"height:100%;width:100%;\" value=\"".$this->card->components[$row][$colom]['id']."\">".$this->card->components[$row][$colom]['id']." </button>";
+                    }
+                    else{
+                        echo "<button style=\"height:100%;width:100%;\"> </button>";
+                    }
+                echo "</div>";                
+
 				$_LOG->log("posicion Row: $row, Colum: $colom");
 			}
 	    }
