@@ -19,7 +19,7 @@
 */
 class bas_frmx_panelGrid {
 	public $jsClass= "bas_frmx_cardframe";
-	public $record;
+// 	public $record;
 	public $query;
 	public $labelwidth;
 	
@@ -33,11 +33,13 @@ class bas_frmx_panelGrid {
 	
 	protected $mode;
 	public $type;
+	protected $gnrEvent;
 // 	protected $actions=array();
 	
-	public function __construct($id,$grid=array('width'=>4,'height'=>5)) {
+	public function __construct($id,$grid="") {
 		$this->id = $id;
-		$this->grid= array('width'=>4,'height'=>5);
+		if (!$grid) $grid = array('width'=>4,'height'=>5);
+		$this->grid= $grid;
 		$this->labelwidth = 30;
 		$this->mode = "edit";
 		$this->type = "normal";
@@ -62,30 +64,6 @@ class bas_frmx_panelGrid {
 		return $this->mode;		
 	}
 	
-	public function setRecord(){
-	  	$this->record = new bas_sqlx_record($this->query);		
-		$this->record->load_data();
-		$this->record->first();
-	}
-	
-	public function initRecord(){
-	  	$this->record = new bas_sqlx_record($this->query);		
-		$this->record->initRecord();
-		
-	}
-	public function createRecord(){
-		$this->record = new bas_sqlx_record($this->query);
-// 		$this->record->SetViewWidth($this->n_item);
-	}	
-	
-	public function reloadData(){}
-	
-	public function Reload(){
-		$this->record->query = $this->query;
-		$this->record->load_data();
-		$this->record->first();
-	}
-	
 	public function uploadFile($id,$name){
 		global $_SESSION;	
 		$localDir = "/var/www/apps/upload/".$_SESSION->apps[$_SESSION->currentApp]->source."/docs/";
@@ -107,31 +85,27 @@ class bas_frmx_panelGrid {
 		$this->labelwidth = $width;
 	}
 	
+	public function numItems(){
+        return $this->grid["width"] * $this->grid["height"];
+    }
+    
+    public function setEvent($event){
+        $this->gnrEvent = $event;
+    }
+	
 	public function getComponent($y,$x){
 		if (isset($this->components[$y][$x]))	return $this->components[$y][$x]["id"];	
 		return NULL;
 	}
 	
-	public function setAttr($id,$attr,$value){
-// 	    if (isset($this->query->cols[$id])){
-// 			$this->query->cols[$id]->setAttr($attr,$value);	
-// 	    }
-		if ($this->query->existField($id)){
-			$this->query->getField($id)->setAttr($attr,$value);	
-	    }
-	    else{
-			global $_LOG;
-			$_LOG->log("Componente $id no asignado. FRMX_CardFrame::setAttr");
-	    }
-	}
-
 	public function OnPaint(){
 		$html = new bas_html_panelGrid($this);
 		$html->OnPaint();	
 	}
 	
-	public function addComponent($y=0, $x=0, $field_id,$paintCaption=true){
-		$this->components[$y][$x] = array("x"=>$x,"y"=>$y,"id"=>$field_id,"caption"=>$paintCaption);
+	public function addComponent($y=0, $x=0, $field_id,$caption,$event=""){
+        if (!$event) $event = $this->gnrEvent;
+		$this->components[$y][$x] = array("x"=>$x,"y"=>$y,"id"=>$field_id,"caption"=>$caption,"event"=>$event);
 	}
 	
 	
@@ -141,22 +115,10 @@ class bas_frmx_panelGrid {
         }
 	}
 	
-	public function saveData($data){
-	  //unset($this->record->current);
-		
-		if (isset($data)){
-//			$this->record->current = [];
-			foreach ($data as $field => $value){
-				$this->record->current[$field] = $value;
-			}
-		}
-	}
 	
 	public function selecttab($tab){// marcamos como seleccionado el tab indicado
 		
 	}
-	
-
 	
 	public function OnAction($action, $data){
 	global $_LOG;

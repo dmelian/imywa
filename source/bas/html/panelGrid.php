@@ -50,14 +50,19 @@ class bas_html_panelGrid{
                     if (isset($this->card->components[$row][$colom])){
                             //$id = $this->card->getComponent($pos)->id;
 //                         echo "<button style=\"height:100%;width:100%;\"> </button>";
-                        echo "<button style=\"height:100%;width:100%;\" value=\"".$this->card->components[$row][$colom]['id']."\">".$this->card->components[$row][$colom]['id']." </button>";
+                        $component = $this->card->components[$row][$colom];
+                        $onclick = "onclick=\"ajaxaction('{$component["event"]}', {'idPanel':'{$this->card->id}','idFrame':'grid'});\"";
+                        echo "<button style=\"height:100%;width:100%;\" $onclick value=\"".$component["id"]."\">".$component["id"]." </button>";
+//                             echo "<button style=\"height:100%;width:100%;\" value=\"".$id."\">".$id." </button>";
+
+//                         echo "<button style=\"height:100%;width:100%;\" value=\"".$this->card->components[$row][$colom]['id']."\">".$this->card->components[$row][$colom]['id']." </button>";
                     }
                     else{
                         echo "<button style=\"height:100%;width:100%;\"> </button>";
                     }
                 echo "</div>";                
 
-				$_LOG->log("posicion Row: $row, Colum: $colom");
+// 				$_LOG->log("posicion Row: $row, Colum: $colom");
 			}
 	    }
 	}

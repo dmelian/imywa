@@ -60,7 +60,7 @@ class bas_html_gridFrame{
                 }
 				
 				
-				$_LOG->log("posicion Row: $row, Colum: $colom");
+// 				$_LOG->log("posicion Row: $row, Colum: $colom");
 			}
 	    }
 	}

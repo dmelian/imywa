@@ -116,6 +116,20 @@ class bas_frmx_gridFrame extends bas_frmx_frame{
 		return NULL;
 	}
 	
+	protected function getObjComponent($id){
+        for($y=1;$y <= $this->grid["height"]; $y++){
+            for($x=1;$x <= $this->grid["width"]; $x++){
+                if(isset($this->components[$y][$x])){
+                    $componente = $this->components[$y][$x];
+                    if ($id == $componente["id"]) return $componente["obj"];
+                }
+                
+            }
+        }
+        
+        return null;
+	}
+	
 	public function setAttr($id,$attr,$value){
 // 	    if (isset($this->query->cols[$id])){
 // 			$this->query->cols[$id]->setAttr($attr,$value);	
@@ -165,7 +179,7 @@ class bas_frmx_gridFrame extends bas_frmx_frame{
 	public function OnAction($action, $data){
 	global $_LOG;
 		switch($action){
-			case "first": $this->record->first(); break;
+			case 'nextGrid': case "prevGrid": $this->getObjComponent($data["idPanel"])->OnAction($action,$data); break;
 			case "previous": $this->record->previous(); break;
 			case "next": $this->record->next(); break;
 			case "last": $this->record->last(); break;
