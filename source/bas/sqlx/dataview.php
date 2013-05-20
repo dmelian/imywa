@@ -71,8 +71,8 @@ class bas_sqlx_dataview extends bas_sqlx_datapointer{
 	}	
 	
 	public function Allrows(){
-		return $this->acces_posfile(0,$this->size);
-	
+		if ($this->size != 1) return $this->acces_posfile(0,$this->size);
+		else return array($this->acces_posfile(0,$this->size));
 	}
 	
 	//   Selección del elemento elegido.
