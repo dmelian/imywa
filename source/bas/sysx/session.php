@@ -1,4 +1,38 @@
 <?php
+
+class bas_sysx_jsCommands{
+	public $commands;
+	
+	public function __construct(){ 
+		ob_start();
+		$this->commands= array();	
+	}
+
+	public function nextjsCommand(){
+		if ($command= ob_get_contents()) $this->commands[]= $command; 
+		ob_clean();
+		
+	}
+	
+	public function close(){
+		if ($command= ob_get_contents()) $this->commands[]= $command; 
+		ob_end_clean();
+	}
+
+	public function getjsCommands(){
+		switch (count($this->commands)){
+			case 0: return '{"command":"void"}';
+			case 1: return $this->commands[0];
+			default:
+				$ret=''; $sep='';
+				foreach($this->commands as $command) { $ret.= "$sep$command"; $sep=','; }
+				return "{\"command\":\"compound\",\"commands\":[$ret]}";
+		}
+	}
+	
+}
+
+
 class bas_sysx_session{
 	public $sessionId;
 	public $sessionDir;
@@ -63,8 +97,12 @@ class bas_sysx_session{
 			
 		} else {
 			$this->currentForm = $this->apps[$this->currentApp]->formpop();
-			$command = $this->currentForm->OnAction(isset($_POST['action']) ? $_POST['action'] : 'undefined',$_REQUEST);
-			if ($command) $this->execcommand($command);
+			$jscommands= new bas_sysx_jsCommands();
+			$sescmd = $this->currentForm->OnAction(isset($_POST['action']) ? $_POST['action'] : 'undefined',$_REQUEST);
+			$jscommands->nextjsCommand();
+			if ($sescmd) $this->execcommand($sescmd);
+			$jscommands->close();
+			echo $jscommands->getjsCommands();
 		}
 		//TODO: Si no se ha printado nada, enviar un void command para no dejar peticiones abiertas en el navigador. 
 		$this->apps[$this->currentApp]->formpush($this->currentForm);
@@ -242,6 +280,12 @@ class bas_sysx_session{
 		}		
 	}
 	
+	public function cmd_refreshDashboard(){
+		$dash = $this->createDashboard();
+		$html = addcslashes($dash,"\t\"\n\r");			
+		echo "{\"command\":\"reload\",\"selector\":\".ia_dashboardcontainer\",\"content\":\"$html\"}";
+	}
+	
 	public function cmd_close($jump=1){
 		if ($jump > 0){
 			$this->currentForm = $this->apps[$this->currentApp]->formpop($jump);
@@ -256,18 +300,14 @@ class bas_sysx_session{
 		$this->currentForm = $this->apps[$this->currentApp]->formpop();
 		if (method_exists($this->currentForm, 'OnRefresh')) $this->currentForm->OnRefresh();
 		//TODO: RECOGER LOS ECHOS COMO COMANDOS.
-		ob_start();
-		$commands=""; $sep='';
+		$jscommands= new bas_sysx_jsCommands();
 		foreach ($actions as $action){
 			$this->currentForm->OnAction($action['action'], $action['data']);
-			$lastcmd= ob_get_contents(); ob_clean();
-			if ($lastcmd) {$commands.="$sep$lastcmd"; $sep=',';} 
+			$jscommands->nextjsCommand();
 		}
 		$this->currentForm->OnPaint('jscommand');
-		$paintcmd= ob_get_contents();
-		ob_end_clean();
-		if ($commands) echo "{\"command\":\"compound\",\"commands\":[$paintcmd,$commands]}";
-		else echo $paintcmd;
+		$jscommands->close();
+		echo $jscommands->getjsCommands();
 	}
 			
 }
