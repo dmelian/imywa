@@ -1,23 +1,5 @@
 <?php
 /*
-	Copyright 2009-2013 Domingo Melian
-
-	This file is part of imywa.
-
-	imywa is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
-
-	imywa is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with imywa.  If not, see <http://www.gnu.org/licenses/>.
-*/
-/*
 	ALT_FRM_FORM
 	
 	We want separate the html(css-js) functionality apart from the definition of the form.
@@ -70,47 +52,32 @@ class alt_frm_form {
 	function OnHeader(){ }
 	function OnFooter(){}
 	
-	function getContents(){
+	function OnPaint($media){
+		$media= ('screen' => with events, 'paper')
+	}
+	
+	function getContents($paper){
 		
-		$ret= array();
-		$re = array();
-		$paper->setLogo($this->logo);
+		// Global settings		
+		$paper->setLogo($this->logo); //This must be included in ha header section.
 		
+		$paper->setBreadCrumb(getBreadCrumbStamp($this));//This is an session job.
+		$paper->setToolBar($this->toolbar);
+		$paper->setButtonBar,statusBar($); // and all others global settings for the paper 
 
+		// Begin
+		$paper->open();
 		
-		ob_start();
-		$ret['.ia_breadcrumb']= getBreadCrumbStamp($this);
-		if (isset($this->toolbar)){
-			$ret['.ia_toolbar']= $this->toolbar->stamp();
-			$ret['.ia_menuContainer'] = $this->toolbar->OnPaintMenu();
+		foreach($this->frames as $frame) {
+			$paper->openFrame($frame->type, $frame->id);
+			$frame->getContents($paper);
+			$paper->closeFrame();
 		}
-		else $ret['.ia_toolbar']= "";
-// 		$frames='';
 		
-		foreach($this->frames as $frame) $frame->OnPaint($this);
-		$ret['.ia_framecontainer']= ob_get_contents();
-		if (isset($this->buttonbar)){
-			ob_clean();
-			$this->buttonbar->OnPaint();
-			$ret['.ia_buttonbar']= ob_get_contents();
-			ob_clean();
-			if (isset($ret['.ia_menuContainer']))	{$ret['.ia_menuContainer'] .= $this->buttonbar->OnPaintMenu();
-				$_LOG-log("ya existe el menuContainer");
-			}
-			else $ret['.ia_menuContainer'] = $this->buttonbar->OnPaintMenu();
-		}
-		else $ret['.ia_buttonbar']= "";
+		$paper->close();
 		
-		$ret[".ia_statusbar"] = "";
-		
-		if (method_exists($this, 'myscript')) {
-			ob_clean();
-			$this->myscript();
-			$ret['#myscript']= ob_get_contents();
-		}
-		ob_end_clean();
-		return $ret;
-		
+		// The form events are executed by the session.
+		// ¿ The data ? getCurrent getValue(id) next nextPage setPageLenght
 	}	
 	
 	function OnPaint($paper, $mode, $dash=NULL){
