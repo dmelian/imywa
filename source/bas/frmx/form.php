@@ -89,7 +89,7 @@ class bas_frmx_form extends bas_html_page{
 		$re = array();
 		if (isset($this->logo)){
 			//$ret ('.ia_logo')
-			$ret['.ia_logo'] =  "<img id='ia_img_logo' src='{$this->logo}' height='150px' border='0' >";
+			$ret['.ia_logo'] =  "<img id='ia_img_logo' src='{$this->logo}' height='120px' width='300px' border='0' >";
 		}
 		else $ret['.ia_logo'] =  "";
 
