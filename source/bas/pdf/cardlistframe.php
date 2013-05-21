@@ -31,7 +31,8 @@ class bas_pdf_cardlistframe extends bas_pdf_miclase{
 				}
 				else	$abstractComp = NULL;
 					
-				$this->Resultquery[$j][$i]= $this->transformData($component->OnFormat($rows[$j][$idComponent]));
+				$this->Resultquery[$j][$i][0]= $this->transformData($component->OnFormat($rows[$j][$idComponent]));
+				$this->Resultquery[$j][$i][1]=$component->type;
 				
 				if(isset($abstractComp)) $component = $abstractComp;
 			}

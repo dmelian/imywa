@@ -67,6 +67,7 @@ class bas_pdf_miclase extends bas_pdf_form{
 	}*/
 	
 	function mypage($iinicio, $ifin, $jinicio, $jfin,$pdf){
+		global $_LOG;
 		$pdf->SetFillColor(224,235,255);//caracteristicas del texo de la tabla. this
 		$pdf->SetTextColor(0);//this
 		$pdf->SetFont('');//this
@@ -104,6 +105,8 @@ class bas_pdf_miclase extends bas_pdf_form{
 			$pdf->SetXY($x+$ancho,$y);//this
 			for($j=$jinicio; $j < $jfin; $j++){
 				$vartexto =$this->Resultquery[$i][$j][0];
+				$_LOG->debug("RESULTQUERY",$this->Resultquery[$i][$j][0]);
+				$_LOG->debug("VARTEXTO",$vartexto);
 				$x=$pdf->GetX();//this
 				$y=$pdf->GetY();//this
 				//Dibujamos el borde
