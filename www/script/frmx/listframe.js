@@ -142,11 +142,15 @@ bas_frmx_listframe.prototype.Reload = function(data, selected, size, reset){
 
     }
     else{
-        row = $("#" + this.id).find(".row_1"); 
-        row.each(function( index ) {
-            $(this).html(" ");
+        for (var i=1;i<=size;i++){ // ### Este for es un parche temporarl. Lo ideal es recorrer de forma independiente los campos o que se envien siempre todos los campos del registro, existan o no.
+            row = $("#" + this.id).find(".row_"+i); 
+    //                 row = $("#" + this.id).find(".row_1"); 
+            row.each(function( index ) {
+                $(this).html(" ");
+              
+            }); 
+        }
           
-        });   
     }
     this.setSelected(selected);
         
