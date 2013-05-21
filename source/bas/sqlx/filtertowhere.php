@@ -42,6 +42,11 @@
  * 	- range -> ivalue (+ fvalue)  => <id> between '<ivalue>' and '<fvalue>'  |  <id> = '<ivalue>'
  *	- comodin -> expresion(cambiando *? por %_) => <id> like '<expresion>'
  *
+ *
+ * cuidadín con el 0.
+ * si tenemos una condicion mysql campo = 0 y campo no es numérico, la condición siempre se cumple.
+ *
+ *
  */
 class bas_sqlx_filtertowhere {
 
@@ -88,12 +93,14 @@ class bas_sqlx_filtertowhere {
 				if (isset($property->filter)) $filtros[$property->id]=$property->filter;
 			}
 		}
+		
 		foreach ($filtros as $id => $filtro){
 			if (strlen(trim($filtro))>0){
 			
 				$this->pos=0;
 				$this->condicion=array();
 				array_splice($this->condicion,0);
+				
 				$this->input=$filtro;
 				$this->filtro();
 				$where .= $septrm . '(';
@@ -294,7 +301,7 @@ class bas_sqlx_filtertowhere {
 						$this->lasttoken = array('token'=>'comodin', 'value'=>strtr($result,'*?','%_'));
 					} else {
 						$result= trim($result);
-						if ($result) $this->lasttoken = array('token'=>'tira', 'value'=>$result);
+						if ($result !== '') $this->lasttoken = array('token'=>'tira', 'value'=>$result);
 						else $this->lexico();
 					}
 					break;
