@@ -9,35 +9,12 @@ class bas_pdf_miclase extends bas_pdf_form{
 	protected $totalheight;
 	
 	function load($frame){
-		//global $_LOG;
-		//$_LOG->debug('frame.query',$frame->query);
-		//$aux=array();
 		$rows=$frame->get_Allrows();
-		$isnt_array=false;
-		foreach($rows as $row){
-			if(!is_array($row)){
-				$isnt_array=true;
-				break;
-			}
-			else{
-				break;
-			}
-		}
-		
-		if($isnt_array){
-			$rows=array($rows);
-		}
-		$_LOG->debug('rows',$rows);
 		$this->mix=count($rows);//numero de filas
 		$this->miy=count($frame->components);//numero de columnas
 		$resultindex=0;
-		//$_LOG->log("filas:".$this->mix);
-		//$_LOG->log("columnas".$this->miy);
-// 		$text = new bas_sqlx_fieldtext();
 		for($i=0;$i<$this->miy;$i++){
 			$component=$frame->getComponent($i);
-// 			$_LOG->log("Caption de las columnas: ".$component->caption);
-// 			$this->myhead[$i]= $this->transformData($component->Onformat($component->caption));
 			$this->myhead[$i]= $this->transformData($component->caption);
 
 			for($j=0;$j<$this->mix;$j++){
@@ -49,10 +26,6 @@ class bas_pdf_miclase extends bas_pdf_form{
 					$this->Resultquery[$j][$i][0]= $this->transformData($component->OnFormat(''));
 					$this->Resultquery[$j][$i][1]="unknow";
 				} 
-					//$_LOG->log("vector aux".$j." ".$aux[$j]);
-					//$_LOG->log($i." ".$j." ".$this->Resultquery[$i][$j]);
-						/*}else
-							$this->Resultquery[$i][$j]="";*/
 			}
 		}
 	}
