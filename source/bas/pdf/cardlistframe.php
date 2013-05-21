@@ -30,7 +30,7 @@ class bas_pdf_cardlistframe extends bas_pdf_miclase{
 					$component = $frame->getRowType($rows[$j][$frame->mainComp]);
 				}
 				else	$abstractComp = NULL;
-					
+				
 				$this->Resultquery[$j][$i][0]= $this->transformData($component->OnFormat($rows[$j][$idComponent]));
 				$this->Resultquery[$j][$i][1]=$component->type;
 				

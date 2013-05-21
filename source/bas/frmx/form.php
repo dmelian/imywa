@@ -199,7 +199,7 @@ class bas_frmx_form extends bas_html_page{
 // 		global $_LOG;
 // 		$_LOG->log("OnPdf::lista de frames del formulario ". count($this->frames));
 		foreach($this->frames as $frame) $frame->OnPdf($pdf);
-		$pdf->endparagraph();
+		//$pdf->endparagraph();
 		$pdf->endDoc();
 	}
 	

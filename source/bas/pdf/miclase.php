@@ -68,7 +68,7 @@ class bas_pdf_miclase extends bas_pdf_form{
 	
 	function mypage($iinicio, $ifin, $jinicio, $jfin,$pdf){
 		global $_LOG;
-		$pdf->SetFillColor(224,235,255);//caracteristicas del texo de la tabla. this
+		$pdf->SetFillColor(149,184,201);//caracteristicas del texo de la tabla. this
 		$pdf->SetTextColor(0);//this
 		$pdf->SetFont('');//this
 		$pdf->SetDrawColor(0,0,0);//this
@@ -84,7 +84,13 @@ class bas_pdf_miclase extends bas_pdf_form{
 		}
 		$pdf->Ln();//nueva linea this
 		$fill=false;
-
+		
+		$pdf->SetFillColor(224,235,255);//caracteristicas del texo de la tabla. this
+		$pdf->SetTextColor(0);//this
+		$pdf->SetFont('');//this
+		$pdf->SetDrawColor(0,0,0);//this
+		$pdf->SetLineWidth(.3);//this
+		
 		$textolargo="";
 		for($i=$iinicio; $i < $ifin; $i++){
 			$h=$alto*$this->totalheight;//esta va a ser la altura definida para todas las celdas por lo tanto todas las pags serán uniformes
@@ -177,6 +183,7 @@ class bas_pdf_miclase extends bas_pdf_form{
 				$nlines=max($nlines,$pdf->NbLines($wr,$this->Resultquery[$irow][$jcol][0]));//calculamos la altura máxima.this
 			}
 		}
+		if($nlines==0)$nlines=1;
 		$this->totalheight=$nlines;
 		$this->totalrow=(int)($hp/($nlines*$hr));
 	}

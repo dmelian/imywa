@@ -207,6 +207,15 @@ class bas_pdf_form extends lib_fpdf_fpdf{
 	
 	
 	public function Footer(){
+		$this->SetY(-23);
+		$texto="En cumplimiento de lo establecido en la Ley Organica 15/99 de Protección de Datos Carácter Personal que sus datos personales quedarán incorporados y serán tratados en los fichero de A&M EDITA S.L. Asimismo, le informamos de la posiblidad de que ejerza los derechos de acceso, rectificación, cancelación y oposición en la siguiente dirección C/ Pío XII, 64 local 5.";
+		$texto2="En caso de que este documento deban incluirse datos de carácter personal referentes a personas físicas o juridicas distintas de quien lo presente deberá con carácter previo a su inclusión, informales de los extremos contenidos  en el parrafo anterior. Asimismo, se prohibe el uso, divulgación y tratamiento de la información contenida en dicho documento por terceras partes no autorizadas al efecto.";
+		$texto = utf8_decode($texto);
+		$texto2= utf8_decode($texto2);
+		$this->Write(3,$texto);
+		$this->Ln();
+		$this->Write(3,$texto2);
+		$this->Ln();
 		global $_SESSION;
 		//if($_SESSION)
 		$this->SetFillColor(255,255,255);//caracteristicas del texo de la tabla.
