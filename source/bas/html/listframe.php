@@ -83,7 +83,7 @@ class bas_html_listframe{
 // 			if (isset($rows[$index][$this->cssComp]))	$classDyn = $rows[$index][$this->cssComp];
 			else	$classDyn = "";
 				
-			echo "<div class =\"". $class ."$classDyn list_row row_".($index+1) ." {$component->id} \"style=\"position:relative;width:100%;text-align:left;text-indent:40px;overflow:hidden; top:".($index+1)*$this->top ."{$this->measure};height:".$this->height."{$this->measure};\">";
+			echo "<div class =\"". $class ."$classDyn list_row row_".($index+1) ." {$component->id} \"style=\"position:relative;width:100%;text-align:justify;text-indent:20%;overflow:hidden; top:".($index+1)*$this->top ."{$this->measure};height:".$this->height."{$this->measure};\">";
 			//echo "<div class =\"". $class ."$classDyn list_row row_".($index+1) ." {$component->id} \"style=\"position:relative;width:100%;text-align:{$component->align};overflow:hidden; top:".($index+1)*$this->top ."{$this->measure};height:".$this->height."{$this->measure};\">";
 // 					echo "<label style=\"margin-left:".$margin_left."{$this->measure};\">";
 					if (isset($rows[$index]) && isset($rows[$index][$component->id]))

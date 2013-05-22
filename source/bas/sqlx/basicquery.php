@@ -138,7 +138,7 @@ class bas_sqlx_basicquery {
 		
 		//if (!$type) $type="text";
 		switch ($type){
-				case "text": case "enum": case "boolean": case "date": case "money": case "image": case "upload": case "number":case "date":
+				case "text": case "enum": case "boolean": case "date": case "money": case "image": case "upload": case "number":case "date": case "textarea":
 					$fieldtype = "bas_sqlx_field".$type;
 					$field = new $fieldtype($id,$table,$db,$pk,$caption,$aliasof);//"bas_sqlx_fieldtype(X)"
 					break;
