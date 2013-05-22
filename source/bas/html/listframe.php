@@ -68,7 +68,7 @@ class bas_html_listframe{
 		else $class="header_columDinamic ";
 		
 		
-		$margin_left= 20;
+		$margin_left= 0;//20;
 		$nelem = $this->initialrowcount;//count($rows);
 		
 		echo "<div class =\" $class ia_header_colum \"style=\"position:relative;overflow:hidden; top 0{$this->measure};width:100%;height:".$this->height."{$this->measure};\">";
