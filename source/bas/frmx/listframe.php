@@ -54,6 +54,9 @@ class bas_frmx_listframe extends bas_frmx_frame{
 		$this->dataset->initRecord();
 		
 	}
+	public function setHeight($height=18){
+        $this->height = $height;
+    }
 	
 	public function setMaxItem($nelem){
 		$this->n_item = $nelem;

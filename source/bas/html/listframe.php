@@ -47,7 +47,10 @@ class bas_html_listframe{
 		$this->autosize = floor(96/count($this->frame->components));
 	
 	}
-	
+
+	public function setHeight($height=18){
+        $this->height = $height;
+	}
 	
 	protected function PaintSelector($nelem){
 	
@@ -105,7 +108,7 @@ class bas_html_listframe{
                 else
                     echo $component->OnPaintList("","edit");
             }
->>>>>>> b4a8ae423d36b64f41da112f2f555caa01bbafce
+
 // 					echo "</label>";
 			echo "</div>";
 		}
