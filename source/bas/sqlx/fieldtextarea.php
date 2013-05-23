@@ -24,25 +24,12 @@
  * funciona muy bien lo hemos pasado a una clase nueva
  * Esto salió por primera vez en vigilancia. Las visitas activas.
  */
-class bas_sqlx_fieldtextarea extends bas_sqlx_fielddef {
+class bas_sqlx_fieldtextarea extends bas_sqlx_fieldtext {
 	
 	public function __construct($id,$table,$db="",$pk=false,$caption="",$aliasof=NULL,$editable=true,$visible=true,$selected=true){
 		parent::__construct($id,$table,$db,$pk,$caption,$aliasof,$editable,$visible,$selected);
-		$this->type = "text";	
+		$this->type = "textarea";	
 		$this->align = "center";
-	}
-	
-	public function OnContent($value,$labelwidth,$caption,$mode){
-// 	    Pintamos el caption del componente
-	    if($caption) $this->OnPaintCaption($labelwidth);
-	    
-// 	    Creamos el inputbox con su contenido
-	    $this->OnPaintInPut($this->OnFormat($value,"input"),$mode);
-	    
-// 	    Si posee lookup creamos el boton y su acción javascript
-	    if ($this->lookup!=""){
-			$this->OnPaintLookup();			
-	    }
 	}
 	
 	protected function OnPaintInPut($value,$mode,$list=false){
@@ -55,19 +42,6 @@ class bas_sqlx_fieldtextarea extends bas_sqlx_fielddef {
 	    echo  ">".$value."</textarea></br>";
 	}
 	
-	public function OnPaintList($value,$mode){
-// 		echo "<div style=\"width:100%;position:absolute;\">";
-			$this->OnPaintInPut($this->OnFormat($value,$mode),$mode,true);
-// 	    echo "</div>";
- 	}
-	public function check($content){
-	    // Cada tipo deberá implementar su función check para revisar que el contenido posee el formato exigido.
-	}
 	
-	public function OnFormat($value,$job="read"){
-		
-		return $value;
-	}
-
 }
 ?>

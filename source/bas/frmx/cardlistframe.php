@@ -191,7 +191,7 @@ class bas_frmx_cardlistframe extends bas_frmx_listframe{
 // 		}
 // 		else{
 			switch ($type){
-				case "text": case "enum": case "boolean": case "date": case "money": case "image": case "upload": case "number":
+				case "text": case "enum": case "boolean": case "date": case "money": case "image": case "upload": case "number":case "textarea":
 					$fieldtype = "bas_sqlx_field".$type;
 					break;
 					
