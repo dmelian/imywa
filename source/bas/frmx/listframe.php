@@ -216,20 +216,60 @@ class bas_frmx_listframe extends bas_frmx_frame{
 		}
 	}
 	
-	protected function setFormatData($data){
+	/*protected function setFormatData($data){
 		$content = array();
 		$pos = 0;
+		$cols = $this->query->cols;
+		
 		foreach($data as $row){
 			foreach($row as $key => $value){
 				$obj = $this->query->getField($key);
-				if (isset($obj)){
-					$content[$pos][$key] = $obj->OnFormat($value);		
+				if ($obj->type != "textarea"){
+                    if (isset($obj)){
+                        $content[$pos][$key] = $obj->OnFormat($value);		
+                    }
+				}
+				else{
+                    if (isset($obj)){
+                        ob_start();
+                            $obj->OnPaintList($value,"read"); 
+                            $content[$pos][$key] = ob_get_contents();
+                        ob_end_clean();
+                    }
+                    
 				}
 			}
 			$pos++;
 		}
 		return $content;
-	}
+	}*/
+	
+	
+	protected function setFormatData($data){
+        $content = array();
+        $pos = 0;
+        $cols = $this->query->cols;
+        
+        foreach($data as $row){
+            foreach($cols as $key => $obj){
+//                 $obj = $this->query->getField($key);
+                if ( isset($row[$key])) $value = $row[$key];
+                else $value = "";
+                
+                if ($obj->type != "textarea"){
+                    $content[$pos][$key] = $obj->OnFormat($value);      
+                }
+                else{
+                    ob_start();
+                        $obj->OnPaintList($value,"read"); 
+                        $content[$pos][$key] = ob_get_contents();
+                    ob_end_clean();
+                }
+            }
+            $pos++;
+        }
+        return $content;
+    }
 	
 	protected function sendContent($reset=false){
 		$html = $this->get_rows();
