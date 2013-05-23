@@ -46,13 +46,13 @@ class bas_sqlx_fieldtextarea extends bas_sqlx_fielddef {
 	}
 	
 	protected function OnPaintInPut($value,$mode,$list=false){
-		if ($list)	echo " <textarea class=\"ia_inputfield\" type=\"text\" style=\"background-color: white;border-radius: 25px;width:100%;text-align:{$this->align}\" name=\"".$this->name."\" ";
-		else 	echo " <textarea class=\"ia_inputfield\" type=\"text\" style=\"background-color: white;border-radius: 25px;width:100%;text-align:{$this->align}\"name=\"".$this->name."\"";
+		if ($list)	echo " <textarea cols='auto' rows='auto' class=\"ia_inputfield\"  style=\"border-radius: 5px;resize:none;margin:20px;border-style:inset; text-align:{$this->align}\" name=\"".$this->name."\" ";
+		else 	echo " <textarea  cols='auto' rows='auto' class=\"ia_inputfield\"   style=\"border-radius: 5px;resize:none;border-style:inset;text-align:{$this->align}\"name=\"".$this->name."\"";
 		//if ($this->indexTab) echo "tabindex=\"{$this->indexTab}\"";
-	    //if (!$this->editable || $mode =="read"){
-	      //echo "disabled=\"disabled\"";	    
-	    //}
-	    echo  ">".$value."</textarea>";
+	    if (!$this->editable || $mode =="read"){
+	      echo "readonly";	    
+	    }
+	    echo  ">".$value."</textarea></br>";
 	}
 	
 	public function OnPaintList($value,$mode){
