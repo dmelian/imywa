@@ -86,10 +86,18 @@ class bas_html_listframe{
 			echo "<div class =\"". $class ."$classDyn list_row row_".($index+1) ." {$component->id} \"style=\"position:relative;width:100%;text-align:justify;text-indent:20%;overflow:hidden; top:".($index+1)*$this->top ."{$this->measure};height:".$this->height."{$this->measure};\">";
 			//echo "<div class =\"". $class ."$classDyn list_row row_".($index+1) ." {$component->id} \"style=\"position:relative;width:100%;text-align:{$component->align};overflow:hidden; top:".($index+1)*$this->top ."{$this->measure};height:".$this->height."{$this->measure};\">";
 // 					echo "<label style=\"margin-left:".$margin_left."{$this->measure};\">";
-					if (isset($rows[$index]) && isset($rows[$index][$component->id]))
-						echo $component->OnFormat($rows[$index][$component->id]);
-					else
-						echo $component->OnFormat("");
+                if ($component->type == "textarea"){
+                    if (isset($rows[$index]) && isset($rows[$index][$component->id]))
+                        echo $component->OnFormat($rows[$index][$component->id]);
+                    else
+                        echo $component->OnFormat("");
+               }
+               else{
+                    if (isset($rows[$index]) && isset($rows[$index][$component->id]))
+                        echo $component->OnPaintList($rows[$index][$component->id],"read");
+                    else
+                        echo $component->OnPaintList("","read");
+               }
 // 					echo "</label>";
 			echo "</div>";
 		}
