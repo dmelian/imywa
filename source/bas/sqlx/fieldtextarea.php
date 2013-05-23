@@ -28,7 +28,7 @@ class bas_sqlx_fieldtextarea extends bas_sqlx_fielddef {
 	
 	public function __construct($id,$table,$db="",$pk=false,$caption="",$aliasof=NULL,$editable=true,$visible=true,$selected=true){
 		parent::__construct($id,$table,$db,$pk,$caption,$aliasof,$editable,$visible,$selected);
-		$this->type = "text";	
+		$this->type = "textarea";	
 		$this->align = "center";
 	}
 	
@@ -46,7 +46,7 @@ class bas_sqlx_fieldtextarea extends bas_sqlx_fielddef {
 	}
 	
 	protected function OnPaintInPut($value,$mode,$list=false){
-		if ($list)	echo " <textarea cols='auto' rows='auto' class=\"ia_inputfield\"  style=\"border-radius: 5px;resize:none;margin:20px;border-style:inset; text-align:{$this->align}\" name=\"".$this->name."\" ";
+		if ($list)	echo " <textarea cols='auto' rows='auto' class=\"ia_inputfield\"  style=\"border-radius: 5px;resize:none;height: 100%;width: 100%;border-style:inset; text-align:{$this->align}\" name=\"".$this->name."\" ";
 		else 	echo " <textarea  cols='auto' rows='auto' class=\"ia_inputfield\"   style=\"border-radius: 5px;resize:none;border-style:inset;text-align:{$this->align}\"name=\"".$this->name."\"";
 		//if ($this->indexTab) echo "tabindex=\"{$this->indexTab}\"";
 	    if (!$this->editable || $mode =="read"){
