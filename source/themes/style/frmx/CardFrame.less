@@ -1,3 +1,5 @@
+@import "listFrame.less";
+
 .ia_labelfield {
 	padding-top: 30pt;
 	display: inline-block;
@@ -7,7 +9,13 @@
 }
 
 .ia_inputfield {display: inline-block;}
-
+.ia_textfield(@bgpaint:oldLace){ 
+	//.ui-selected(#e7d8bd);
+	background: @bgpaint;//@bgpaint;#e7d8bd;
+	border-radius: 5px;
+	border-style:inset;
+	text-align:center;
+}
 .ia_componentCard{
 	position: absolute;
 	overflow: hidden;
