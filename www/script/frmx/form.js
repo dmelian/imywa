@@ -353,6 +353,7 @@ bas_frmx_form.prototype.dialogAction= function(dialogId, action, actionParams){
 				case "select-one":
 					params[this.name] = this.value;
 				break;
+				case "textarea":
 				case "password":
 				case "text":
 					params[this.name] = this.value;
