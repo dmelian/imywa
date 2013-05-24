@@ -418,6 +418,7 @@ function frameAction(action,form,lookup){
 				case "select-one":
 					values[this.name] = this.value;
 				break;
+				case "textarea":
 				case "password":
 				case "text":
 					values[this.name] = this.value;
