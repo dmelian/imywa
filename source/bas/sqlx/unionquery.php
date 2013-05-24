@@ -99,6 +99,10 @@ class bas_sqlx_unionquery{
         return $this->querys[0]->getfilters();
     }
 	
+	public function getcols(){
+		return $this->querys[0]->getcols();
+	}
+	
 }
 
 ?>

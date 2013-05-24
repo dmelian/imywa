@@ -156,6 +156,10 @@ class bas_sqlx_basicquery {
 		}
 		$this->cols[$id] = $field;
 	}
+	
+	public function getcols(){
+		return $this->cols;
+	}
 
 	public function addextraselect($expresion){
 		// Añade expresiones al select que no son tratados como columnas pero que se necesitan como campos internos.

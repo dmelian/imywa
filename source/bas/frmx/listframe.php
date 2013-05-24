@@ -251,7 +251,7 @@ class bas_frmx_listframe extends bas_frmx_frame{
 	protected function setFormatData($data){
         $content = array();
         $pos = 0;
-        $cols = $this->query->cols;
+        $cols = $this->query->getcols();
         
         foreach($data as $row){
             foreach($cols as $key => $obj){
