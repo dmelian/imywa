@@ -75,6 +75,9 @@ class test_frmx_listframe_form extends bas_frmx_form {
 		$list->setRecord();	
 		
 		$this->addFrame($list);
+		$this->addFrame(new test_frmx_listframe_form_medias('frame21','Testing List Frame'));
+		
+		
 		$this->list = $list;
 	}
 	

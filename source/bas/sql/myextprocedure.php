@@ -46,7 +46,7 @@ class bas_sql_myextprocedure{
 		$_SESSION->apps[$_SESSION->currentApp]->getMainDb($hostname, $databasename);
 		//$databasename = $_SESSION->apps[$_SESSION->currentApp]->mainDb;
 		//$hostname = $_SESSION->apps[$_SESSION->currentApp]->dbServer;
-		if($database) $databasename = $database;
+		if($database != '') $databasename = $database;
 		$this->connection = mysqli_init();
 		
 		$this->rolledback = false;
@@ -70,7 +70,7 @@ class bas_sql_myextprocedure{
 		
 		$databasename = $_SESSION->apps[$_SESSION->currentApp]->mainDb;
 		$hostname = $_SESSION->apps[$_SESSION->currentApp]->dbServer;
-        if($database) $databasename = $database;
+        if($database != '') $databasename = $database;
 
 		if ($this->success){
 			$query = "call $procedure" . $this->expand($params);

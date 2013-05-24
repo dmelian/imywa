@@ -49,6 +49,20 @@ class bas_frmx_listframe extends bas_frmx_frame{
 		$this->SetViewPos(0);		
 	}
 	
+	public function setPivot($campo,$valor){
+		$this->dataset->setPivot($campo,$valor);
+	}
+	
+	public function Reload($paint=false,$con=""){
+		$this->dataset->query = $this->query;
+		if ($con != "")$this->dataset->setConnection($con);
+		
+		$this->dataset->load_data();
+		$this->dataset->SetViewPos(0);
+		$this->setSelected(-1);  // WARNING: Debemos mirar si tiene sentido hacerlo siempre. Desaparecera el seleccionado, útil en el borrado
+		if ($paint)	$this->sendContent();
+	}
+	
 	public function initRecord(){
 	  	$this->dataset = new bas_sqlx_dataview($this->query);		
 		$this->dataset->initRecord();
@@ -127,14 +141,6 @@ class bas_frmx_listframe extends bas_frmx_frame{
 // 	    return $this->dataset->SetViewPos($pos);	setSelected
 	    return $this->dataset->SetViewPos($pos);	
 
-	}
-	
-	public function Reload($paint=false){
-		$this->dataset->query = $this->query;
-		$this->dataset->load_data();
-		$this->dataset->SetViewPos(0);
-		$this->setSelected(-1);  // WARNING: Debemos mirar si tiene sentido hacerlo siempre. Desaparecera el seleccionado, útil en el borrado
-		if ($paint)	$this->sendContent();
 	}
 	
 	public function createRecord(){

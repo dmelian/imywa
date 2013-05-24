@@ -110,9 +110,9 @@ class bas_sqlx_datapointer{
 		{
 			$_LOG->log('Could not connect: ' . $con->error);
 		}
-		$con->set_charset('utf8');
+		@$con->set_charset('utf8');
 
-		$result = $con->query($query);
+		@$result = $con->query($query);
 		$this->current = array();
 		$_LOG->log("Datapointer::Query: Consulta ejecutada: $query");
 		if ($result != false){
