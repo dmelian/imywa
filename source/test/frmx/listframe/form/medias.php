@@ -23,9 +23,15 @@ class test_frmx_listframe_form_medias extends bas_frmx_listframe{
 	
 	$this->addComponent($width, $height,"local");
 	
+
+	$this->query->addcol("VTA","VTA","valordetalle",false,"temp","number");		$this->setAttr("VTA","selected",false);
+	$this->addComponent($width,$height,"VTA");
 	
-// 	$this->query->addcol("$i","Expresion Periodo $i","valordetalle",false,"temp","textarea");		$this->setAttr("$i","selected",false);
-// 	$this->addComponent(300,300,"$i");
+	$this->query->addcol("CPA","CPA","valordetalle",false,"temp","number");		$this->setAttr("CPA","selected",false);
+	$this->addComponent($width,$height,"CPA");
+	
+	$this->query->addcol("OTRGTS","OTRGTS","valordetalle",false,"temp","number");		$this->setAttr("OTRGTS","selected",false);
+	$this->addComponent($width,$height,"OTRGTS");
 
 	$this->createRecord();
 	$this->setPivot("concepto","importe");
