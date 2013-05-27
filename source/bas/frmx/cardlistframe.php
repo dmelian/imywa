@@ -22,7 +22,7 @@ class bas_frmx_cardlistframe extends bas_frmx_listframe{
 	public $dataview;
 	public $query;
 	protected $cssComp;
-	private $height;
+// 	private $height;
 
 	public $colComponents=array(); // los campos que compondrán los encabezado (en x) de la lista.
 	public $rowComponents; // Contendran el valor pincipal por el cual se regirán los tipos de los distintos campos.
