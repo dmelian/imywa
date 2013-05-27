@@ -85,10 +85,14 @@ class bas_html_cardlistframe extends bas_html_listframe{
 				else echo "\"";
 				echo "style=\"position:relative;width:100%;text-align:{$component->align};overflow:hidden; top:".($index+1)*$this->top ."{$this->measure};height:".$this->height."{$this->measure};\">";
 // 				echo "<div class =\"". $class ."$classDyn list_row row_".($index+1) ." {$component->id} \"style=\"position:relative;width:100%;text-align:{$component->align};overflow:hidden; top:".($index+1)*$this->top ."{$this->measure};height:".$this->height."{$this->measure};\">";
-						if (isset($rows[$index]) && isset($rows[$index][$component->id]))
-							echo $component->OnFormat($rows[$index][$component->id]);
-						else
-							echo $component->OnFormat("");
+						if (isset($rows[$index]) && isset($rows[$index][$component->id])){
+// 							echo $component->OnFormat($rows[$index][$component->id]);
+							$this->paintValue($rows[$index][$component->id],$component,(($nelem*$index)+$Poscolum));
+						}
+						else{
+// 							echo $component->OnFormat("");
+							$this->paintValue("",$component,(($nelem*$index)+$Poscolum));
+						}
 				echo "</div>";
 				$component->description = null;
 				
