@@ -149,11 +149,19 @@ bas_frmx_listframe.prototype.Reload = function(data, selected, size, scrollSize)
                 row.filter("."+field).html(data[i][field]);
             }
             pos++;		
+        }       
+        
+        row = $("#" + this.id).find(".ia_selector").children();
+		var aux;
+        for (var i=nelem;i<=size;i++){ // ### Este for es un parche temporarl. Lo ideal es recorrer de forma independiente los campos o que se envien siempre todos los campos del registro, existan o no.
+			aux = row.filter(":nth-child("+(i+2)+")");
+			aux.children().removeClass("selector_row"); //addClass            
         }
 
     }
-    else
+    else{
 		$("#" + this.id).find(".scroll_List")[0].childNodes[0].style.height = scrollSize+"pt";
+	}
     
     $("#" + this.id).find(".ia_list").height( (7+(this.height + 4)*(nelem+1))+"pt");
 //     else{

@@ -292,8 +292,8 @@ class bas_frmx_listframe extends bas_frmx_frame{
 		
 		$sel = $this->dataset->selectedPosRelative();
 		$reset= ($this->getQuerySize()+1)*22;
-// 		echo "{\"command\": \"reloadList\",\"frameid\":\"{$this->id}\",\"selected\": \"".$sel."\",\"size\": \"".$this->n_item."\",\"reset\": \"".$reset."\", \"data\": ".json_encode($html)."}";
-		echo "{\"command\": \"reloadList\",\"frameid\":\"{$this->id}\",\"selected\": \"".$sel."\",\"size\": \"".$nelem."\",\"reset\": \"".$reset."\", \"data\": ".json_encode($html)."}";
+		echo "{\"command\": \"reloadList\",\"frameid\":\"{$this->id}\",\"selected\": \"".$sel."\",\"size\": \"".$this->n_item."\",\"reset\": \"".$reset."\", \"data\": ".json_encode($html)."}";
+// 		echo "{\"command\": \"reloadList\",\"frameid\":\"{$this->id}\",\"selected\": \"".$sel."\",\"size\": \"".$nelem."\",\"reset\": \"".$reset."\", \"data\": ".json_encode($html)."}";
 		
 	}
 	
