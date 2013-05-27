@@ -76,11 +76,11 @@ function getBreadCrumbStamp(&$form= false){
 		global $_LOG;
 		$_LOG->debug("valor del captions",$captions);
 		if (count($captions)== 1){
-			$breaditems ="<li>"."<a class=\"ia_bread_item $hover\" style=\"z-index: $jump;\" > <div> ". $captions[0] ." </div> </a> </li>";// <span> > </span></li>";
+			$breaditems ="<li>"."<a class=\"\" style=\"z-index: $jump;\" > <div> ". $captions[0] ." </div> </a> </li>";// <span> > </span></li>";
 		}
 		else{
 			foreach($captions as $caption){			
-				$bread ="<li>"."<a class=\"ia_bread_item $hover\" style=\"z-index: $jump;\" onclick=\"ajaxaction('close', {'jump':$jump});\" > "."<div>  $caption  </div> </a> </li>";// <span> > </span></li>";
+				$bread ="<li>"."<a class=\"\" style=\"z-index: $jump;\" onclick=\"ajaxaction('close', {'jump':$jump});\" > "."<div>  $caption  </div> </a> </li>";// <span> > </span></li>";
 				$breaditems = $bread . $breaditems;
 	// 			"<a class=\"ia_bread_item $hover\" style=\"z-index: $jump;\" onclick=\"ajaxaction('close', {'jump':$jump});\" > <div> <span> $caption </span> </div> </a> </li>";// <span> > </span></li>";
 				if($hover=="ia_bread_fixed")$hover="ia_bread_hover";
