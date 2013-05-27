@@ -119,7 +119,7 @@ class bas_html_cardlistframe extends bas_html_listframe{
 						if (isset($rows[$index]) && isset($rows[$index][$currentID]))
 							$this->paintValue($rows[$index][$currentID],$component,(($nelem*$index)+$Poscolum));
 						else
-							$this->paintValue("",$component);
+							$this->paintValue("",$component,(($nelem*$index)+$Poscolum));
 				echo "</div>";
 				
 			}		
