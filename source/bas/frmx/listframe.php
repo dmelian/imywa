@@ -27,6 +27,7 @@ class bas_frmx_listframe extends bas_frmx_frame{
 	protected $autosize;
 	protected $selector;
 	protected $footer;
+	public $height;
 	
 	public $fixedColums; // Número de columnas fijas dentro de components. Se tomarán los primeros X componentes.
 	public $components = array();  // Vector con todos los campos que representarán las columnas de la lista
@@ -40,6 +41,7 @@ class bas_frmx_listframe extends bas_frmx_frame{
 		$this->n_item = 10;
 		$this->cssComp = null;
 		$this->selector = true;
+		$this->height = 18;
 	}
 	public function setRecord($con=""){
 		$this->dataset = new bas_sqlx_dataview($this->query);
@@ -282,17 +284,17 @@ class bas_frmx_listframe extends bas_frmx_frame{
 	
 	protected function sendContent($reset=false){
 		$html = $this->get_rows();
+		$nelem = count($html);
+		if ($nelem == 0) $nelem=1;
 		global $_LOG;
 		$_LOG->debug("contenido a enviar", $html);
 		$html = $this->setFormatData($html);
 		
-// 		global $_LOG;
-// 		$_LOG->debug("contenido a enviar", $html);
-// 		$_LOG->log("FRMX_LISTFRAME:: Valor resultante de la conversion:     ".addcslashes(json_encode($html),"\t\"\n\r") );
-// 		$_LOG->log("FRMX_LISTFRAME:: la posicion seleccionada es ".$this->dataset->selectedPosRelative());
 		$sel = $this->dataset->selectedPosRelative();
 		$reset= ($this->getQuerySize()+1)*22;
-		echo "{\"command\": \"reloadList\",\"frameid\":\"{$this->id}\",\"selected\": \"".$sel."\",\"size\": \"".$this->n_item."\",\"reset\": \"".$reset."\", \"data\": ".json_encode($html)."}";
+// 		echo "{\"command\": \"reloadList\",\"frameid\":\"{$this->id}\",\"selected\": \"".$sel."\",\"size\": \"".$this->n_item."\",\"reset\": \"".$reset."\", \"data\": ".json_encode($html)."}";
+		echo "{\"command\": \"reloadList\",\"frameid\":\"{$this->id}\",\"selected\": \"".$sel."\",\"size\": \"".$nelem."\",\"reset\": \"".$reset."\", \"data\": ".json_encode($html)."}";
+		
 	}
 	
 	function OnPdf($pdf){

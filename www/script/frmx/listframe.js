@@ -118,7 +118,7 @@ bas_frmx_listframe.prototype.setSelected = function(pos){
 	
 }
 
-bas_frmx_listframe.prototype.Reload = function(data, selected, size, reset){
+bas_frmx_listframe.prototype.Reload = function(data, selected, size, scrollSize){
 	var pos =1;
 	var nelem = data.length;
 
@@ -140,7 +140,8 @@ bas_frmx_listframe.prototype.Reload = function(data, selected, size, reset){
                     row.filter("."+field).html(" ");
                 }
         }
-        $("#" + this.id).find(".scroll_List")[0].childNodes[0].style.height = reset+"pt";
+        $("#" + this.id).find(".scroll_List")[0].childNodes[0].style.height = scrollSize+"pt";
+// 		$("#" + this.id).find(".ia_list").height( (7+(this.height + 4)*(nelem+1))+"pt");
 
         for (var i=0;i<nelem;i++){ // Recorremos los datos secuencialmente, insertando el contenido de cada fila en su columna correspondiente.
             row = $("#" + this.id).find(".row_"+pos); 
@@ -151,6 +152,10 @@ bas_frmx_listframe.prototype.Reload = function(data, selected, size, reset){
         }
 
     }
+    else
+		$("#" + this.id).find(".scroll_List")[0].childNodes[0].style.height = scrollSize+"pt";
+    
+    $("#" + this.id).find(".ia_list").height( (7+(this.height + 4)*(nelem+1))+"pt");
 //     else{
 //         for (var i=1;i<=size;i++){ // ### Este for es un parche temporarl. Lo ideal es recorrer de forma independiente los campos o que se envien siempre todos los campos del registro, existan o no.
 //             row = $("#" + this.id).find(".row_"+i); 
