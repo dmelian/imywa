@@ -1,48 +1,63 @@
 <?php
 class test_frmx_listframe_form_medias extends bas_frmx_listframe{
+	
+	public $listado= 1;
+	public $desde= '2013-5-20';
+	public $hasta= '2013-5-30';
 
     public function __construct($id,$title, $tabs='', $grid=array('width'=>4,'height'=>4)) {
-	parent::__construct($id,$title);
-//	$this->query = new bas_sqlx_querydef();
-	$this->query->add("calcularConceptos_medias",'seguimiento');
-	$this->query->setkey(array('local'));
+		parent::__construct($id,$title);
+	//	$this->query = new bas_sqlx_querydef();
+		$this->query->add("movLocal",'seguimiento');
+		$this->query->addcol("local", "Local","movLocal" ,true,'seguimiento');
+			
+		$this->query->addrelated('grupoConcepto','concepto','movLocal','seguimiento');	
+		$this->query->addcol("grupo", "Concepto","conceptoGrupo" ,true,'seguimiento');
 		
-	$this->query->addcol("local", "Recinto","calcularConceptos_medias" ,true,'seguimiento');	
-	$this->query->addcol("concepto", "concepto","calcularConceptos_medias" ,true,'seguimiento');	
-	$this->query->addcol("importe", "importe","calcularConceptos_medias" ,false,'seguimiento');
 	
-// 	$this->query->db = "seguimiento";
-	$this->query->order= array("local"=>"asc");
+		$this->query->addcol("valor", "Valor","movLocal" ,false,'seguimiento');
+		$this->query->setAttColum('valor', 'expression', 'sum(movLocal.importe)*grupoConcepto.signo');
+		
+		$this->addrelated('columna', 'grupo', 'grupoConcepto', false, 'seguimiento');
+		
+		$this->addCondition("movLocal.fecha between '{$this->desde}' and '{$this->hasta}'", 'fecha'); //Ver las fechas iniciales y finales de la semana.
+		$this->addCondition("columna.listado = {$this->listado}", 'listado');
+		
+		$this->query->setkey(array('local'));
+		
+	// 	$this->query->db = "seguimiento";
+		$this->query->order= array("local"=>"asc",'columna.orden'=>'asc');
+		
+		$x=$y= $height = 1;
+		$width = 80;
+		
+	// 	$this->setFixed(2);
+		
+		// field type:   ($id,$type,$name, $caption, $editable, $value,$visible)
+		
+		$this->addComponent($width, $height,"local");
+		
+		$qry = "select grupo from columna where listado = {$this->listado} order by orden";
 	
-	$x=$y= $height = 1;
-	$width = 80;
+		foreach(as $rec){
+			$this->query->addcol($rec['grupo'],$rec['grupo'],"valordetalle",false,"temp","number");
+			$this->setAttr($rec['grupo'],"selected",false);
+			$this->addComponent($width,$height,$rec['grupo']);
+			$pivotValues[]= $rec['grupo'];
+		}
 	
-// 	$this->setFixed(2);
-	
-	// field type:   ($id,$type,$name, $caption, $editable, $value,$visible)
-	
-	$this->addComponent($width, $height,"local");
-	
-
-	$this->query->addcol("VTA","VTA","valordetalle",false,"temp","number");		$this->setAttr("VTA","selected",false);
-	$this->addComponent($width,$height,"VTA");
-	
-	$this->query->addcol("CPA","CPA","valordetalle",false,"temp","number");		$this->setAttr("CPA","selected",false);
-	$this->addComponent($width,$height,"CPA");
-	
-	$this->query->addcol("OTRGTS","OTRGTS","valordetalle",false,"temp","number");		$this->setAttr("OTRGTS","selected",false);
-	$this->addComponent($width,$height,"OTRGTS");
-
-	$this->createRecord();
-	$this->setPivot("concepto","importe");
-	
-	$proc = new bas_sql_myextprocedure("seguimiento");
-	if ($proc->success){ 
-		$proc->call('calcularConceptos', array(null, null, null,null),"seguimiento"); 
-		$this->Reload(false,$proc->connection);
-		$proc->commit();
-	}
-	
+		$this->setGroup('local,grupo');
+		$this->createRecord();
+		$this->setPivot("concepto","importe");
+		//pivot values =$pivotValues;
+		
+		$proc = new bas_sql_myextprocedure("seguimiento");
+		if ($proc->success){ 
+			$proc->call('calcularConceptos', array(null, null, null,null),"seguimiento"); 
+			$this->Reload(false,$proc->connection);
+			$proc->commit();
+		}
+		
     }	
     
 }
