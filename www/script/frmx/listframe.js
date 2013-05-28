@@ -152,6 +152,10 @@ bas_frmx_listframe.prototype.Reload = function(data, selected, size, scrollSize)
         }       
         
         row = $("#" + this.id).find(".ia_selector").children();
+		for (var i=0;i<=nelem;i++){ // ### Este for es un parche temporarl. Lo ideal es recorrer de forma independiente los campos o que se envien siempre todos los campos del registro, existan o no.
+			aux = row.filter(":nth-child("+(i+2)+")");
+			aux.children().addClass("selector_row"); //addClass            
+        }
 		var aux;
         for (var i=nelem;i<=size;i++){ // ### Este for es un parche temporarl. Lo ideal es recorrer de forma independiente los campos o que se envien siempre todos los campos del registro, existan o no.
 			aux = row.filter(":nth-child("+(i+2)+")");

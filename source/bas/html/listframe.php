@@ -59,7 +59,9 @@ class bas_html_listframe{
 		echo "</div>";
 		
 		$class= "selector_row ia_select_box";
-		for($index=0;$index < $nelem;$index++){
+		
+		for($index=0;$index < $this->frame->n_item;$index++){
+				if ($index == $nelem) $class = " ia_select_box ";
 			    echo "<div   style=\"position:relative; top:".($index+1)*$this->top ."{$this->measure};height:".$this->height."{$this->measure};\">";
 					echo "<div id=\"". ($index+1) ."\" class =\"". $class ." row_".($index+1) ."\"> </div>" ;
 				echo "</div>";
@@ -192,11 +194,14 @@ class bas_html_listframe{
         }
         
         
-        
+// 		$nreg = $this->initialrowcount;
+		$nreg = count($rows);
         echo "<div class=\"ia_list\" style=\"position:relative;white-space:nowrap;height:";//TODO: A revisar correctamente (presentacion amedita)
-        $nreg = $this->initialrowcount;//count($rows);
-        if( $nreg >= 5)echo (7+($this->frame->n_item+1)*($this->height+$this->top))."{$this->measure};width:100%;\">";
-        else  echo (7+($nreg+1)*($this->height+$this->top))."{$this->measure};width:100%;\">";
+		echo (7+($nreg+1)*($this->height+$this->top))."{$this->measure};width:100%;\">";
+        
+//         if( $nreg >= 5)echo (7+($this->frame->n_item+1)*($this->height+$this->top))."{$this->measure};width:100%;\">";
+//         else  echo (7+($nreg+1)*($this->height+$this->top))."{$this->measure};width:100%;\">";
+
         
             if ($this->selector){
                 // Se crea el encapsulado de los selectores de fila.
