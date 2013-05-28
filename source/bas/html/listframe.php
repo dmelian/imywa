@@ -196,6 +196,7 @@ class bas_html_listframe{
         
 // 		$nreg = $this->initialrowcount;
 		$nreg = count($rows);
+		if ($nreg < $this->frame->n_item) $nreg++;
         echo "<div class=\"ia_list\" style=\"position:relative;white-space:nowrap;height:";//TODO: A revisar correctamente (presentacion amedita)
 		echo (7+($nreg+1)*($this->height+$this->top))."{$this->measure};width:100%;\">";
         
