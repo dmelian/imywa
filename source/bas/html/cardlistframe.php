@@ -53,7 +53,7 @@ class bas_html_cardlistframe extends bas_html_listframe{
 		
 		$nelem = count($this->frame->colComponents);
 		
-		$margin_left= 20;
+		$margin_left= 0;//20;
 		$nelem = count($rows);
 		
 		
