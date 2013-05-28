@@ -96,7 +96,7 @@ class bas_frmx_toolbar{
 
 		$this->actions['close']['type']= 'ajax';
 		$this->actions['close']['icon']= 'ia_icon ia_icon_salir';
-		$this->actions['close']['enabled']= true;
+		$this->actions['close']['enabled']= false;
 		$this->actions['close']['visible']= true;
 		
 		
