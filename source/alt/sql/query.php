@@ -26,96 +26,30 @@
  */
 class alt_sql_query {
 	
-	protected $table;
-
-	public function addField($id, $field, $table){
-		global $_LOG;
-		// Codigo de tableded
-		// ### Obtenemos el caption pre-establecido para el id indicado.
-		if (!$id) {
-			$aux = new bas_aux_functions();
-			$id = $aux->idfromcaption($caption);
-		}
-		$this->lastid = $id;
-		// Codigo de tableded
-		
-		if (!$table) $table=$this->lasttable;
-		else	$this->lasttable = $table;
-		
-		//if (!$db) $db=$this->maindb;
-		$db= $this->getdb($table); 
-		
-		//if (!$type) $type="text";
-		switch ($type){
-				case "text": case "enum": case "boolean": case "date": case "money": case "image": case "upload": case "number":case "date": case "textarea":
-					$fieldtype = "bas_sqlx_field".$type;
-					$field = new $fieldtype($id,$table,$db,$pk,$caption,$aliasof);//"bas_sqlx_fieldtype(X)"
-					break;
-				
-				case null:
-					$field = new bas_sqlx_fielddef($id,$table,$db,$pk,$caption,$aliasof);
-					break;
-					
-				default:
-					if (class_exists($type)) $field= new $type($id,$table,$db,$pk,$caption,$aliasof) ;
-					else {
-						$_LOG->log("Tipo de datos inexistente: $type. BasicQuery::addcol");
-					}
-					break;
-		}
-		$this->cols[$id] = $field;
-	}
+	public $fields= array();
+	public $tables= array();
 	
-}
+	protected $defaultDb;
+	protected $currTable;
+	protected $currField;
 
-class alt_sql_mixquery {
-/////////////////////////////////////////////////////// BASIC QUERY
-
-	public $cols=array();
-	public $tables = array();
-	protected $position = array();
-	protected $extrajoinconditions = array(); //Condiciones adicionales de los joins.
-	protected $lasttable;
-	public $key;
-	protected $extraselect = '';
-	protected $id;
-	protected $caption;
-	protected $maindb;
-
-///////////////////////////////////////////////////////// QUERY DEF
-	
-	protected $pivot;
-	protected $sorting = array();
-	protected $conditions = array(); // condiciones directas a where sin pasar por filtros.
-	protected $group = array();
-	public $order;
-// 	public $db;
-
-/////////////////////////////////////////////////////// BASIC QUERY
-
-
-// TABLES
-	
-	public function add($table,$db=''){
+	public function __construct($db= ''){
 		global $_SESSION;
-		if (!$db) $db=$this->maindb; else $bd= $_SESSION->apps[$_SESSION->currentApp]->getDbName($db);
-		$this->tables[] = array('table'=>$table,'db'=>$db);
-		$this->lasttable = $table;
+		$_SESSION->apps[$_SESSION->currentApp]->getMainDb($host, $database);
+		$this->defaultDb= $db ? $db : $database;
+	}
+
+// TABLES	
+	
+	public function addTable($id, $db=''){ $this->addTableAs($id, $id, $db); }
+	
+	public function addTableAs($tableName, $id, $db=''){
+		if (!$db) $db= $this->defaultDb;
+		$this->tables[$id] = array('id'=>$id, 'name'=>$tableName, 'db'=>$db);
+		$this->currTable = $id;
 	}
 	
-	public function getdb($tablename){
-		foreach($this->tables as $table) if ($table['table'] == $tablename) return $table['db'];
-		return ''; 
-	}
-	
-	/**
-	 * Añade una tabla relacionada con las anteriores
-	 *
-	 * @param string $table - tabla a añadir
-	 * @param array $relatedfields - array con los campos de la relacion
-	 * @param string $relatedtable - tabla con la que se relaciona
-	 */
-	public function addrelated($table, $relatedfields='', $relatedtable='',$db='', $jointype='left'){//###
+	public function addRelatedTable($table, $relatedfields='', $relatedtable='', $db='', $jointype='left'){
 		global $_SESSION;
 		if (!$db) $db=$this->maindb; else $bd= $_SESSION->apps[$_SESSION->currentApp]->getDbName($db);
 		if (!$relatedtable) $relatedtable = $this->lasttable;
@@ -161,6 +95,57 @@ class alt_sql_mixquery {
 		$this->extrajoinconditions[$id] = $extracondition;
 	}
 	
+// FIELDS
+	
+	public function addField($id, $field, $table=''){
+		
+		$this->currField= $id;
+		if (!$table) $table= $this->currTable;
+		else $this->currTable= $table;
+		$this->fields[$id]= $field;
+	}
+	
+}
+
+class alt_sql_mixquery {
+/////////////////////////////////////////////////////// BASIC QUERY
+
+	protected $position = array();
+	protected $extrajoinconditions = array(); //Condiciones adicionales de los joins.
+	protected $lasttable;
+	public $key;
+	protected $extraselect = '';
+	protected $id;
+	protected $caption;
+	protected $maindb;
+
+///////////////////////////////////////////////////////// QUERY DEF
+	
+	protected $pivot;
+	protected $sorting = array();
+	protected $conditions = array(); // condiciones directas a where sin pasar por filtros.
+	protected $group = array();
+	public $order;
+// 	public $db;
+
+/////////////////////////////////////////////////////// BASIC QUERY
+
+
+// TABLES
+	
+	
+	public function getdb($tablename){
+		foreach($this->tables as $table) if ($table['table'] == $tablename) return $table['db'];
+		return ''; 
+	}
+	
+	/**
+	 * Añade una tabla relacionada con las anteriores
+	 *
+	 * @param string $table - tabla a añadir
+	 * @param array $relatedfields - array con los campos de la relacion
+	 * @param string $relatedtable - tabla con la que se relaciona
+	 */
 	public function setAttColum($id,$att,$value){
 		$this->cols[$id]->setAttr($att,$value);	
 	}
