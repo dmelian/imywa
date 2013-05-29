@@ -6,27 +6,29 @@ class test_frmx_listframe_form_medias extends bas_frmx_listframe{
 	public $hasta= '2013-5-30';
 
     public function __construct($id,$title, $tabs='', $grid=array('width'=>4,'height'=>4)) {
+    	global $_LOG;
 		parent::__construct($id,$title);
 	//	$this->query = new bas_sqlx_querydef();
 		$this->query->add("movLocal",'seguimiento');
 		$this->query->addcol("local", "Local","movLocal" ,true,'seguimiento');
 			
 		$this->query->addrelated('grupoConcepto','concepto','movLocal','seguimiento');	
-		$this->query->addcol("grupo", "Concepto","conceptoGrupo" ,true,'seguimiento');
+		$this->query->addcol("grupo", "Concepto","conceptoGrupo" ,true, 'seguimiento');
 		
 	
 		$this->query->addcol("valor", "Valor","movLocal" ,false,'seguimiento');
 		$this->query->setAttColum('valor', 'expression', 'sum(movLocal.importe)*grupoConcepto.signo');
 		
-		$this->addrelated('columna', 'grupo', 'grupoConcepto', false, 'seguimiento');
+		$this->query->addrelated('columna', 'grupo', 'grupoConcepto', false, 'seguimiento');
 		
-		$this->addCondition("movLocal.fecha between '{$this->desde}' and '{$this->hasta}'", 'fecha'); //Ver las fechas iniciales y finales de la semana.
-		$this->addCondition("columna.listado = {$this->listado}", 'listado');
+		$this->query->addCondition("movLocal.fecha between '{$this->desde}' and '{$this->hasta}'", 'fecha'); //Ver las fechas iniciales y finales de la semana.
+		$this->query->addCondition("columna.listado = {$this->listado}", 'listado');
 		
 		$this->query->setkey(array('local'));
 		
 	// 	$this->query->db = "seguimiento";
 		$this->query->order= array("local"=>"asc",'columna.orden'=>'asc');
+		$_LOG->log("medias.query = " . $this->query->query());
 		
 		$x=$y= $height = 1;
 		$width = 80;
@@ -38,15 +40,17 @@ class test_frmx_listframe_form_medias extends bas_frmx_listframe{
 		$this->addComponent($width, $height,"local");
 		
 		$qry = "select grupo from columna where listado = {$this->listado} order by orden";
-	
-		foreach(as $rec){
+		
+		foreach(array(array("grupo"=>'GVTA'),array("grupo"=>'GECPA'),array("grupo"=>'GEOTRGTS'),array("grupo"=>'GRDO'))
+				as $rec){
 			$this->query->addcol($rec['grupo'],$rec['grupo'],"valordetalle",false,"temp","number");
 			$this->setAttr($rec['grupo'],"selected",false);
 			$this->addComponent($width,$height,$rec['grupo']);
 			$pivotValues[]= $rec['grupo'];
 		}
 	
-		$this->setGroup('local,grupo');
+		$this->query->setGroup('local'); $this->query->setGroup('grupo');
+		$_LOG->log("medias.grouped-query = " . $this->query->query());
 		$this->createRecord();
 		$this->setPivot("concepto","importe");
 		//pivot values =$pivotValues;
