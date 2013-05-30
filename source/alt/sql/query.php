@@ -41,69 +41,123 @@ class alt_sql_query {
 
 // TABLES	
 	
-	public function addTable($id, $db=''){ $this->addTableAs($id, $id, $db); }
+	public function addTable($table, $db=''){ 
+		$this->addTableAs($table, $table, $db); 
+	}
 	
-	public function addTableAs($tableName, $id, $db=''){
+	public function addTableAs($table, $alias, $db=''){
 		if (!$db) $db= $this->defaultDb;
-		$this->tables[$id] = array('id'=>$id, 'name'=>$tableName, 'db'=>$db);
-		$this->currTable = $id;
+		$this->tables[$alias]= array('id'=>$alias, 'name'=>$table, 'db'=>$db);
+		$this->currTable= $alias;
 	}
 	
-	public function addRelatedTable($table, $relatedfields='', $relatedtable='', $db='', $jointype='left'){
-		global $_SESSION;
-		if (!$db) $db=$this->maindb; else $bd= $_SESSION->apps[$_SESSION->currentApp]->getDbName($db);
-		if (!$relatedtable) $relatedtable = $this->lasttable;
-		if (!$relatedfields){
-			$relatedfields = array(array('field'=>$table, 'db'=>$db,'relatedfield'=>$table));
-		} elseif (!is_array($relatedfields)) {
-			$fields = array();
-			foreach(explode(',', $relatedfields) as $field){
-				$fields[]=array('field'=>trim($field), 'db'=>$db,'relatedfield'=>trim($field));
+	public function addRelatedTable($table, $relatedFields='', $relatedTable='', $joinType='left', $db=''){
+		$this->addRelatedTableAs($table, $table, $relatedFields='', $relatedTable='', $joinType='left', $db='');
+	}
+	
+	public function addRelatedTableAs($table, $alias, $relatedFields='', $relatedTable='', $joinType='left', $db=''){
+		if (!$relatedTable) $relatedTable= $this->currTable;
+		if (!$relatedFields) $relatedFields= array(array('field'=>$table, 'relatedField'=>$table));
+		elseif (!is_array($relatedFields)) {
+			$fields= array();
+			foreach(explode(',', $relatedFields) as $field){
+				$fields[]= array('field'=>trim($field), 'relatedField'=>trim($field));
 			}
-			$relatedfields = $fields;
+			$relatedFields= $fields;
 		}
-		$this->tables[] = array('table'=>$table, 'relatedtable'=>$relatedtable,'db'=>$db, 'relatedfields'=>$relatedfields, 'jointype'=>$jointype);
-		$this->lasttable = $table;
+		$this->addTableAs($table, $alias, $db);
+		$this->tables[$alias][]= array('relatedTable'=>$relatedTable, 'relatedFields'=>$relatedFields, 'joinType'=>$joinType);
 	}
 	
-	public function addrelatedExp($table, $relatedfields='', $relatedtable='',$db='', $expresion='',$jointype='left'){//###
-        global $_SESSION;
-        if (!$db) $db=$this->maindb; else $bd= $_SESSION->apps[$_SESSION->currentApp]->getDbName($db);
-        if (!$relatedtable) $relatedtable = $this->lasttable;
-        if (!$relatedfields){
-            $relatedfields = array(array('field'=>$table, 'db'=>$db,'relatedfield'=>$table));
-        } elseif (!is_array($relatedfields)) {
-            $fields = array();
-            foreach(explode(',', $relatedfields) as $field){
-                $fields[]=array('field'=>trim($field), 'db'=>$db,'relatedfield'=>trim($field));
-            }
-            $relatedfields = $fields;
-        }
-        $this->tables[] = array('table'=>$table, 'relatedtable'=>$relatedtable,'db'=>$db, 'relatedfields'=>$relatedfields, 'jointype'=>$jointype, 'expresion'=>$expresion);
-        $this->lasttable = $table;
-    }
-	
-	public function addmanual($table, $condition, $db='',$jointype='left'){
-		global $_SESSION;
-		if (!$db) $db=$this->maindb; else $bd= $_SESSION->apps[$_SESSION->currentApp]->getDbName($db);
-		$this->tables[] = array('table'=>$table, 'manual'=>true, 'db'=>$db,'condition'=>$condition, 'jointype'=>$jointype);
-		$this->lasttable = $table;
+	public function setJoinExpression($expression, $replace=true, $id=''){
+		if(!$id) $id= $this->currTable;
+		$this->tables[$id][]= array('joinExpression'=>$expression, 'replaceJoinExpression'=>$replace);
+	}
+
+	public function getFromExpression(){
+		$first= true;
+		$fromExpression= joinExpression= '';
+		foreach($this->tables as $table) {
+			$separator=", ";
+			if (isset($table['relatedTable'])){
+				$expressionSeparator= '';
+				foreach($table['relatedFields'] as $field){
+					$joinExpression.= $expressionSeparator
+						. "{$table['relatedTable']}.{$field['relatedField']} = {$table['id']}.{$field['field']}"
+					;
+					$expressionSeparator= ' and ';
+				}
+				if (isset($table['joinExpression'])) {
+					$joinExpression= isset($table['replaceJoinExpression']) ?
+						$table['joinExpression'] : "($joinExpression) and ({$table['joinExpression']})" 
+				}
+				$separator= " {$table['joinType']} join ";
+			}
+			if ($first) {$separator= $joinExpression= ''; $first= false;}
+			$fromExpression.= "$separator{$table['db']}.{$table['name']}";
+			if ($table['name'] != $table['id']) $fromExpression.= " as {$table['id']}";
+			if ($joinExpression) {$fromExpression.= " on $joinExpression"; $joinExpresion= '';}  
+		}
+		return $fromExpression;
 	}
 	
-	public function addextrajoincondition($extracondition, $id=''){
-		if (!$id){$id=$this->lasttable;}
-		$this->extrajoinconditions[$id] = $extracondition;
-	}
+	
+	
 	
 // FIELDS
-	
-	public function addField($id, $field, $table=''){
-		
-		$this->currField= $id;
-		if (!$table) $table= $this->currTable;
-		else $this->currTable= $table;
-		$this->fields[$id]= $field;
+
+	public function addField($name, $field, $table=''){
+		$this->addFieldAs($name, $name, $field, $table);
 	}
+	
+	public function addFieldAs($name, $alias, $field, $table=''){		
+		if (!$table) $table= $this->currTable;
+		$this->fields[$alias]= array('id'=>$alias, 'field'=>$field, 'table'=>$table);
+		$this->currField= $alias;
+	}
+	
+	public function getSelectExpression(){
+		$selectExpression= $separator= '';
+		foreach ($this->fields as $field){
+			if (isset($field['expression'])) {
+				$fieldExpression= "{$field['expression']} as {$field['id']}";
+			} else {
+				$fieldExpression= "{$field['table']}.{$field['name']}";
+				if ($field['id'] != $field['name']) $fieldExpression.= " as {$field['id']}"; 
+			}
+			$selectExpression.= "$separator$fieldExpression";
+			$separator= ', ';
+		}
+		return $selectExpression;
+	}
+
+	
+// FILTERS	
+
+	public function getWhereExpression(){
+		return '';
+	}
+
+// QUERY
+	
+	public function getQuery($options=array()){
+		$fromExpression= $this->getFromExpression();
+		
+		$selectExpression= $this->getSelectExpression();
+		if (!$selectExpression) $selectExpression= $fromExpression ? '*' : '0';
+		
+		$query= "select";
+		if (isset($options['countRows'])) $query.= ' SQL_CALC_FOUND_ROWS';
+		$query.= " $selectExpression";
+		if (isset($options['extraSelectExpression'])) $query.= ", {$options['extraSelectExpression']}";
+		
+		if ($fromExpression) $query.= " from $fromExpression";
+		
+		if ($whereExpression= $this->getWhereExpression()) $query.= " where $whereExpression";
+		
+		return $query 
+	}
+	
 	
 }
 
@@ -546,28 +600,6 @@ group by linfactura.nofactura, cronoHeaders.name limit 15;
 	}
 	
 // SELECT
-	public function selectclause($all = false){  // ### Pivot¿?¿?
-	//	global $_LOG;
-		$ret = $prefix = '';
-	//	$nl = count($this->cols);
-		//$_LOG->log("Numero de columnas ".$nl);
-		foreach ($this->cols as $col){
-			if ($all || (((isset($col->selected) && $col->selected) || isset($col->system)) && !isset($col->pivot))){ // ### Done 
-				if (isset($col->aliasof)) { // ### 
-					$ret .= "$prefix{$col->db}.{$col->table}.{$col->aliasof} as {$col->id}" ;
-				} else if ($col->expression) {
-					$ret .= "$prefix{$col->expression} as {$col->id}" ;
-				} else {
-					$ret .= "$prefix{$col->db}.{$col->table}.{$col->id}";
-				}
-				$prefix = ', ';
-			}
-		}
-		if ($this->extraselect) $ret = "$ret, {$this->extraselect}";
-		if ($ret) return "select $ret";//return "select SQL_CALC_FOUND_ROWS $ret"; //###
-		else return "select *"; //select 0
-	}
-	
 // 	public function groupclause($all = false){  // ### Pivot¿?¿?
 //         $ret = $prefix = '';
 //         foreach ($this->group as $col){
@@ -594,46 +626,6 @@ group by linfactura.nofactura, cronoHeaders.name limit 15;
 
 // FROM
 	
-	public function fromclause(){
-		$tables = $this->jointables();
-		return $tables ? " from $tables" : '';
-	}
-	
-	protected function jointables(){
-
-		$first = true;
-		$ret = '';
-		foreach($this->tables as $table) {
-			if (isset($table['relatedtable']) && !$first){
-				$prefix='';
-				$condition = '';
-				foreach($table['relatedfields'] as $field){
-                   if (isset($table['expresion'])){
-                        $condition .= $prefix.$this->getdb($table['relatedtable']).'.'.$table['relatedtable'].'.'.$field['relatedfield']." ".$table['expresion'];
-                   }
-                   else{
-                        $condition .= $prefix.$this->getdb($table['relatedtable']).'.'.$table['relatedtable'].'.'.$field['relatedfield']
-                        .' = '.$table['db'].'.'.$table['table'].'.'.$field['field'];
-                        
-					}
-					$prefix = ' and ';
-				} 
-				if ($condition) {  
-					$ret .= " ${table['jointype']} join ${table['db']}.${table['table']} on $condition";
-					if (isset($this->extrajoinconditions[$table['table']])) {
-						$ret .= " and {$this->extrajoinconditions[$table['table']]}";
-					}
-				} else { $ret .= ", ${table['db']}.${table['table']}"; }
-				
-			} elseif(isset($table['manual'])) {
-				$ret .= " ${table['jointype']} join ${table['db']}.${table['table']} on ${table['condition']}";
-				
-			} else { $ret .= ($first ? '' : ', ').$table['db'].'.'.$table['table'];	}
-			$first=false;
-		}
-		return $ret;
-		
-	}
 	
 	
 
