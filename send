@@ -16,6 +16,7 @@ chmod 666 /usr/local/$sourceDir/imywa.log
 
 # copy the source, www and config folder to their destination
 rsync -avPz --delete --force --exclude .svn --delete-excluded source/bas 	/usr/local/$sourceDir/source
+rsync -avPz --delete --force --exclude .svn --delete-excluded source/alt 	/usr/local/$sourceDir/source
 rsync -avPz --delete --force --exclude .svn --delete-excluded source/imywa 	/usr/local/$sourceDir/source
 rsync -avPz --delete --force --exclude .svn --delete-excluded source/lib 	/usr/local/$sourceDir/source
 rsync -avPz --delete --force --exclude .svn --delete-excluded source/sysadmin 	/usr/local/$sourceDir/source

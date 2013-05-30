@@ -8,6 +8,15 @@ class test_frmx_listframe_form_medias extends bas_frmx_listframe{
     public function __construct($id,$title, $tabs='', $grid=array('width'=>4,'height'=>4)) {
     	global $_LOG;
 		parent::__construct($id,$title);
+		$query= new alt_sql_query();
+		$query->addTableAs('movLocal', 'movimientos');
+		$query->addFieldAs('local','establecimiento','text');
+		$query->addRelatedTableAs('grupoConcepto', 'grupillo', 'concepto');
+		$query->addField('grupo','text');
+		$query->addFieldAs('valor','importe','double');		
+		$_LOG->log(">>> Query:" . $query->getQuery());
+		$_LOG->debug("queryobject",$query);
+		return;
 	//	$this->query = new bas_sqlx_querydef();
 		$this->query->add("movLocal",'seguimiento');
 		$this->query->addcol("local", "Local","movLocal" ,true,'seguimiento');

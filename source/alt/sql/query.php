@@ -1,37 +1,12 @@
-<?php
-/*
-	Copyright 2009-2012 Domingo Melian
-
-	This file is part of imywa.
-
-	imywa is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
-
-	imywa is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with imywa.  If not, see <http://www.gnu.org/licenses/>.
-*/
-/**
- * Esta es una clase de prueba para soportar conjuntos de datos formados por querys de varias tablas
- * en contraposición con bas_dat_tabledef que se definió para una sola tabla.
- * En principio como no estamos seguros de como saldrá un intento de fusión de las dos, y como la primera
- * funciona muy bien lo hemos pasado a una clase nueva
- * Esto salió por primera vez en vigilancia. Las visitas activas.
- */
+<?php 
 class alt_sql_query {
 	
 	public $fields= array();
 	public $tables= array();
 	
-	protected $defaultDb;
-	protected $currTable;
-	protected $currField;
+	public $defaultDb;
+	public $currTable;
+	public $currField;
 
 	public function __construct($db= ''){
 		global $_SESSION;
@@ -66,17 +41,17 @@ class alt_sql_query {
 			$relatedFields= $fields;
 		}
 		$this->addTableAs($table, $alias, $db);
-		$this->tables[$alias][]= array('relatedTable'=>$relatedTable, 'relatedFields'=>$relatedFields, 'joinType'=>$joinType);
+		$this->tables[$alias]+= array('relatedTable'=>$relatedTable, 'relatedFields'=>$relatedFields, 'joinType'=>$joinType);
 	}
 	
 	public function setJoinExpression($expression, $replace=true, $id=''){
 		if(!$id) $id= $this->currTable;
-		$this->tables[$id][]= array('joinExpression'=>$expression, 'replaceJoinExpression'=>$replace);
+		$this->tables[$id]+= array('joinExpression'=>$expression, 'replaceJoinExpression'=>$replace);
 	}
 
 	public function getFromExpression(){
 		$first= true;
-		$fromExpression= joinExpression= '';
+		$fromExpression= $joinExpression= '';
 		foreach($this->tables as $table) {
 			$separator=", ";
 			if (isset($table['relatedTable'])){
@@ -89,7 +64,7 @@ class alt_sql_query {
 				}
 				if (isset($table['joinExpression'])) {
 					$joinExpression= isset($table['replaceJoinExpression']) ?
-						$table['joinExpression'] : "($joinExpression) and ({$table['joinExpression']})" 
+						$table['joinExpression'] : "($joinExpression) and ({$table['joinExpression']})"; 
 				}
 				$separator= " {$table['joinType']} join ";
 			}
@@ -106,26 +81,28 @@ class alt_sql_query {
 	
 // FIELDS
 
-	public function addField($name, $field, $table=''){
-		$this->addFieldAs($name, $name, $field, $table);
+	public function addField($name, $type, $table=''){
+		$this->addFieldAs($name, $name, $type, $table);
 	}
 	
-	public function addFieldAs($name, $alias, $field, $table=''){		
+	public function addFieldAs($name, $alias, $type, $table=''){		
 		if (!$table) $table= $this->currTable;
-		$this->fields[$alias]= array('id'=>$alias, 'field'=>$field, 'table'=>$table);
-		$this->currField= $alias;
+		$this->addExpression("$table.$name", $alias, $type);
+		$this->fields[$alias]['table']= $table;
 	}
+	
+	public function addExpression($expression, $alias, $type){
+		$this->fields[$alias]= array('id'=>$alias, 'expression'=>$expression, 'type'=>$type);
+		$this->currField= $alias;
+	}	
 	
 	public function getSelectExpression(){
 		$selectExpression= $separator= '';
 		foreach ($this->fields as $field){
-			if (isset($field['expression'])) {
-				$fieldExpression= "{$field['expression']} as {$field['id']}";
-			} else {
-				$fieldExpression= "{$field['table']}.{$field['name']}";
-				if ($field['id'] != $field['name']) $fieldExpression.= " as {$field['id']}"; 
+			$selectExpression.= "$separator{$field['expression']}";
+			if (!isset($field['table']) || ($field['expression'] != "{$field['table']}.{$field['id']}")) {
+				$selectExpression.= " as {$field['id']}";
 			}
-			$selectExpression.= "$separator$fieldExpression";
 			$separator= ', ';
 		}
 		return $selectExpression;
@@ -134,6 +111,18 @@ class alt_sql_query {
 	
 // FILTERS	
 
+	public function setFieldFilter($name, $type, $table=''){
+		$this->addFieldAs($name, $name, $type, $table);
+		if (!$table) $table= $this->currTable;
+		$this->addExpression("$table.$name", $alias, $type);
+		$this->fields[$alias]['table']= $table;
+	}
+	
+	public function addFilter($expression, $alias, $type){
+		$this->fields[$alias]= array('id'=>$alias, 'expression'=>$expression, 'type'=>$type);
+		$this->currField= $alias;
+	}	
+	
 	public function getWhereExpression(){
 		return '';
 	}
@@ -155,7 +144,7 @@ class alt_sql_query {
 		
 		if ($whereExpression= $this->getWhereExpression()) $query.= " where $whereExpression";
 		
-		return $query 
+		return $query; 
 	}
 	
 	
