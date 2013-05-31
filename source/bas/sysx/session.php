@@ -231,8 +231,8 @@ class bas_sysx_session{
 	}
 	
 	
-	private function createDashboard(){
-		$html='<div id="accordion">';
+	private function createDashboard($reload=false){
+		$html='';
 		foreach ($this->apps as $id => $app){
 			$html .= '<div id="'.$id.'" class="group';
 			if ($this->currentApp == $id) $html .= ' selected_dash_first';
@@ -241,7 +241,7 @@ class bas_sysx_session{
 			if ($app->state != 'unloaded') $html.= $app->onPaintDashboard();
 			$html.= '</div></div>';
 		}
-		$html = $html.'</div>';
+		if (!$reload)	$html = '<div id="accordion">'.$html.'</div>';
 		return $html;
 	}
 	
@@ -281,9 +281,11 @@ class bas_sysx_session{
 	}
 	
 	public function cmd_refreshDashboard(){
-		$dash = $this->createDashboard();
+		$dash = $this->createDashboard(true);
 		$html = addcslashes($dash,"\t\"\n\r");			
-		echo "{\"command\":\"reload\",\"selector\":\".ia_dashboardcontainer\",\"content\":\"$html\"}";
+// 		echo "{\"command\":\"reload\",\"selector\":\".ia_dashboardcontainer\",\"content\":\"$html\"}";
+		echo "{\"command\":\"reload\",\"selector\":\"#accordion\",\"content\":\"$html\"}";
+		
 	}
 	
 	public function cmd_close($jump=1){
