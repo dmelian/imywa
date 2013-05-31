@@ -97,21 +97,7 @@ $(":not(.ia_menu_item)").on("click",function(e){
 		}
 	});
 /////////////accordion
-	
-	if($(".group").hasClass("selected_dash_first")){
-		var size_accodion = $("#accordion").children().size();
-		var pos = $(".selected_dash_first").nextAll().size()+1;
-		pos = (size_accodion - pos)%size_accodion;
-		$(".selected_dash_first").toggleClass("selected_dash").toggleClass("selected_dash_first");//.toggleClass("selected_dash");
-		$( "#accordion" ).accordion({
-				heightStyle: "content",
-				header: "> div > h3",
-				active: pos
-			}).sortable({
-				axis: "y",
-				handle: "h3"
-			});
-	}
+	currentForm.loadDashboard();
 
 	if (! $("body").hasClass("evnt_lookup")){
 		
@@ -163,35 +149,23 @@ $(":not(.ia_menu_item)").on("click",function(e){
 	
 };
 
-// bas_frmx_form.prototype.sendAction= function(action, params, type){//frameid,action, params){
-// 	var data;
-// // 	alert("sendAction");
-// 	
-// 	// what is type: undefined or ???. Like a class of destination or destination type of the action?
-// 	if (type == undefined)data = {"action": action};
-// 	else data={"SessionAction": action};
-// 	
-// 	var row_selected = select_item();
-// 	if ( row_selected != undefined){
-// 		data['selected']= parseInt(row_selected);
-// 	}
-// 	for (var param in params){
-// 		if (params[param].name == undefined) data[param]= params[param];
-// 		else data[params[param].name]= params[param].value;
-// 	}
-// // 	alert("la accion a realizar es: "+action);
-// 
-// 	data['XHR']=1;
-// 	data['sessionId']= this.sessionId;
-// 	if (console) console.debug('ajax:', data);
-// 	$.ajax({"type":'POST'
-// 		, "data": data //TODO: include session data.
-// 		, "dataType": "json"
-// 		, "context": this
-// 		, "success": this.recvActionResponse
-// 		, "error": this.actionError
-// 	});		
-// };
+bas_frmx_form.prototype.loadDashboard= function(){
+	if($(".group").hasClass("selected_dash_first")){
+		var size_accodion = $("#accordion").children().size();
+		var pos = $(".selected_dash_first").nextAll().size()+1;
+		pos = (size_accodion - pos)%size_accodion;
+		$(".selected_dash_first").toggleClass("selected_dash").toggleClass("selected_dash_first");//.toggleClass("selected_dash");
+		$( "#accordion" ).accordion({
+				heightStyle: "content",
+				header: "> div > h3",
+				active: pos
+			}).sortable({
+				axis: "y",
+				handle: "h3"
+			});
+	}
+	
+};
 
 
  bas_frmx_form.prototype.sendAction= function(action, params, type){//frameid,action, params){
@@ -248,6 +222,12 @@ bas_frmx_form.prototype.executeJsCommand= function(data){
 	case "reload": 
 		$(data.selector).html(data.content);
 // 		this.frames[data.frameid].Customer();
+		break;
+		
+	case "refreshDashboard":
+		$("#accordion").accordion("destroy");
+		$("#accordion").html(data.content);
+		currentForm.loadDashboard();
 		break;
 		
 	case "load":

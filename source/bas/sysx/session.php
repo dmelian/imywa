@@ -283,8 +283,7 @@ class bas_sysx_session{
 	public function cmd_refreshDashboard(){
 		$dash = $this->createDashboard(true);
 		$html = addcslashes($dash,"\t\"\n\r");			
-// 		echo "{\"command\":\"reload\",\"selector\":\".ia_dashboardcontainer\",\"content\":\"$html\"}";
-		echo "{\"command\":\"reload\",\"selector\":\"#accordion\",\"content\":\"$html\"}";
+		echo "{\"command\":\"refreshDashboard\",\"content\":\"$html\"}";
 		
 	}
 	
