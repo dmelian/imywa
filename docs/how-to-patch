@@ -1,0 +1,65 @@
+How to apply some code write into one branch into another.
+
+
+dmelian@pc-dmelian-u1204:~/imywa$ git status
+# On branch contaluz
+nothing to commit (working directory clean)
+dmelian@pc-dmelian-u1204:~/imywa$ git diff master -- source/bas/sysx/session.php > session.php.patch
+dmelian@pc-dmelian-u1204:~/imywa$ git diff master -- www/script/frmx/form.js > form.js.patch
+dmelian@pc-dmelian-u1204:~/imywa$ git status
+# On branch contaluz
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	form.php.patch
+#	session.php.patch
+nothing added to commit but untracked files present (use "git add" to track)
+dmelian@pc-dmelian-u1204:~/imywa$ git checkout master
+Switched to branch 'master'
+dmelian@pc-dmelian-u1204:~/imywa$ patch source/bas/sysx/session.php session.php.patch
+patching file source/bas/sysx/session.php
+dmelian@pc-dmelian-u1204:~/imywa$ patch www/script/frmx/form.js form.js.patch
+patching file www/script/frmx/form.js
+dmelian@pc-dmelian-u1204:~/imywa$ git status
+# On branch master
+# Changes not staged for commit:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#	modified:   source/bas/sysx/session.php
+#	modified:   www/script/frmx/form.js
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	form.php.patch
+#	session.php.patch
+no changes added to commit (use "git add" and/or "git commit -a")
+dmelian@pc-dmelian-u1204:~/imywa$ git add -u
+dmelian@pc-dmelian-u1204:~/imywa$ git status
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	modified:   source/bas/sysx/session.php
+#	modified:   www/script/frmx/form.js
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	form.php.patch
+#	session.php.patch
+dmelian@pc-dmelian-u1204:~/imywa$ rm *.patch
+dmelian@pc-dmelian-u1204:~/imywa$ git status
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	modified:   source/bas/sysx/session.php
+#	modified:   www/script/frmx/form.js
+#
+dmelian@pc-dmelian-u1204:~/imywa$ git commit -m "Update the resolved dashboard refreshing from the contaluz branch."
+[master 090739b] Update the resolved dashboard refreshing from the contaluz branch.
+ 2 files changed, 30 insertions(+), 49 deletions(-)
+dmelian@pc-dmelian-u1204:~/imywa$ 
+
