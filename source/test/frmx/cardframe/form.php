@@ -70,7 +70,8 @@ class test_frmx_cardframe_form extends bas_frmx_form{
 		parent::OnAction($action,$data);
 		switch($action){
 			case 'salir': case 'close': return array('close');
-			case 'edit':
+			case 'eliminar':
+				return array('refreshDashboard');
 // 			case 'nextGrid':
 // 					echo '{"command": "void",'. substr(json_encode($this),1);
            
