@@ -23,7 +23,48 @@ class alt_sql_groupQuery extends alt_sql_query{
 	public function addExpression($expression, $alias, $groupOption, $type){
 		$this->fields[$alias]= array('id'=>$alias, 'expression'=>$expression, 'groupOption'=>$groupOption, 'type'=>$type);
 		$this->currField= $alias;
-	}	
+	}
+
+// FILTERS
+	
+	#groupOption for filters group | aggregate
+	public function addFieldFilter($field, $filter){
+		if (isset($this->fields[$field])) {
+			$groupOption= $this->fields[$field]['groupOption'] == 'group' ? 'group' : 'aggregate';
+			$this->addFilterAs($this->fields[$field]['expression'], $field, $groupOption,$filter);
+		} //TODO ELSE LOG
+	}
+	
+	public function addFilter($expression, $groupOption, $filter){ $this->addFilterAs($expression, '', $groupOption, $filter); }
+	
+	public function addFilterAs($expression, $id, $groupOption, $filter){
+		if ($id) $this->filters[$id]= array('leftPart'=>$expression, 'groupOption'=>$groupOption, 'filter'=>$filter, 'id'=>$id);
+		else $this->filters[]= array('leftPart'=>$expression, 'groupOption'=>$groupOption, 'filter'=>$filter);
+	}
+	
+	public function getWhereExpression(){
+		$whereExpression= ''; $logicOperator= '';
+		$parser= new alt_sql_filterParser();
+		foreach($this->filters as $filter){
+			if ($filter['groupOption'] == 'group' && $filterExpression= $parser->parseFilter($filter['leftPart'], $filter['filter'])){
+				$whereExpression.= "$logicOperator( $filterExpression )";
+				$logicOperator= " {$this->filterMode} ";
+			}
+		}
+		return $whereExpression;
+	}
+	
+	private function getHavingExpression(){
+		$havingExpression= ''; $logicOperator= '';
+		$parser= new alt_sql_filterParser();
+		foreach($this->filters as $filter){
+			if ($filter['groupOption'] == 'aggregate' && $filterExpression= $parser->parseFilter($filter['leftPart'], $filter['filter'])){
+				$havingExpression.= "$logicOperator( $filterExpression )";
+				$logicOperator= " {$this->filterMode} ";
+			}
+		}
+		return $havingExpression;
+	}
 	
 // GROUP
 	private function isAggregateFunction($groupOption){
@@ -39,6 +80,8 @@ class alt_sql_groupQuery extends alt_sql_query{
 		return $groupExpression;
 		
 	}
+	
+// QUERY
 	
 	public function getQuery($options=array()){
 		$fromExpression= $this->getFromExpression();
@@ -56,6 +99,8 @@ class alt_sql_groupQuery extends alt_sql_query{
 		if ($whereExpression= $this->getWhereExpression()) $query.= " where $whereExpression";
 		
 		if ($groupExpression= $this->getGroupExpression()) $query.= " group by $groupExpression";
+		
+		if ($havingExpression= $this->getHavingExpression()) $query.= " having $havingExpression";
 		
 		if ($orderExpression= $this->getOrderExpression()) $query.= " order by $orderExpression";
 		

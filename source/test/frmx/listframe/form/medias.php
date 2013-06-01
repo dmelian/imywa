@@ -15,10 +15,10 @@ class test_frmx_listframe_form_medias extends bas_frmx_listframe{
 		$query->addField('grupo','group','text');
 		$query->addFieldAs('valor','importe','sum','double');		
 		$query->addField('valor','avg','double');
-		$query->addFilter('valor','<>100');
-		$query->addFilter('valor','123..345');
-		$query->addFilter('valor2','*juana*');
-		$query->addFilter('valor1+valor2+valor3','12|42|234|<-30');
+		$query->addFilter('valor','group','<>100');
+		$query->addFilter('sum(valor)','aggregate','123..345');
+		$query->addFilter('valor2','group','*juana*');
+		$query->addFilter('valor1+valor2+valor3','group','12|42|234|<-30');
 		$query->addFieldFilters('establecimiento,grupo,valor');
 		$query->sortBy('grupo>,establecimiento<');		
 		$_LOG->log(">>> Query:" . $query->getQuery());

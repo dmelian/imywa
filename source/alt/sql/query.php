@@ -129,21 +129,20 @@ class alt_sql_query {
 			}
 			$fieldFilters= $filters;
 		}
-		foreach($fieldFilters as $fieldFilter){
-			if (isset($this->fields[$fieldFilter['field']])) {
-				$this->addFilterAs($this->fields[$fieldFilter['field']]['expression'], $fieldFilter['field'], $fieldFilter['filter']);
-			}
-		}
-		
+		foreach($fieldFilters as $fieldFilter) $this->addFieldFilter($fieldFilter['field'], $fieldFilter['filter']);
+	}
+	
+	public function addFieldFilter($field, $filter){
+		if (isset($this->fields[$field])) $this->addFilterAs($this->fields[$field]['expression'], $field, $filter);
+		//TODO ELSE LOG
 	}
 	
 	#anomymous filter. Not deletable, not editable, not replaceable, fixed.
 	public function addFilter($expression, $filter){ $this->addFilterAs($expression, '', $filter); }
 	
 	public function addFilterAs($expression, $id, $filter){
-		$leftPart= isset($this->fields[$expression]) ? $this->fields[$expression]['expression'] : $expression;
-		if ($id) $this->filters[$id]= array('leftPart'=>$leftPart, 'filter'=>$filter, 'id'=>$id); #id only for reference to the user.
-		else $this->filters[]= array('leftPart'=>$leftPart, 'filter'=>$filter);
+		if ($id) $this->filters[$id]= array('leftPart'=>$expression, 'filter'=>$filter, 'id'=>$id); #id only for reference to the user.
+		else $this->filters[]= array('leftPart'=>expression, 'filter'=>$filter);
 	}
 	
 	public function delFilter($id){ if (isset($this->filters[$id])) unset($this->filters[$id]); }
