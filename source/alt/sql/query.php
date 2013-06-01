@@ -4,6 +4,7 @@ class alt_sql_query {
 	public $fields= array();
 	public $tables= array();
 	public $filters= array();
+	public $filterMode= 'and';
 	public $sorting= '';
 	
 	public $defaultDb;
@@ -113,22 +114,50 @@ class alt_sql_query {
 	}
 
 	
-// FILTERS	
-
-	public function setFieldFilter($name, $type, $table=''){
-		$this->addFieldAs($name, $name, $type, $table);
-		if (!$table) $table= $this->currTable;
-		$this->addExpression("$table.$name", $alias, $type);
-		$this->fields[$alias]['table']= $table;
+// FILTERS
+	
+	#filterMode: and | or
+	public function setFilterMode($filterMode){ $this->filterMode= trim($filterMode); }
+	
+	#$fieldFilters: comma separated field ids you want to filter to or array(field=> filter=>) 
+	public function addFieldFilters($fieldFilters, $filterValues=array()){
+		if (!is_array($fieldFilters)) {
+			$filters= array();
+			foreach(explode(',', $fieldFilters) as $filter) {
+				$filterValue= isset($filterValues[$filter]) ? $filterValues[$filter] : '';
+				$filters[]=array('field'=>trim($filter), 'filter'=>$filterValue);
+			}
+			$fieldFilters= $filters;
+		}
+		foreach($fieldFilters as $fieldFilter){
+			if (isset($this->fields[$fieldFilter['field']])) {
+				$this->addFilterAs($this->fields[$fieldFilter['field']]['expression'], $fieldFilter['field'], $fieldFilter['filter']);
+			}
+		}
+		
 	}
 	
-	public function addFilter($expression, $alias, $type){
-		$this->fields[$alias]= array('id'=>$alias, 'expression'=>$expression, 'type'=>$type);
-		$this->currField= $alias;
-	}	
+	#anomymous filter. Not deletable, not editable, not replaceable, fixed.
+	public function addFilter($expression, $filter){ $this->addFilterAs($expression, '', $filter); }
+	
+	public function addFilterAs($expression, $id, $filter){
+		$leftPart= isset($this->fields[$expression]) ? $this->fields[$expression]['expression'] : $expression;
+		if ($id) $this->filters[$id]= array('leftPart'=>$leftPart, 'filter'=>$filter, 'id'=>$id); #id only for reference to the user.
+		else $this->filters[]= array('leftPart'=>$leftPart, 'filter'=>$filter);
+	}
+	
+	public function delFilter($id){ if (isset($this->filters[$id])) unset($this->filters[$id]); }
 	
 	public function getWhereExpression(){
-		return '';
+		$whereExpression= ''; $logicOperator= '';
+		$parser= new alt_sql_filterParser();
+		foreach($this->filters as $filter){
+			if ($filterExpression= $parser->parseFilter($filter['leftPart'], $filter['filter'])){
+				$whereExpression.= "$logicOperator( $filterExpression )";
+				$logicOperator= " {$this->filterMode} ";
+			}
+		}
+		return $whereExpression;
 	}
 
 // SORTING
@@ -142,9 +171,11 @@ class alt_sql_query {
 			$direction= ' asc';
 			if (strpos($order,'>') !== false){ $direction= ' asc'; $order= strtr($order, array('>'=>'')); }
 			if (strpos($order,'<') !== false){ $direction= ' desc'; $order= strtr($order, array('<'=>'')); }
-			$field= $this->fields[trim($order)]['expression'];
-			$orderExpression.= "$separator$field$direction";
-			$separator= ', '; 
+			if (isset($this->fields[trim($order)]['expression'])){
+				$field= $this->fields[trim($order)]['expression'];
+				$orderExpression.= "$separator$field$direction";
+				$separator= ', ';
+			} //TODO ELSE LOG. 
 		}
 		return $orderExpression;
 	}

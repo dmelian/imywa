@@ -35,85 +35,39 @@ class alt_sql_filterParser {
 		private $input;
 		private $pos;
 		private $condicion;
-//		private $properties;
 		public $error;
 		public $errormsg= array();
-/*
-	public function __construct ($fieldprops=''){
-		if ($fieldprops) $this->properties = $fieldprops;
-	}
-*/
-				
-	/**
-	 * GENERA LA CLAUSULA WHERE SEGÚN LOS FILTROS SELECCIONADOS.
-	 * como entrada $filtros array de entradas 'id' para el nombre del campo y 'filter' para la expresión del filtro. 
-	 */
-	public function filtertowhere($filtros=''){
-/*		Sólo utilizable a partir de php 5.3.0		
- 			return $this->filtertowhereextended(
-			function($id, $lpart, $template){
-				return str_replace('*LPART*', $lpart, $template);
-				}
-			, $filtros);
-*/
-		$callback = create_function('$id, $lpart, $template', 'return str_replace(\'*LPART*\', $lpart, $template);');
-		return $this->filtertowhereextended($callback, $filtros);	
-		
-	}
-/*
-	static function stamptemplate($id, $lpart, $template){
-		return str_replace('*LPART*', $lpart, $template);
-	}
-*/	
 	
-	public function filtertowhereextended($stampcallback, $filtros=''){
-		$where = "";
-		$septrm='';
-		if (!$filtros){
-			$filtros = array();
-			foreach($this->properties as $property){
-				if (isset($property->filter)) $filtros[$property->id]=$property->filter;
-			}
-		}
-		
-		foreach ($filtros as $id => $filtro){
-			if (strlen(trim($filtro))>0){
+	public function parseFilter($leftPart, $filter){
+		$resultCondition= '';
+		if (strlen(trim($filter))>0) {
+			$this->pos= 0;
+			$this->condicion= array();
+			array_splice($this->condicion, 0);
 			
-				$this->pos=0;
-				$this->condicion=array();
-				array_splice($this->condicion,0);
-				
-				$this->input=$filtro;
-				$this->filtro();
-				$where .= $septrm . '(';
-				$sep = '';
-				foreach($this->condicion['terminos'] as $termino){
-					$lpart = $this->leftpart($id);
-					switch ($termino['type']){
-						case 'single':
-							$value = $this->formatvalue($termino['value']);
-							$where .= $stampcallback($id, $lpart, "$sep*LPART* {$termino['operator']} $value");
-							#$where .= "$sep$lpart {$termino['operator']} $value"; 
-							break;
-						case 'range': 
-							$ivalue = $this->formatvalue($termino['ivalue']); 
-							$fvalue = $this->formatvalue($termino['fvalue']); 
-							$where .= $stampcallback($id, $lpart, "$sep*LPART* between $ivalue and $fvalue"); 
-							#$where .= "$sep$lpart between $ivalue and $fvalue"; 
-							break;
-						case 'comodin':
-							$where .= $stampcallback($id, $lpart, "$sep*LPART* like '${termino['value']}'"); 
-							#$where .= "$sep$lpart like '${termino['value']}'"; 
-							break;
-					}
-					$sep = ' or ';
+			$this->input=$filter;
+			$this->filtro();
+			$sep = '';
+			foreach($this->condicion['terminos'] as $termino){
+				switch ($termino['type']){
+					case 'single':
+						$value = $this->formatvalue($termino['value']);
+						$resultCondition.= "$sep$leftPart {$termino['operator']} $value"; 
+						break;
+						
+					case 'range': 
+						$ivalue = $this->formatvalue($termino['ivalue']); 
+						$fvalue = $this->formatvalue($termino['fvalue']); 
+						$resultCondition.= "$sep$leftPart between $ivalue and $fvalue"; 
+						break;
+					case 'comodin':
+						$resultCondition.= "$sep$leftPart like '${termino['value']}'"; 
+						break;
 				}
-				$where .= ')';
-				$septrm = ' and '; 
+				$sep = ' or ';
 			}
 		}
-	
-		return $where;
+		return $resultCondition; 
 	}
 	
 		
@@ -134,22 +88,6 @@ class alt_sql_filterParser {
 			return $value;
 		} else return '\''.addcslashes($value,'\'').'\'';
 	} 
-	
-	private function leftpart($id){
-		if (isset($this->properties)){
-			if (isset($this->properties[$id]->expresion)){
-				return $this->properties[$id]->expresion;
-			} else {
-				$ret = '';
-				if (isset($this->properties[$id]->table)) $ret .= $this->properties[$id]->db.'.'.$this->properties[$id]->table .'.';
-				if (isset($this->properties[$id]->aliasof)) {	$ret .= $this->properties[$id]->db.'.'.$this->properties[$id]->aliasof;}
-				else { $ret .= $this->properties[$id]->id;} 
-				return $ret;
-			}
-		} else {
-			return $id;
-		}	
-	}
 	
 	private function match($token){
 	
