@@ -8,34 +8,18 @@ class test_frmx_listframe_form_medias extends bas_frmx_listframe{
     public function __construct($id,$title, $tabs='', $grid=array('width'=>4,'height'=>4)) {
     	global $_LOG;
 		parent::__construct($id,$title);
-		$query= new alt_sql_groupQuery();
-		$query->addTableAs('movLocal', 'movimientos');
-		$query->addFieldAs('local','establecimiento','group','text');
-		$query->addRelatedTableAs('grupoConcepto', 'grupillo', 'concepto');
-		$query->addField('grupo','group','text');
-		$query->addFieldAs('valor','importe','sum','double');		
-		$query->addField('valor','avg','double');
-		$query->addFilter('valor','group','<>100');
-		$query->addFilter('sum(valor)','aggregate','123..345');
-		$query->addFilter('valor2','group','*juana*');
-		$query->addFilter('valor1+valor2+valor3','group','12|42|234|<-30');
-		$query->addFieldFilters('establecimiento,grupo,valor');
-		$query->sortBy('grupo>,establecimiento<');		
-		$_LOG->log(">>> Query:" . $query->getQuery());
-		$_LOG->debug("queryobject",$query);
-		return;
-	//	$this->query = new bas_sqlx_querydef();
-		$this->query->add("movLocal",'seguimiento');
-		$this->query->addcol("local", "Local","movLocal" ,true,'seguimiento');
+		$this->query = new bas_sqlx_querydef();
+		$this->query->add("movLocal",'');
+		$this->query->addcol("local", "Local","movLocal" ,true,'');
 			
-		$this->query->addrelated('grupoConcepto','concepto','movLocal','seguimiento');	
-		$this->query->addcol("grupo", "Concepto","conceptoGrupo" ,true, 'seguimiento');
+		$this->query->addrelated('grupoConcepto','concepto','movLocal','');	
+		$this->query->addcol("grupo", "Concepto","conceptoGrupo" ,true, '');
 		
 	
-		$this->query->addcol("valor", "Valor","movLocal" ,false,'seguimiento');
+		$this->query->addcol("valor", "Valor","movLocal" ,false,'');
 		$this->query->setAttColum('valor', 'expression', 'sum(movLocal.importe)*grupoConcepto.signo');
 		
-		$this->query->addrelated('columna', 'grupo', 'grupoConcepto', false, 'seguimiento');
+		$this->query->addrelated('columna', 'grupo', 'grupoConcepto', false, '');
 		
 		$this->query->addCondition("movLocal.fecha between '{$this->desde}' and '{$this->hasta}'", 'fecha'); //Ver las fechas iniciales y finales de la semana.
 		$this->query->addCondition("columna.listado = {$this->listado}", 'listado');
@@ -79,5 +63,6 @@ class test_frmx_listframe_form_medias extends bas_frmx_listframe{
 		}
 		
     }	
+    
     
 }
