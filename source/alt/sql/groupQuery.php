@@ -9,7 +9,7 @@ class alt_sql_groupQuery extends alt_sql_query{
 		aggregate - aggregate expression.
 	*/
 	public function addField($name, $groupOption, $type, $table=''){
-		$alias= $this->isAggregateFunction($groupOption)) ? "{$groupOption}_$name" : $name;
+		$alias= $this->isAggregateFunction($groupOption) ? "{$groupOption}_$name" : $name;
 		$this->addFieldAs($name, $alias, $groupOption, $type, $table);
 	}
 	
@@ -56,6 +56,8 @@ class alt_sql_groupQuery extends alt_sql_query{
 		if ($whereExpression= $this->getWhereExpression()) $query.= " where $whereExpression";
 		
 		if ($groupExpression= $this->getGroupExpression()) $query.= " group by $groupExpression";
+		
+		if ($orderExpression= $this->getOrderExpression()) $query.= " order by $orderExpression";
 		
 		return $query; 
 	}

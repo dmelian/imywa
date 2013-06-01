@@ -3,6 +3,8 @@ class alt_sql_query {
 	
 	public $fields= array();
 	public $tables= array();
+	public $filters= array();
+	public $sorting= '';
 	
 	public $defaultDb;
 	public $currTable;
@@ -26,6 +28,7 @@ class alt_sql_query {
 		$this->currTable= $alias;
 	}
 	
+	#relatedFields: array(field=> relatedField=>) or comma separated string if the name of the two fields are the same.
 	public function addRelatedTable($table, $relatedFields='', $relatedTable='', $joinType='left', $db=''){
 		$this->addRelatedTableAs($table, $table, $relatedFields='', $relatedTable='', $joinType='left', $db='');
 	}
@@ -44,6 +47,7 @@ class alt_sql_query {
 		$this->tables[$alias]+= array('relatedTable'=>$relatedTable, 'relatedFields'=>$relatedFields, 'joinType'=>$joinType);
 	}
 	
+	#for a specific join expression of the last related add.
 	public function setJoinExpression($expression, $replace=true, $id=''){
 		if(!$id) $id= $this->currTable;
 		$this->tables[$id]+= array('joinExpression'=>$expression, 'replaceJoinExpression'=>$replace);
@@ -127,6 +131,24 @@ class alt_sql_query {
 		return '';
 	}
 
+// SORTING
+
+	#$sorting: fields identifiers comma separated string with an optional < or > for the direction. 
+	public function sortBy($sorting){ $this->sorting= $sorting; }
+	
+	public function getOrderExpression(){
+		$orderExpression= ''; $separator= '';
+		foreach(explode(',', $this->sorting) as $order){
+			$direction= ' asc';
+			if (strpos($order,'>') !== false){ $direction= ' asc'; $order= strtr($order, array('>'=>'')); }
+			if (strpos($order,'<') !== false){ $direction= ' desc'; $order= strtr($order, array('<'=>'')); }
+			$field= $this->fields[trim($order)]['expression'];
+			$orderExpression.= "$separator$field$direction";
+			$separator= ', '; 
+		}
+		return $orderExpression;
+	}
+	
 // QUERY
 	
 	public function getQuery($options=array()){
@@ -144,6 +166,8 @@ class alt_sql_query {
 		
 		if ($whereExpression= $this->getWhereExpression()) $query.= " where $whereExpression";
 		
+		if ($orderExpression= $this->getOrderExpression()) $query.= " order by $orderExpression";
+		
 		return $query; 
 	}
 	
@@ -153,60 +177,14 @@ class alt_sql_query {
 class alt_sql_mixquery {
 /////////////////////////////////////////////////////// BASIC QUERY
 
-	protected $position = array();
-	protected $extrajoinconditions = array(); //Condiciones adicionales de los joins.
-	protected $lasttable;
 	public $key;
-	protected $extraselect = '';
-	protected $id;
-	protected $caption;
-	protected $maindb;
 
 ///////////////////////////////////////////////////////// QUERY DEF
 	
-	protected $pivot;
-	protected $sorting = array();
 	protected $conditions = array(); // condiciones directas a where sin pasar por filtros.
-	protected $group = array();
-	public $order;
-// 	public $db;
 
 /////////////////////////////////////////////////////// BASIC QUERY
 
-
-// TABLES
-	
-	
-	public function getdb($tablename){
-		foreach($this->tables as $table) if ($table['table'] == $tablename) return $table['db'];
-		return ''; 
-	}
-	
-	/**
-	 * Añade una tabla relacionada con las anteriores
-	 *
-	 * @param string $table - tabla a añadir
-	 * @param array $relatedfields - array con los campos de la relacion
-	 * @param string $relatedtable - tabla con la que se relaciona
-	 */
-	public function setAttColum($id,$att,$value){
-		$this->cols[$id]->setAttr($att,$value);	
-	}
-	
-// FIELDS
-	
-	
-	public function getcols(){
-		return $this->cols;
-	}
-
-	public function addextraselect($expresion){
-		// Añade expresiones al select que no son tratados como columnas pero que se necesitan como campos internos.
-		// Se ha creado para poder tratar de una forma sencilla las plantillas dinámicas.
-		$this->extraselect = $this->extraselect ? "{$this->extraselect}, $expresion" : $expresion;
-	}
-	
-	public function delextraselect(){$this->extraselect = '';}
 
 // PRIMARY KEYS
 
@@ -408,11 +386,6 @@ class alt_sql_mixquery {
 	
 
 	
-	public function getMaindb(){
-		return $this->maindb;
-	}
-	
-	
 	public function existField($id){
 		if (isset($this->cols[$id])) return true;
 		else false;
@@ -505,118 +478,9 @@ class alt_sql_mixquery {
 	}
 	
 	
-// NAVIGATE     ### Obsoleto¿?
-	
-	public function go($pos){
-		switch($pos){
-			case 'first':
-				$this->position['currec']=0;
-				break;
-			case 'previouspage':
-				$this->position['currec'] -= $this->position['recsxpag'];
-				if ($this->position['currec']<0) $this->position['currec']=0;
-				break;
-			case 'previous':
-				$this->position['currec']--;
-				if ($this->position['currec']<0) $this->position['currec']=0;
-				break;
-			case 'next':
-				$this->position['currec']++;
-				if ($this->position['currec'] >= $this->position['numrows']) $this->position['currec']=$this->position['numrows']-1;
-				if ($this->position['currec']<0) $this->position['currec']=0;
-				break;
-			case 'nextpage':
-				$this->position['currec'] += $this->position['recsxpag'];
-				if ($this->position['currec'] >= $this->position['numrows']) $this->position['currec']=$this->position['numrows']-1;
-				if ($this->position['currec']<0) $this->position['currec']=0;
-				break;
-			case 'last':
-				$this->position['currec'] = $this->position['numrows'] -1;
-				if ($this->position['currec']<0) $this->position['currec']=0;
-				break;
-		}
-		
-	}
-	
-	public function setrowcount($rowcount){
-		$this->position['numrows'] = $rowcount;
-	}
-
-// POSITION
-
-	public function setposition($currec, $recsxpag=0){
-		$this->position['currec'] = $currec;
-		if ($recsxpag) $this->position['recsxpag']= $recsxpag;
-	}
-
-// ORDER
-	public function setorder($order){
-		$this->order = $order;
-	}
-	
-// Group by
-    public function setGroup($field){
-        $this->group[]=array("field"=>$field);
-    }
-
-
-	/*
-select linfactura.comercializadora,linfactura.poliza,linfactura.nofactura, cronoHeaders.name, sum(linfactura.valor)
-from contaluz.linfactura left join contaluz.factura on linfactura.nofactura = factura.nofactura inner 
-join cronoHeaders on factura.fechafactura between cronoHeaders.fromDate  and cronoHeaders.untilDate 
-group by linfactura.nofactura, cronoHeaders.name limit 15;
-
-	*/
-	
-	
-	
 	
 
-// 	QUERY	
-// ------------------------------------------------------------------
-	/**
-	 * Return the actual query of the table def.
-	 *
-	 */
-	public function query($order = true){
-		global $CONFIG;
-		//if(!$nolimits && $CONFIG['LSTTYPE'] == constant('LT_FULL_LIST')) $nolimits = false;
-		$nolimits= false;
-		$qry = $this->selectclause() . $this->fromclause() . $this->whereclause() . $this->groupclause();
-		if ($order)$qry = $qry. $this->orderclause();
-// 		if (!$nolimits) $qry .= $this->limitclause();
-		return $qry;
-	}
-	
-// SELECT
-// 	public function groupclause($all = false){  // ### Pivot¿?¿?
-//         $ret = $prefix = '';
-//         foreach ($this->group as $col){
-//             $table = $this->getTable($col["table"]);
-//             $ret .= $prefix."{$table['db']}.{$table['table']}";
-//         }
-//         if ($ret) return " Group By $ret";//return "select SQL_CALC_FOUND_ROWS $ret"; //###
-//         else return ""; //select 0
-//     }
-    
-    
-    
-    public function groupclause(){  // ### Pivot¿?¿?
-        $ret = $prefix = '';
-        foreach ($this->group as $item){
-            $col = $this->getField($item["field"]);
-            $ret .= "$prefix{$col->db}.{$col->table}.{$col->id}";
-            $prefix = ', ';
-        }
-        if ($ret) return " Group By $ret";//return "select SQL_CALC_FOUND_ROWS $ret"; //###
-        else return ""; //select 0
-    }
-    
 
-// FROM
-	
-	
-	
 
 // WHERE
 	
@@ -645,7 +509,6 @@ group by linfactura.nofactura, cronoHeaders.name limit 15;
 		return $where;
 	}
 	
-// GROUP BY	
 
 // LIMIT
 	protected function limitclause(){
@@ -655,37 +518,6 @@ group by linfactura.nofactura, cronoHeaders.name limit 15;
 		return $ret;
 	}
 
-// ORDER
-	public function orderclause(){
-		$order = "";
-		$sep="";
-		if (isset($this->order) && !empty($this->order)){
-			foreach($this->order as $field => $dir){
-				$order = $order. $sep.$field. " ". $dir;	
-				$sep = ", ";
-			}
-		}
-		$nelem = count($this->key);
-		for ($ind=0;$ind<$nelem;$ind++){
-			if (!isset($this->order[$this->key[$ind]['id']]))	$order = $order. $sep.$this->key[$ind]['id']. " ASC";
-			$sep = ", ";
-		}
-		if ($order) $order= " order by $order";	
-		return $order;
-	
-// 		if (isset($this->order) && !empty($this->order)){
-// 			return " order by {$this->order}";
-// 		} else return '';
-	}
-	
-// MISCELANEUS        ### Posiblemente obsoleto
-	
-	public function refresh(){
-		// realiza los refrescos necesario. 
-		if (isset($this->pivot) && $this->pivot['auto']) {
-			$this->refreshpivotcols($this->pivot['auto']);
-		}
-	}
 	
 }
 

@@ -8,12 +8,14 @@ class test_frmx_listframe_form_medias extends bas_frmx_listframe{
     public function __construct($id,$title, $tabs='', $grid=array('width'=>4,'height'=>4)) {
     	global $_LOG;
 		parent::__construct($id,$title);
-		$query= new alt_sql_query();
+		$query= new alt_sql_groupQuery();
 		$query->addTableAs('movLocal', 'movimientos');
-		$query->addFieldAs('local','establecimiento','text');
+		$query->addFieldAs('local','establecimiento','group','text');
 		$query->addRelatedTableAs('grupoConcepto', 'grupillo', 'concepto');
-		$query->addField('grupo','text');
-		$query->addFieldAs('valor','importe','double');		
+		$query->addField('grupo','group','text');
+		$query->addFieldAs('valor','importe','sum','double');		
+		$query->addField('valor','avg','double');
+		$query->sortBy('grupo>,establecimiento<');		
 		$_LOG->log(">>> Query:" . $query->getQuery());
 		$_LOG->debug("queryobject",$query);
 		return;
