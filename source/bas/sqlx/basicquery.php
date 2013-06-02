@@ -58,6 +58,12 @@ class bas_sqlx_basicquery {
 		return ''; 
 	}
 	
+	public function tableExists($tablename){
+		foreach($this->tables as $table) if ($table['table'] == $tablename) return true;
+		return false; 
+		
+	}
+	
 	/**
 	 * Añade una tabla relacionada con las anteriores
 	 *
@@ -67,6 +73,8 @@ class bas_sqlx_basicquery {
 	 */
 	public function addrelated($table, $relatedfields='', $relatedtable='',$db='', $jointype='left'){//###
 		global $_SESSION;
+		global $_LOG;
+		
 		if (!$db) $db=$this->maindb; else $bd= $_SESSION->apps[$_SESSION->currentApp]->getDbName($db);
 		if (!$relatedtable) $relatedtable = $this->lasttable;
 		if (!$relatedfields){
@@ -77,6 +85,10 @@ class bas_sqlx_basicquery {
 				$fields[]=array('field'=>trim($field), 'db'=>$db,'relatedfield'=>trim($field));
 			}
 			$relatedfields = $fields;
+		}
+		if (!$this->tableExists($relatedtable)){
+			$_LOG->log("Undefined related table [$relatedtable] in bas_sqlx_basicquery",5,'data_errors');
+			$_LOG->log($this,5,'data_errors');
 		}
 		$this->tables[] = array('table'=>$table, 'relatedtable'=>$relatedtable,'db'=>$db, 'relatedfields'=>$relatedfields, 'jointype'=>$jointype);
 		$this->lasttable = $table;
@@ -95,6 +107,9 @@ class bas_sqlx_basicquery {
             }
             $relatedfields = $fields;
         }
+		if (!$this->tableExists($relatedtable)){
+			$_LOG->log("Undefined related table [$relatedtable] in bas_sqlx_basicquery",5,'data_errors');
+		}
         $this->tables[] = array('table'=>$table, 'relatedtable'=>$relatedtable,'db'=>$db, 'relatedfields'=>$relatedfields, 'jointype'=>$jointype, 'expresion'=>$expresion);
         $this->lasttable = $table;
     }
