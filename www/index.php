@@ -2,7 +2,7 @@
 ini_set('display_errors', 1);
 ini_set('memory_limit', -1);
 include 'imywa.inc';
-$_LOG= new bas_sys_log($CONFIG['BASDIR'].'imywa.log',10,true);
+$_LOG= new bas_sys_log($CONFIG['BASDIR'].'log',10);
 $_LANG= new bas_sysx_lang();
 if (isset($_POST['sessionId']) && ($_POST['sessionId']) && ($_POST['sessionId']!='null')) {
 	$sessionfolder = "{$CONFIG['BASDIR']}run/sessions/{$_POST['sessionId']}/";
@@ -19,7 +19,5 @@ if (isset($_POST['sessionId']) && ($_POST['sessionId']) && ($_POST['sessionId']!
 	$_SESSION= new bas_sysx_session();
 	$_SESSION->begin();
 }
-
-$_LOG->close();
 
 ?>

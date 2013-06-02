@@ -200,6 +200,13 @@ class alt_sql_query {
 		
 		return $query; 
 	}
+
+// NOT EXISTING METHODS AND PROPERTIES
+/*
+	public void __set ( string $name , mixed $value )
+	public mixed __get ( string $name )
+	public mixed __call ( string $name , array $arguments )
+*/
 	
 	
 }

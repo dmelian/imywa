@@ -22,58 +22,61 @@
  * @package system
  */
 class bas_sys_log{
-	private $logFilename;
-	private $curLevel;
-	private $debug;
-	private $fp;
+	private $baseFolder;
+	private $level;
+	private $indent;
+	private $prefix;
 	
-	public function __construct($logfilename, $curlevel, $debug){
-		$this->debug = $debug;
-		$this->logFilename = $logfilename;
-		$this->curLevel = $curlevel;
-		if (!$this->debug){
-			$this->fp = fopen($this->logFilename, 'a');
-		}
+	public function __construct($baseFolder, $level){
+		$this->baseFolder= $baseFolder;
+		$this->level= $level;
+		$this->indent= "\t";
+		$this->prefix= "* ";
 	}
 	
-	public function log($msg, $level=5){
-		if ($level <= $this->curLevel){
-			if ($this->debug) $this->fp = fopen($this->logFilename, 'a');
+	public function log($msg, $level=5, $file='imywa'){
+		if ($level <= $this->level){
+			$filename= "{$this->baseFolder}/$file";
+			if (!file_exists($filename)){
+				$fp= fopen($filename, 'a+');
+				chmod($filename, 0666);
+			} else $fp = fopen($filename, 'a');
+			
+			$prefix= $this->prefix.date('Y-m-d H:i:s');
 			if (is_array($msg)){
-				fwrite($this->fp, "ARRAY:\n");
+				fwrite($fp, $prefix." ARRAY:\n");
 				foreach($msg as $key => $value){
-					fwrite($this->fp, "\t[$key]=$value.\n");
+					fwrite($fp, "{$this->indent}[$key]=$value.\n");
 				}
-				fwrite($this->fp, "END ARRAY\n");
+				fwrite($fp, "{$this->indent}END.\n");
+				
 			} elseif(is_object($msg)) {
-				$msg = print_r($msg, TRUE);
-				fwrite($this->fp, "OBJECT:\n{$msg}END OBJECT\n");
+				$msg= strtr($this->indent.print_r($msg, TRUE), array("\n"=>"\n{$this->indent}"));
+				fwrite($fp, $prefix." OBJECT:\n{$msg}\n");
+				
 			} else {
-				fwrite($this->fp, date('Y-m-d H:i:s')." $msg\n");
+				$msg= strtr($msg, array("\n"=>"\n{$this->indent}"));
+				fwrite($fp, $prefix." $msg\n");
 			}
-			if ($this->debug) {
-				fclose($this->fp);
-//				chmod($this->logFilename, 0666);
-			}
+			
+			fclose($fp);
 		}
 	}
 	
-	public function debug($caption, $object){
-		if ($this->debug) $this->fp = fopen($this->logFilename, 'a');
-		$msg = print_r($object, TRUE);
-		fwrite($this->fp, "DEBUG: OBJECT[$caption] :\n{$msg}END DEBUG [$caption]\n");
-		if ($this->debug) {
-			fclose($this->fp);
-//			chmod($this->logFilename, 0666);
-		}
+	public function debug($caption, $object, $file=''){
+		$filename= "{$this->baseFolder}/debug";
+		if ($file) $filename.= "/$file";
+		if (!file_exists($filename)){
+			$fp= fopen($filename, 'a+');
+			chmod($filename, 0666);
+		} else $fp = fopen($filename, 'a');
+		
+		$msg= strtr($this->indent.print_r($object, TRUE), array("\n"=>"\n{$this->indent}"));
+		fwrite($fp, $this->prefix.date('Y-m-d H:i:s')." $caption\n$msg\n");
+
+		fclose($fp);
 	}
 	
-	public function close(){
-		if (!$this->debug) {
-			fclose($this->fp);
-//			chmod($this->logFilename, 0666);
-		}	
-	}
 
 }
 ?>

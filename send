@@ -7,9 +7,17 @@ uglify=false
 sourceDir=imywa
 webDir=apps
 
+if [ -f /usr/local/$sourceDir/log ] ; then
+	rm -f /usr/local/$sourceDir/log
+fi
+if [ ! -d /usr/local/$sourceDir/log ] ; then
+	mkdir /usr/local/$sourceDir/log
+	chmod 777 /usr/local/$sourceDir/log
+fi
+
 # Delete the run dir and logs
 rm -Rf /usr/local/$sourceDir/run/*
-cat /dev/null > /usr/local/$sourceDir/log
+rm -Rf /usr/local/$sourceDir/log/*
 cat /dev/null > /usr/local/$sourceDir/access.log
 cat /dev/null > /usr/local/$sourceDir/imywa.log
 chmod 666 /usr/local/$sourceDir/imywa.log
