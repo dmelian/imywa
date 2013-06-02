@@ -202,11 +202,62 @@ class alt_sql_query {
 	}
 
 // NOT EXISTING METHODS AND PROPERTIES
-/*
-	public void __set ( string $name , mixed $value )
-	public mixed __get ( string $name )
-	public mixed __call ( string $name , array $arguments )
-*/
+
+	public function __set($name, $value){
+		global $_LOG;
+		$_LOG->log("undefined property: $name\t[set $value]",1,'alt_sql_query');
+	}
 	
+	public function __get($name){
+		global $_LOG;
+		$_LOG->log("undefined property: $name\t[get]",1,'alt_sql_query');
+		return false;		
+	}
+	
+	public function __call($name, $arguments){
+		global $_LOG;
+		$_LOG->log("undefined method: $name\n".print_r($arguments,true),1,'alt_sql_query');
+		return false;		
+	}
+
+// LEGACY METHODS
+
+	public function existField($id){ return isset($this->fields[$id]); }
+	
+	public function getField($id){
+		$field= null;
+		if (isset($this->fields[$id])){
+			
+			if (isset($this->fields[$id]['table'])){
+				$table= $this->fields[$id]['table'];
+				$aliasof= '';
+			} else {
+				$table= '';
+				$aliasof= $this->fields[$id]['expression'];
+			}
+			$db= '';
+			$pk= false;
+			$caption= 'caption';
+			$type= $this->fields[$id]['type'];
+			
+			switch ($this->fields[$id]['type']){
+				case "text": case "enum": case "boolean": case "date": 
+				case "money": case "image": case "upload": case "number":
+				case "textarea":
+					$fieldtype = "bas_sqlx_field$type";
+					$field= new $fieldtype($id,$table,$db,$pk,$caption,$aliasof);
+					break;
+				
+				case null:
+					$field = new bas_sqlx_fielddef($id,$table,$db,$pk,$caption,$aliasof);
+					break;
+					
+				default:
+					if (class_exists($type)) $field= new $type($id,$table,$db,$pk,$caption,$aliasof);
+					else $_LOG->log("undefined data type: $type.", 5, 'alt_sql_query');
+			}
+		}
+		return $field;
+	}
 	
 }

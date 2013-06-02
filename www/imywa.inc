@@ -73,8 +73,6 @@ function getBreadCrumbStamp(&$form= false){
 		$ret='<ul class="crumbs">';
 		$hover="ia_bread_fixed";
 		$breaditems = "";
-		global $_LOG;
-		$_LOG->debug("valor del captions",$captions);
 		if (count($captions)== 1){
 			$breaditems ="<li>"."<a class=\"ia_bread_item $hover\" style=\"z-index: $jump;\" > <div> ". $captions[0] ." </div> </a> </li>";// <span> > </span></li>";
 		}

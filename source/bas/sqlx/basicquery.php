@@ -37,12 +37,10 @@ class bas_sqlx_basicquery {
 	protected $maindb;
 
 	public function __construct($caption="", $id=""){
- 		global $_LOG;
 		global $_SESSION;
 		$this->id = $id;
 		$this->caption = $caption;
 		$_SESSION->apps[$_SESSION->currentApp]->getMainDb($host, $database);
-		$_LOG->log("Las base de datos es $database");		
 		$this->maindb = $database;
 	}
 

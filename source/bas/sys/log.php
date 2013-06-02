@@ -40,7 +40,7 @@ class bas_sys_log{
 			if (!file_exists($filename)){
 				$fp= fopen($filename, 'a+');
 				chmod($filename, 0666);
-			} else $fp = fopen($filename, 'a');
+			} else $fp= fopen($filename, 'a');
 			
 			$prefix= $this->prefix.date('Y-m-d H:i:s');
 			if (is_array($msg)){
@@ -69,7 +69,7 @@ class bas_sys_log{
 		if (!file_exists($filename)){
 			$fp= fopen($filename, 'a+');
 			chmod($filename, 0666);
-		} else $fp = fopen($filename, 'a');
+		} else $fp= fopen($filename, 'a');
 		
 		$msg= strtr($this->indent.print_r($object, TRUE), array("\n"=>"\n{$this->indent}"));
 		fwrite($fp, $this->prefix.date('Y-m-d H:i:s')." $caption\n$msg\n");

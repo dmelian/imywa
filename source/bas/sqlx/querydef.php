@@ -231,12 +231,13 @@ group by linfactura.nofactura, cronoHeaders.name limit 15;
 		//$_LOG->log("Numero de columnas ".$nl);
 		foreach ($this->cols as $col){
 			if ($all || (((isset($col->selected) && $col->selected) || isset($col->system)) && !isset($col->pivot))){ // ### Done 
-				if (isset($col->aliasof)) { // ### 
-					$ret .= "$prefix{$col->db}.{$col->table}.{$col->aliasof} as {$col->id}" ;
+				$db= $col->db ? "{$col->db}." : ''; 
+				if (isset($col->aliasof)) { // ###
+					$ret .= "$prefix$db{$col->table}.{$col->aliasof} as {$col->id}" ;
 				} else if ($col->expression) {
 					$ret .= "$prefix{$col->expression} as {$col->id}" ;
 				} else {
-					$ret .= "$prefix{$col->db}.{$col->table}.{$col->id}";
+					$ret .= "$prefix$db{$col->table}.{$col->id}";
 				}
 				$prefix = ', ';
 			}

@@ -125,10 +125,8 @@ class bas_sqlx_datapointer{
 			}
 			if (isset($this->pivot)) $this->pivotFormat();
 			$this->original = $this->current;
-		}
-		else{
-			$_LOG->log("DataPointer::Mysql. Se ha ha producido un error durante la consulta: {$con->error}");
-			$_LOG->log("DataPointer::Mysql. Se ha ha producido un error en la query: $query");
+		} else {
+			$_LOG->log("(bas_sqlx_datapointer)\nconsulta: $query\nerror: {$con->error}", 1, 'sql_errors');
 		}
 		if (!isset($this->connect))$con->close();
 	}
