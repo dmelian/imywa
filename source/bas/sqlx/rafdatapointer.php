@@ -19,84 +19,9 @@
 */
 
 
-class bas_sqlx_rafdatapointer{
-	public $query; // private o protected ¿?
-	public $current;
-	public $original;
-	protected $pos_current, $size;
-	protected $key;
-	protected $fileName;	
-	protected $connect;
-	protected $pivot;			// Será un array asociativo donde pivot["pivot"] = campo pivotante y pivot["value"] = "campo contenedor del valor"
-	
-	public function __construct($queryObj){
-	    $this->query = $queryObj;
-	    $this->size = 0;  // ### Lo establecemos para la realización de las pruebas
-	    $this->pos_current = 0;
-	    
-	    $pref = (get_called_class() == "bas_sqlx_record")? "RC":"DTV";
-	    global $_SESSION; //bas_sysx_session;
-	    $baseDir = $_SESSION->sessionDir."/temp/";		
-		
-	    $this->fileName = uniqid("",true);
-	    while (file_exists($baseDir.$pref.$this->fileName)){	
-			$this->fileName = uniqid("",true);
-	    }
-	    $file = fopen($baseDir.$pref.$this->fileName, 'c');   
-	    fclose($file);	    
-	    $this->fileName = $baseDir.$pref.$this->fileName;
-	    
-	    
-	}
-	public function setConnection($con){
-		$this->connect = $con;
-	}
-	// Se genera la clausula SQL para los movimientos extremos (FIRST y LAST).
-	private function createQueryPos($limit,$pos){
-	
-	    $query = "";
-		$query = $query . $this->query->query(true);
-	    if ($limit != -1)  $query = $query . " limit ". $pos.", ".$limit.";";
-	    return $query;	
-	}
-	
-	public function first_pos($limit){	    
-	    $this->MySQL($this->createQueryPos($limit,0),$limit);
-	    $this->pos_current = 0;
-	}
-	
-	public function last_pos($limit){	    
-	   /* $this->MySQL($this->createQueryPos($limit,$this->size-$limit),$limit); //antes true
-	    $this->pos_current = $this->size -$limit;*/
-	    $pos = $this->size - ($limit % $this->size);
-	    if ($pos >= 0){
-		$this->MySQL($this->createQueryPos($limit,$pos),$limit); 
-		$this->pos_current = $pos;
-	    }
-	}
-	
-	public function prox_next($limit,$pos=""){
-		if ($pos === ""){
-			$pos = $this->pos_current + $limit;
-		}	    
-	    if ($pos<$this->size){
-			$this->MySQL($this->createQueryPos($limit,$pos),$limit);
-			$this->pos_current = $pos;
-	    }
-	}
-	
-	public function prox_previous($limit,$pos=""){
-	    if ($pos === ""){
-			$pos = $this->pos_current - $limit;
-		}
-		
-	    if ($pos > -1){
-			$this->MySQL($this->createQueryPos($limit,$pos),$limit); // antes true
-			$this->pos_current = $pos;
-	    }
-	}
-	
-	
+class bas_sqlx_rafdatapointer extends bas_sqlx_datapointer{
+	const PACKHEADLENGTH= 12;
+
 	private function MySQL ($query,$limit){ // cada uno debe crearse el suyo propio debido a la particularidad de bas_sql_myquery
 	    
 		global $_LOG;
@@ -117,31 +42,43 @@ class bas_sqlx_rafdatapointer{
 		$_LOG->log("Datapointer::Query: Consulta ejecutada: $query");
 		if ($result != false){
 			
-			///////////////////////////////////////////////////////////////
-			// Testing the mysqli fectch_fields functions.
-			$_LOG->log("<<<<<< BEGIN - MYSQLI FIELDS INFO");
-			$maxlength=0;
-			for ($fd=0; $fd < $result->field_count; $fd++){
-				$fdi=$result->fetch_field_direct($fd);
-				$maxlength+= $fdi->max_length; 
-				$_LOG->debug("Field $fd:", $fdi );
-			}
-			$_LOG->log("----------------------------");
-			$_LOG->log("MaxLength $maxlength");
+		///////////////////////////////////////////////////////////////
 			
-			while($row = $result->fetch_assoc()) {
-				$_LOG->debug("row:",$row);
+/*	RANDOM ACCESS FILE FORMAT.
+	HEADER
+		record length
+		record count
+		field count
+		fields names -> serialized null row data assoc
+		first record file offset
+		
+	CONTENT
+		record fields lengths and content
+		
+	For unserialize first we merge the null assoc with the fields content on a serialized string.
+	afterwards, we unserialized the resulting string.
+	
+	How to serialized some objects in one only string?.
+	1) Create an array and then serialize the array
+	2) Managing the serializes length manually.
+			
+*/
+			$maxLengths= 0;
+			$fdNames= array();
+			foreach (fetch_fields_direct() as $fdInfo){
+				$fdNames[]= $fdInfo->name;
+				$maxLengths+= $fdInfo->max_length +10; //type + separator + length(5) + separator + 2 string char terminators.
+			}
+			
+			$header= array('fieldsCount' => $result->field_count);
+			$header['fieldNames']= serialize($nullRecord);
+			$header['recordSize']= maxLengths + strlen($header['fieldNames']);
+			
+			if ($row= $result->fetch_assoc()){
+				
+			}
+			while($row = $result->fetch_row()) {
 				$srow=serialize($row);
-				$_LOG->log("serializaed-row:$srow");
-				$length= strlen($srow); $lengthdiff= $maxlength - $length;
-				$_LOG->log("length: $length maxlength: $maxlength diff: $lengthdiff");
-				$_LOG->log('serialize " '.serialize('"'));
-				$_LOG->log('serialize " '.serialize('";i:3;'));
-				$_LOG->log('serialize " '.serialize("\""));
-				$_LOG->log('serialize \n\t '.serialize("\n\t"));
-				$_LOG->log('serialize \'\"\n\t '.serialize("'\\\"\n\t"));
-				$_LOG->log('serialize null '.serialize(null));
-				$_LOG->log('serialize "" '.serialize(''));
 				
 			}
 			
@@ -168,134 +105,21 @@ class bas_sqlx_rafdatapointer{
 		if (!isset($this->connect))$con->close();
 	}
 	
-	public function setPivot($pivot,$value){
-		$this->pivot = array("pivot"=>$pivot, "value"=>$value);
-	}
-	
-	protected function pivotFormat(){
-		$container = array();
-		$pos = 0;
-		foreach($this->current as $row){
-			foreach($row as $field => $value){
-				if (($field != $this->pivot["pivot"])  && ($field != $this->pivot["value"])){ // nos enctramos con un campo que no pertenece a los campos pivot ni valor.
-					if (isset($container[$pos][$field])){
-						if ($container[$pos][$field] != $value){  // hemos encontrado un campo distinto al anterior, por lo que se ha completado este registro.
-							$pos++;
-							$container[$pos][$field] = $value;
-						}
-					}
-					else
-						$container[$pos][$field] = $value;
-				}
-				else{
-					if ($field == $this->pivot["pivot"]){
-						$container[$pos][$value] = $row[$this->pivot["value"]];
-					}
-				}
-					
-			}
+	public function packArray($array, $serialize=true){
+		$values= ''; $lengths= array();
+		foreach($array as $value) {
+			$svalue= $serialize ? serialize($value) : $value;
+			$values.= $svalue;
+			$lengths[]= strlen($svalue);
 		}
-		$this->current = $container;
+		$result= implode(';',$lengths).":".$values; 
+		return str_pad(strlen($result),PACKHEADLENGTH,'0',STR_PAD_LEFT).$result;
 	}
 	
-
-/*
-  ############################################################################################################################################
-		      Acceso a los registros mediante el uso de ficheros.
-  ############################################################################################################################################
-*/
-	protected function acces_posfile($pos,$limit){ 
-	// TO-DO: Gestionar la posible inexistencia del fichero. Desidir el nombre y ubicación final
-	    $vector = unserialize(file_get_contents($this->fileName));
-// 	    global $_LOG;
-	    if (!isset($vector[$pos])) return NULL;
-	    
-		if ($pos <= $this->size){
-
-			if ($limit == 1) return $vector[$pos];
-			
-			$register = "";
-			if (($pos+$limit) > $this->size){
-				$limit = $limit - ( ($pos+$limit) - $this->size);
-			}
-			for($index=$pos,$nelem=0;$nelem <$limit; $index++, $nelem++){ // Optimizable
-				$register[$nelem] = $vector[$index];
-			}
-			return $register;
-		}
-		else{
-			global $_LOG;
-			$_LOG->log(get_class($this)."::acces_posfile. Se ha sobrepasado el maximo {$this->size}");
-			return array();
-		}
-	}
-	
-	protected function save_data(){ // almacenamos la informacion obtenida en fichero
-	    global $_LOG;
-	    $file = fopen($this->fileName, 'w');
-	    if (!$file) $_LOG->log("Error durante la apertura de fichero. DataPointer::save_data");
-		$this->size = count($this->current);
-	    $data = serialize($this->current);
-
-	    if (fwrite($file,$data)===false) {
-			$_LOG->log("Error durante la escritura. DataPointer::save_data");
-	    }
-	    fclose($file);
-	}
-	
-	public function load_data(){
+	public function unpackArray($string, $unserialize=true){
 		
-		
-	    $this->MySQL($this->createQueryPos(-1,0),-1);
-	    $this->save_data();
-	    
-	    
-	    
-	    
 	}
 	
-	public function first_file($limit){
-	    $this->data_posfile(0,$limit);
-	}
-	
-	public function last_file($limit){
-	    $pos = $this->size - ($limit % $this->size);
-	    $this->data_posfile($pos,$limit);	
-	}
-	
-	public function next_file($limit){
-	    $pos = $this->pos_current + $limit;
-	    $this->data_posfile($pos,$limit);
-	}
-	
-	public function previous_file($limit){
-	    $pos = $this->pos_current - $limit;
-	    $this->data_posfile($pos,$limit);
-	}
-	
-	protected function data_posfile($pos,$limit){
-		if (  ($pos<$this->size)  &&  ($pos>=0)  ){			
-			$rows= $this->acces_posfile($pos,$limit);
-			if (isset($rows)){
-				$this->current = $rows;
-				$this->original = $rows;
-				$this->pos_current = $pos;
-			}
-	    }
-	}
-	
-	protected function get_dataRow($pos){
-		if ($pos<$this->size){
-			$row = $this->acces_posfile($pos,1);
-			if (isset($row))return $row;
-	    }
-	    return NULL;
-	}
-	
-	public function initRecord(){
-		$this->current= $this->query->getemptyrec();
-		$this->original= $this->current;
-	}
 }
 
 ?>
