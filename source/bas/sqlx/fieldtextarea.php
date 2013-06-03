@@ -33,8 +33,8 @@ class bas_sqlx_fieldtextarea extends bas_sqlx_fieldtext {
 	}
 	
 	protected function OnPaintInPut($value,$mode,$list=false){
-		if ($list)	echo " <textarea cols='auto' rows='auto' class=\"ia_inputfield\"  style=\"border-radius: 5px;border:0;resize:none;height: 100%;width: 100%;background:oldLace; text-align:{$this->align}\" name=\"".$this->name."\" ";
-		else 	echo " <textarea  cols='auto' rows='auto' class=\"ia_textfield\" style=\"resize:none\"";  //style=\"border-radius: 5px;resize:none;border-style:inset;text-align:{$this->align}";
+		if ($list)	echo " <textarea  class=\"ia_inputfield\"  style=\"border-radius: 5px;max-height: 35px;border:0;resize:none;height: 100%;width: 100%;background:oldLace; text-align:{$this->align}\" name=\"".$this->name."\" "; //cols='auto' rows='auto'
+		else 	echo " <textarea class=\"ia_textfield\" style=\"resize:none;max-height: 35px;\"";  //style=\"border-radius: 5px;resize:none;border-style:inset;text-align:{$this->align}";
 		//if ($this->indexTab) echo "tabindex=\"{$this->indexTab}\"";
 	    if (!$this->editable || $mode =="read"){
 	      echo "readonly";	    

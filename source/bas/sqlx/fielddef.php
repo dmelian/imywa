@@ -86,7 +86,7 @@ class bas_sqlx_fielddef {
 	}
 	
 	protected function OnPaintCaption($labelwidth){
-		echo "<div class=\"ia_labelfield\" style=\"padding-top: 4pt;width:$labelwidth%\">".$this->caption."</div>";
+		echo "<div class=\"ia_labelfield\" style=\"padding-top: 4pt;width:20%\">".$this->caption."</div>"; //$labelwidth
 	}
 	
 // 	protected function OnPaintLookup(){
