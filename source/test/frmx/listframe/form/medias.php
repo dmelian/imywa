@@ -2,8 +2,8 @@
 class test_frmx_listframe_form_medias extends bas_frmx_listframe{
 	
 	public $listado= 1;
-	public $desde= '2013-5-20';
-	public $hasta= '2013-5-30';
+	public $desde= '2013-4-20';//'2013-5-20';
+	public $hasta= '2013-7-30';
 
     public function __construct($id,$title, $tabs='', $grid=array('width'=>4,'height'=>4)) {
     	global $_LOG;
