@@ -9,17 +9,17 @@ class test_frmx_listframe_form_medias extends bas_frmx_listframe{
     	global $_LOG;
 		parent::__construct($id,$title);
 		$this->query = new bas_sqlx_querydef();
-		$this->query->add("movLocal",'');
+		$this->query->add("movLocal",'seguimiento');
 		$this->query->addcol("local", "Local","movLocal" ,true,'');
 			
-		$this->query->addrelated('grupoConcepto','concepto','movLocal','');	
-		$this->query->addcol("grupo", "Concepto","conceptoGrupo" ,true, '');
+		$this->query->addrelated('grupoConcepto','concepto','movLocal','seguimiento');	
+		$this->query->addcol("grupo", "Concepto","grupoConcepto" ,true, '');
 		
 	
 		$this->query->addcol("valor", "Valor","movLocal" ,false,'');
 		$this->query->setAttColum('valor', 'expression', 'sum(movLocal.importe)*grupoConcepto.signo');
 		
-		$this->query->addrelated('columna', 'grupo', 'grupoConcepto', false, '');
+		$this->query->addrelated('columna', 'grupo', 'grupoConcepto', 'seguimiento');
 		
 		$this->query->addCondition("movLocal.fecha between '{$this->desde}' and '{$this->hasta}'", 'fecha'); //Ver las fechas iniciales y finales de la semana.
 		$this->query->addCondition("columna.listado = {$this->listado}", 'listado');
@@ -52,7 +52,7 @@ class test_frmx_listframe_form_medias extends bas_frmx_listframe{
 		$this->query->setGroup('local'); $this->query->setGroup('grupo');
 		$_LOG->log("medias.grouped-query = " . $this->query->query());
 		$this->createRecord();
-		$this->setPivot("concepto","importe");
+		$this->setPivot("grupo","valor");
 		//pivot values =$pivotValues;
 		
 		$proc = new bas_sql_myextprocedure("seguimiento");
@@ -61,6 +61,7 @@ class test_frmx_listframe_form_medias extends bas_frmx_listframe{
 			$this->Reload(false,$proc->connection);
 			$proc->commit();
 		}
+		$_LOG->debug("Valor almacenado: ",$this->dataset->current);
 		
     }	
     
