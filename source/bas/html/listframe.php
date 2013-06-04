@@ -37,7 +37,7 @@ class bas_html_listframe{
 		$this->selector = $selector;
 		$this->top = 4;
 		$this->measure = "pt";
-		$this->height = 18;
+		$this->height = $this->frame->height;//18
 		$this->cssComp = $this->frame->getCssComponent();
 		$this->footer = null;
 	}
