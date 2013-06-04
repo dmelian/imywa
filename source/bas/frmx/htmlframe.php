@@ -24,8 +24,7 @@ class bas_frmx_htmlframe extends bas_frmx_frame{
 
 	public function OnPaintContent(){
 		global $CONFIG;	
-		//include($ICONFIG['SRCDIR'].str_replace('_','/',get_called_class()).".inc");//<-- la ruta no enlaza bien, the route is wrong
-		include("{$CONFIG['BASDIR']}source/".str_replace('_','/',get_called_class()).".inc");
+		include($CONFIG['SOURCEDIR'].str_replace('_','/',get_called_class()).".inc");
 	}
 	
 	public function OnPdf($form){
