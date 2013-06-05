@@ -12,13 +12,16 @@ $CONFIG['DEFAULTDATABASE']= 'imywa';
 $CONFIG['TERMINAL'] = isset($_GET['terminal']) ? $_GET['terminal'] : 'UNKNOWN';
 $CONFIG['BROWSER'] = preg_match('/MSIE/i', $_SERVER['HTTP_USER_AGENT']) ? 'IE' : 'COMPATIBLE';
 
+// DEBUG
+$CONFIG['DEBUGGING']= false; 
+$CONFIG['SOURCEDIR']= !$CONFIG['DEBUGGING'] ? "{$CONFIG['BASDIR']}source/" : '';
 
 // GLOBAL FUNCTIONS
 function getclassfile($class_name){
 	global $CONFIG;
 	
 	$class= explode('_',$class_name); 
-	return "${CONFIG['BASDIR']}source/".implode('/',$class);
+	return $CONFIG['SOURCEDIR'].implode('/',$class);
 }
 
 function __autoload($class_name) {

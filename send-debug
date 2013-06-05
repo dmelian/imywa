@@ -1,0 +1,44 @@
+#! /bin/bash
+# Copy all the project files to the eclipse debugging project. 
+
+clear
+
+# declare -a themes=(amedita blitzer cupertino dark-hive eggplant excite-bike flick hot-sneaks humanity le-frog overcast pepper-grinder redmond smoothness south-street start sunny ui-darkness ui-lightness vader)
+declare -a themes=(amedita blitzer cupertino)
+uglify=false
+debugDir=../imywa-debug
+
+# copy the source, www and config folder to their destination
+rsync -avPz --delete --force --exclude .git --delete-excluded www/* $debugDir
+rsync -avPz --delete --force --exclude .git --delete-excluded source/bas $debugDir
+rsync -avPz --delete --force --exclude .git --delete-excluded source/alt $debugDir
+rsync -avPz --delete --force --exclude .git --delete-excluded source/imywa $debugDir
+rsync -avPz --delete --force --exclude .git --delete-excluded source/lib $debugDir
+rsync -avPz --delete --force --exclude .git --delete-excluded source/sysadmin $debugDir
+rsync -avPz --delete --force --exclude .git --delete-excluded source/sysdb $debugDir
+rsync -avPz --delete --force --exclude .git --delete-excluded source/syslogin $debugDir
+rsync -avPz --delete --force --exclude .git --delete-excluded source/test $debugDir
+
+echo build CSS....
+# Create the theme css
+for theme in ${themes[@]}; do
+	echo lessing $theme
+	lessc source/themes/$theme/theme.less > $debugDir/theme/$theme/$theme.css
+done
+
+if $uglify ; then 
+	echo uglifying ...
+	cat /dev/null > $debugDir/script/frmxlib.js
+	for jsfile in www/script/frmx/*.js; do
+		cat $jsfile >> $debugDir/script/frmxlib.js
+	done
+	uglifyjs --overwrite $debugDir/script/frmxlib.js
+	echo uglified.
+
+else
+	echo moving js...
+	cat /dev/null > $debugDir/script/frmxlib.js
+	for jsfile in www/script/frmx/*.js; do
+		cat $jsfile >> $debugDir/script/frmxlib.js
+	done	
+fi
