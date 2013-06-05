@@ -95,7 +95,7 @@ class bas_html_listframe{
 // 					echo "<label style=\"margin-left:".$margin_left."{$this->measure};\">";
 
             if ($component->type != "textarea"){
-                echo "<div class =\"". $class ."$classDyn list_row row_".($index+1) ." {$component->id} \"style=\"position:relative;width:100%;text-align:justify;text-indent:20%;overflow:hidden; top:".($index+1)*$this->top ."{$this->measure};height:".$this->height."{$this->measure};\">";
+                echo "<div class =\"". $class ."$classDyn list_row row_".($index+1) ." {$component->id} \"field=\"{$component->id}\" pos=\"".($index+1)."\" style=\"position:relative;width:100%;text-align:justify;text-indent:20%;overflow:hidden; top:".($index+1)*$this->top ."{$this->measure};height:".$this->height."{$this->measure};\">";
 
                 if (isset($rows[$index]) && isset($rows[$index][$component->id]))
                     echo $component->OnFormat($rows[$index][$component->id]);
@@ -103,7 +103,7 @@ class bas_html_listframe{
                     echo $component->OnFormat("");
             }
             else{
-                echo "<div class =\"". $class ."$classDyn list_row row_".($index+1) ." {$component->id} \"style=\"position:relative;width:100%;text-align:justify;overflow:hidden; top:".($index+1)*$this->top ."{$this->measure};height:".$this->height."{$this->measure};\">";
+                echo "<div class =\"". $class ."$classDyn list_row row_".($index+1) ." {$component->id} \"field=\"{$component->id}\" pos=\"".($index+1)."\" style=\"position:relative;width:100%;text-align:justify;overflow:hidden; top:".($index+1)*$this->top ."{$this->measure};height:".$this->height."{$this->measure};\">";
 
                 if (isset($rows[$index]) && isset($rows[$index][$component->id]))
                     echo $component->OnPaintList($rows[$index][$component->id],"read");

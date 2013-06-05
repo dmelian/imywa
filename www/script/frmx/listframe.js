@@ -103,6 +103,23 @@ bas_frmx_listframe.prototype.OnLoad= function(){
 		mainThis.setSelected(pos);
 	});
 	
+	
+	
+	$("#" + this.id).on("click",".list_row",function(event){
+		var pos = $(event.target).attr("pos");
+		mainThis.setSelected(pos);
+	});
+// 	
+	$("#" + this.id).find(".list_row").dblclick(function(event){
+
+		var pos = $(event.target).attr("pos");
+		var field = $(event.target).attr("field");
+		var id = String(mainThis.id);
+// 		mainThis.setSelected(pos);
+// 		alert("Dobleeee: frame: "+ id +" Fila: " + pos + " Campo:" + field);
+		currentForm.sendAction('dbclickList',{"frameID":id,"posDbClick": pos,"field":field});
+	});
+	
 }
 
 bas_frmx_listframe.prototype.setSelected = function(pos){
