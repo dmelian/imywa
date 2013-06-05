@@ -13,11 +13,11 @@ class bas_pdf_card extends bas_pdf_form{
 		$this->micard=$variabletipocard;
 	}
 	
-	function adjust($x=3,$y=5){//the grid on the paper.
+	function adjust($x=3,$y=5){//the grid on the paper.x=>width; y=>height
 		$wp=parent::$widthpage;
 		$hp=parent::$heightpage;
-		$this->gridwidth=$y;
-		$this->gridheight=$x;
+		$this->gridwidth=$x;
+		$this->gridheight=$y;
 		$this->cellwidth=$wp/($x*2);
 		$this->cellheigth=$hp/($y);
 	}
@@ -52,9 +52,10 @@ class bas_pdf_card extends bas_pdf_form{
 					if(($index!=-1)&&($index!=-2)){
 						$campo=  $this->micard->getComponent($index);//$this->micard->components[$index]["field"];
 						$label=$campo->caption;
-						$kwidth=$this->micard->components[$index]["width"];
+						//$kwidth=$this->micard->components[$index]["width"];
+						$kwidth=1;
 						$id = $this->micard->getComponent($index)->id;
-						$value=utf8_decode("pepe");
+						//$value=utf8_decode("pepe");
 						if (isset($this->micard->record->current[$campo->id]))$value=utf8_decode($this->micard->record->current[$campo->id]);
 						else $value=utf8_decode("");
 						$kheigth=max($kheigth,$pdf->NbLines($this->cellwidth*$kwidth,$value));//this
@@ -78,7 +79,8 @@ class bas_pdf_card extends bas_pdf_form{
 // 							$value=$this->micard->record->current[$campo->id];
 							$label=$campo->caption;
 							$type=$campo->type;
-							$kwidth=$this->micard->components[$index]["width"];
+							//$kwidth=$this->micard->components[$index]["width"];
+							$kwidth=1;
 							//}
 							switch($type){
 								case "boolean":{
@@ -89,18 +91,18 @@ class bas_pdf_card extends bas_pdf_form{
 									$pdf->SetFont('Arial','',9);//$this
 									$x=$pdf->GetX();//this
 									$y=$pdf->GetY();//this
-									$pdf->MultiCell($ancho,$alto*$kheigth,$label,0);//$this->
+									$pdf->MultiCell($ancho,$alto,$label,0);//$pdf->MultiCell($ancho,$alto*$kheigth,$label,0);//$this->
 									$pdf->SetXY($x+$ancho,$y);//$this->
 									$x=$pdf->GetX();//this
 									$y=$pdf->GetY();//this
 									if($value==true){
 										$pdf->SetFillColor(0);//this
 										$pdf->Rect($x,$y,4,4,'FD');//this
-										$pdf->MultiCell($ancho,$alto*$kheigth,"",0);//this
+										$pdf->MultiCell($ancho,$alto,"",0);//$pdf->MultiCell($ancho,$alto*$kheigth,"",0);//this
 									}
 									else{
 										$pdf->Rect($x,$y,4,4,'D');//this
-										$pdf->MultiCell($ancho,$alto*$kheigth,"",0);//this
+										$pdf->MultiCell($ancho,$alto,"",0);//$pdf->MultiCell($ancho,$alto*$kheigth,"",0);//this
 									}
 									$pdf->SetXY($x+$ancho,$y);//this
 									break;
@@ -122,7 +124,7 @@ class bas_pdf_card extends bas_pdf_form{
 									}
 									else */
 										$pdf->Rect($x,$y,$ancho,$alto*$kheigth);//this
-										$pdf->MultiCell($ancho,$alto,utf8_decode($value),0);//this
+										$pdf->MultiCell($ancho,$alto,utf8_decode($value),0);//$pdf->MultiCell($ancho,$alto*$kheigth,utf8_decode($value),0);//this
 									$pdf->SetXY($x+$ancho,$y);//this
 								}
 							}
@@ -140,7 +142,7 @@ class bas_pdf_card extends bas_pdf_form{
 		$this->loadcard($card);
 		$pdf->loadtitle($card->title);//this
 		$pdf->SetFont('Arial','',9);
-		$this->adjust($card->grid["height"],$card->grid["width"]);
+		$this->adjust($card->grid["width"],$card->grid["height"]);
 		//$this->beginDoc();
 		$this->Onprint($pdf);
 		//$this->endDoc();
