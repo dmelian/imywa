@@ -171,7 +171,6 @@ class bas_sysx_session{
 		if ($sessionApps= $db->getResult('sessionApps')) {
 				
 			foreach($sessionApps as $app){
-				//require_once("{$CONFIG['BASDIR']}source/apps/{$app['source']}/app.php");
 				$appclassname= "{$app['source']}_app";
 				if (class_exists($appclassname)) $this->apps[$app['app']]= new $appclassname($app);
 				else $_LOG->log("Error: Error al carga la aplicación {$app['app']}. No se encuentra la clase $appclassname.");
