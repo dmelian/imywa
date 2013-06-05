@@ -7,7 +7,7 @@
 * Author:  Olivier PLATHEY                                                     *
 *******************************************************************************/
 global $CONFIG;
-define('FPDF_FONTPATH', "{$CONFIG['BASDIR']}source/lib/fpdf/font/");
+define('FPDF_FONTPATH', "{$CONFIG['SOURCEDIR']}lib/fpdf/font/");
 define('FPDF_VERSION','1.7');
 
 class lib_fpdf_fpdf {

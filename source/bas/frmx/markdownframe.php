@@ -27,7 +27,7 @@ class bas_frmx_markdownframe extends bas_frmx_htmlframe{
 		$mark = new lib_markdown_markdown();
 	
 	// Leemos el contenido a transformar
-		$fichero = "{$CONFIG['BASDIR']}source/".str_replace('_','/',get_called_class()).".inc";
+		$fichero = $CONFIG['SOURCEDIR'].str_replace('_','/',get_called_class()).".inc";
 
 	// Abrioms, leemos y cerramos el fichero el fichero
 		$fichero_texto = fopen ($fichero, "r");
