@@ -31,7 +31,7 @@ class bas_sqlx_cronoQuery extends bas_sqlx_querydef {
 		parent::__construct($caption, $id);
 	}
     
-    public function setCrono($date, $value,$operation="sum"){
+    public function setCrono($date, $value, $operation="sum"){
         $this->addrelatedExp("cronoHeaders",$date,"registros","imywa","between imywa.cronoHeaders.fromDate  and imywa.cronoHeaders.untilDate","inner");  // ### Cuidado con la tabla registros
         
         $this->addcol('name','name','cronoHeaders',true,"imywa");

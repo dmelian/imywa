@@ -159,9 +159,9 @@ class bas_html_listframe{
 	
 	protected function OnPaintFooter(){
          echo "<div style=\"margin-left: 40%;\">";
-            echo "<button onclick=\"ajaxaction('listPrev',{'idFrame':{$this->frame->id}});\" ><span class=\"ui-icon ui-icon-triangle-1-w\"></span></button>";
+            echo "<button onclick=\"ajaxaction('listPrev',{'idFrame':'{$this->frame->id}'});\" ><span class=\"ui-icon ui-icon-triangle-1-w\"></span></button>";
             echo "<input type='text' value='{$this->footer}' disabled=\"disabled\">";
-            echo "<button onclick=\"ajaxaction('listNext',{'idFrame':{$this->frame->id}});\"><span class=\"ui-icon ui-icon-triangle-1-e\"></span></button>";
+            echo "<button onclick=\"ajaxaction('listNext',{'idFrame':'{$this->frame->id}'});\"><span class=\"ui-icon ui-icon-triangle-1-e\"></span></button>";
         echo "</div>";
 	
 	}

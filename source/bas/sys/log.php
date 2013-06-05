@@ -63,9 +63,8 @@ class bas_sys_log{
 		}
 	}
 	
-	public function debug($caption, $object, $file=''){
-		$filename= "{$this->baseFolder}/debug";
-		if ($file) $filename.= "/$file";
+	public function debug($caption, $object, $file='debug'){
+		$filename= "{$this->baseFolder}/$file";
 		if (!file_exists($filename)){
 			$fp= fopen($filename, 'a+');
 			chmod($filename, 0666);
