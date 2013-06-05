@@ -95,11 +95,11 @@ bas_frmx_listframe.prototype.OnLoad= function(){
  ----------------------------------------------------------------*/	
 	
 	$("#" + this.id).on("click",".selector_row",function(event){
-
 		//alert("row_" + $(event.target).attr("id"));
-		
 		var pos = $(event.target).attr("id");
-
+		if ($(event.target).hasClass("ui-selected")){
+			pos = -1;
+		}
 		mainThis.setSelected(pos);
 	});
 	
@@ -107,6 +107,9 @@ bas_frmx_listframe.prototype.OnLoad= function(){
 	
 	$("#" + this.id).on("click",".list_row",function(event){
 		var pos = $(event.target).attr("pos");
+		if ($(event.target).hasClass("ui-selected")){
+			pos = -1;
+		}
 		mainThis.setSelected(pos);
 	});
 // 	
