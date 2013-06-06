@@ -58,7 +58,7 @@
 
 /* states and images */
 .ui-icon { 
-	display: block; 
+	display: inline-block; 
 	text-indent: -99999px; 
 	overflow: hidden; 
 	background-repeat: no-repeat; 
@@ -153,7 +153,9 @@
 	cursor: pointer; 
 	position: relative; 
 	margin-top: 2px; 
-	padding: .5em .5em .5em .7em; 
+	padding: .1em .5em .15em .1em;
+	//padding: .5em .5em .5em .7em; 
+	font-size: 1em;
 	zoom: 1; 
 }
 .ui-accordion .ui-accordion-icons { 
@@ -224,7 +226,7 @@ button.ui-button-icon-only {
  
 button.ui-button-icons-only { 
 	width: 3.7em; 
-	border-radius:25px;
+	border-radius:10px;//25px;
 } 
 
 /*button text element */
@@ -565,7 +567,7 @@ button.ui-button::-moz-focus-inner {
 	line-height: 1.3; 
 	zoom: 1; 
 	font-weight: normal; 
-	font-size: 1.2em;
+	font-size: 1em;
 }
 .ui-menu .ui-menu-item a.ui-state-focus,
 .ui-menu .ui-menu-item a.ui-state-active { 
@@ -770,19 +772,26 @@ body .ui-tooltip { border-width: 2px; }
   font-size: @fontdefaultsize; 
 }
 
-.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { 
+.ui-widget input, .ui-widget select, .ui-widget button { 
    font-family: @fontdefault; 
-  font-size: 1em; 
-   border-radius:25px;
+//  font-size: 1em; 
+   border-radius:5px;//25px;
+   outline:none;
+  text-align:center;
+}
+.ui-widget textarea{
+	font-family: @fontdefault; 
+//  font-size: 1em; 
+  // border-radius:25px;
    outline:none;
    text-align:center;
 }
-
 .ui-widget-content { 
 
    border: border: 1px solid oldLace;//@borderColorContent; 
    background:oldLace;// @bgColorContent; aqui esta modificado
    color:@fcContent; 
+   font-size: 0.95em;//1em;
 }
    
 .ui-widget-content a { 
