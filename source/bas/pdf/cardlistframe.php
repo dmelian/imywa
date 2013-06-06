@@ -25,17 +25,17 @@ class bas_pdf_cardlistframe extends bas_pdf_miclase{
 			$idComponent = $component->id;
 			for($j=0;$j<$this->mix;$j++){
 				if(isset($rows[$j][$idComponent])){
-				if ($component->type == "abstract"){ 
-					$_LOG->log("se realiza el intercambio");
-					$abstractComp = $component;
-					$component = $frame->getRowType($rows[$j][$frame->mainComp]);
-				}
-				else	$abstractComp = NULL;
-				
-				//$this->Resultquery[$j][$i][0]= $this->transformData($component->OnFormat($rows[$j][$idComponent]));
-				$this->Resultquery[$j][$i][0]= $this->transformData($rows[$j][$idComponent]);
-				$this->Resultquery[$j][$i][1]= $component->type;
-				if(isset($abstractComp)) $component = $abstractComp;
+					if ($component->type == "abstract"){ 
+						$_LOG->log("se realiza el intercambio");
+						$abstractComp = $component;
+						$component = $frame->getRowType($rows[$j][$frame->mainComp]);
+					}
+					else	$abstractComp = NULL;
+					
+					//$this->Resultquery[$j][$i][0]= $this->transformData($component->OnFormat($rows[$j][$idComponent]));
+					$this->Resultquery[$j][$i][0]= $this->transformData($rows[$j][$idComponent]);
+					$this->Resultquery[$j][$i][1]= $component->type;
+					if(isset($abstractComp)) $component = $abstractComp;
 				}
 				else{
 					$this->Resultquery[$j][$i][0]= $this->transformData("");
