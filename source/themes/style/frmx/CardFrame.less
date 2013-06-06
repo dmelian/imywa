@@ -1,20 +1,24 @@
-@import "listFrame.less";
+//@import "listFrame.less";
 
 .ia_labelfield {
+	vertical-align:top;
 	padding-top: 30pt;
 	display: inline-block;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	white-space: nowrap;
+	//white-space: nowrap;
+	font-size: 1em;
 }
 
 .ia_inputfield {display: inline-block;}
 .ia_textfield{//(@bgpaint:oldLace){ 
 	//.ui-selected(#e7d8bd);
-	background: #e7d8bd;//@bgpaint;
+	//background: #e7d8bd;//@bgpaint;
 	border-radius: 5px;
 	border-style:inset;
 	text-align:center;
+	max-width: 11em;
+	min-width: 7em;
 }
 .ia_componentCard{
 	position: absolute;
