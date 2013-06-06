@@ -9,6 +9,7 @@ class bas_pdf_cardlistframe extends bas_pdf_miclase{
 // 	private $totalheight;
 	
 	function load($frame){
+		ob_end_clean();
 		global $_LOG;
 		$aux=array();
 		$rows=$frame->get_Allrows();
@@ -23,7 +24,7 @@ class bas_pdf_cardlistframe extends bas_pdf_miclase{
 			$_LOG->debug("registros",$rows);
 			$idComponent = $component->id;
 			for($j=0;$j<$this->mix;$j++){
-			
+				if(isset($rows[$j][$idComponent])){
 				if ($component->type == "abstract"){ 
 					$_LOG->log("se realiza el intercambio");
 					$abstractComp = $component;
@@ -31,12 +32,18 @@ class bas_pdf_cardlistframe extends bas_pdf_miclase{
 				}
 				else	$abstractComp = NULL;
 				
-				$this->Resultquery[$j][$i][0]= $this->transformData($component->OnFormat($rows[$j][$idComponent]));
-				$this->Resultquery[$j][$i][1]=$component->type;
-				
+				//$this->Resultquery[$j][$i][0]= $this->transformData($component->OnFormat($rows[$j][$idComponent]));
+				$this->Resultquery[$j][$i][0]= $this->transformData($rows[$j][$idComponent]);
+				$this->Resultquery[$j][$i][1]= $component->type;
 				if(isset($abstractComp)) $component = $abstractComp;
+				}
+				else{
+					$this->Resultquery[$j][$i][0]= $this->transformData("");
+					$this->Resultquery[$j][$i][1]= $component->type;
+				}
 			}
 		}
+		ob_start();
 	}
 	
 }
