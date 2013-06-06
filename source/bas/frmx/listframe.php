@@ -28,6 +28,8 @@ class bas_frmx_listframe extends bas_frmx_frame{
 	protected $selector;
 	protected $footer;
 	public $height;
+	public $dbClick;
+	
 	
 	public $fixedColums; // Número de columnas fijas dentro de components. Se tomarán los primeros X componentes.
 	public $components = array();  // Vector con todos los campos que representarán las columnas de la lista
@@ -42,6 +44,7 @@ class bas_frmx_listframe extends bas_frmx_frame{
 		$this->cssComp = null;
 		$this->selector = true;
 		$this->height = 18;
+		$this->dbClick = false;		
 	}
 	public function setRecord($con=""){
 		$this->dataset = new bas_sqlx_dataview($this->query);
@@ -53,6 +56,10 @@ class bas_frmx_listframe extends bas_frmx_frame{
 	
 	public function setPivot($campo,$valor){
 		$this->dataset->setPivot($campo,$valor);
+	}
+	
+	public function setDbClick($value=true){
+		$this->dbClick = $value;
 	}
 	
 	public function Reload($paint=false,$con=""){
