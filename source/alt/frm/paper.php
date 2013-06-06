@@ -1,5 +1,5 @@
 <?php
-class {
+class paper{
 	public $contents=array();
 	
 	public function setLogo($logo){ 

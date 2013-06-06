@@ -270,10 +270,11 @@ class bas_sqlx_filtertowhere {
 					do {
 						while ($i<$len && $this->input[$i] != $comilla) $i++;
 						$seguir = $i+1 < $len && $this->input[$i+1] == $comilla;
-						if ($seguir) $i=$i+2;	 
+						if ($seguir) $i=$i+2;
 					} while ($seguir); 
 					$result .= substr($this->input,$inicio,$i-$inicio);
-					if ($i==$this->pos) $this->pos++; else $this->pos=$i;
+					//if ($i==$this->pos) $this->pos++; else $this->pos=$i;
+					$this->pos= $i+1;
 					if (!(strpos($result,'*')===false) || !(strpos($result,'?')===false)){
 						$this->lasttoken = array('token'=>'comodin', 'value'=>strtr($result,'*?','%_'));
 					} else {

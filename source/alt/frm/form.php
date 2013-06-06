@@ -53,7 +53,7 @@ class alt_frm_form {
 	function OnFooter(){}
 	
 	function OnPaint($media){
-		$media= ('screen' => with events, 'paper')
+		$media= array('screen' => 'with events', 'paper');
 	}
 	
 	function getContents($paper){
@@ -63,7 +63,7 @@ class alt_frm_form {
 		
 		$paper->setBreadCrumb(getBreadCrumbStamp($this));//This is an session job.
 		$paper->setToolBar($this->toolbar);
-		$paper->setButtonBar,statusBar($); // and all others global settings for the paper 
+		$paper->setButtonBar_statusBar($s); // and all others global settings for the paper 
 
 		// Begin
 		$paper->open();

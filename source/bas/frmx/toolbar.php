@@ -106,7 +106,7 @@ class bas_frmx_toolbar{
 			if (isset ($this->actions[$action])) {
 				$this->actions[$action]['enabled']= true;
 			} else {
-				$_LOG.log("Action $action not defined.");
+				$_LOG->log("Action $action not defined.");
 			}
 		}
 		

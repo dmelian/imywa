@@ -267,7 +267,7 @@ class bas_sql_filtertowhere {
 						if ($seguir) $i=$i+2;	 
 					} while ($seguir); 
 					$result .= substr($this->input,$inicio,$i-$inicio);
-					if ($i==$this->pos) $this->pos++; else $this->pos=$i;
+					$this->pos= $i+1;
 					if (!(strpos($result,'*')===false) || !(strpos($result,'?')===false)){
 						$this->lasttoken = array('token'=>'comodin', 'value'=>strtr($result,'*?','%_'));
 					} else {
