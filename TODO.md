@@ -20,5 +20,3 @@ They can look diferent on the bread-crumb.
 Some times, the jscommand response to a http request has a json parser error, don't fit into the browser alert dialog. 
 Put this one in a specific div where it fit complete.
 
-### Test the csv generation.
-It is wrong with a pivot list-frame.

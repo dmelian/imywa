@@ -22,10 +22,8 @@ class bas_csv_listnew extends bas_csv_form{
 			$component=$this->milist->getComponent($i);
 			$this->info_campo[$i]=$component->Onformat($component->caption);
 			for($j=0;$j<$nrows;$j++){
-				/*if (isset($rows[$index]) && isset($rows[$index][$component->id])){*/
-					$this->Resultquery[$j][$i]= $component->OnFormat($rows[$j][$component->id]);
-						/*}else
-							$this->Resultquery[$i][$j]="";*/
+				$value= isset($rows[$j][$component->id]) ? $rows[$j][$component->id] : '';
+				$this->Resultquery[$j][$i]= $component->OnFormat($value);
 			}
 		}
 	}

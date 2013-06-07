@@ -36,7 +36,10 @@ class bas_sqlx_fieldnumber extends bas_sqlx_fieldtext {
 	//    setlocale(LC_MONETARY, 'es_ES');
 	//    return money_format('%.2n €', $value);
 		if ($value === "") return "";
-	    return number_format($value, 2, ',', '.');
+		if (is_float($value)) return number_format($value, 2, ',', '.');
+		$value= 0 + $value;
+		if (is_float($value)) return number_format($value, 2, ',', '.');
+		return $value;
 	}
 
 	public function check($value){

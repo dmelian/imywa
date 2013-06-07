@@ -67,52 +67,49 @@ class bas_html_listframe{
 	}
 	
 	protected function ContentColum($component,$rows, $type){
-		if ($type) $class="header_columStatic ";
-		else $class="header_columDinamic ";
-		
-		
-		$margin_left= 0;//20;
-		$nelem = $this->initialrowcount;//count($rows);
-		
-		echo "<div class =\" $class ia_header_colum \"style=\"position:relative;overflow:hidden; top 0{$this->measure};width:100%;height:".$this->height."{$this->measure};\">";
-			echo "<label style=\"margin-left:".$margin_left."{$this->measure};\">";
-					echo $component->caption;
-			echo "</label>";		      
+		if ($type) $class= "header_columStatic "; //:BM:
+		else $class= "header_columDinamic ";
+
+		$margin_left= 0; //20;
+		$nelem= $this->initialrowcount; //count($rows);
+
+		echo "<div class=\"$class ia_header_colum\" style=\"position: relative; overflow: hidden;"
+			. " top: 0{$this->measure}; width:100%; height:{$this->height}{$this->measure};\">";
+		echo "<label style=\"margin-left: $margin_left{$this->measure};\">";
+		echo $component->caption;
+		echo "</label>";
 		echo "</div>";
-		$class="";
-		
-		global $_LOG;
-		$_LOG->log("tipo enviado: " . $component->type);
-		
-		for($index=0;$index < $nelem;$index++){
-			if ( (isset($this->cssComp)) && ($rows[$index][$this->cssComp] != ""))	$classDyn = $rows[$index][$this->cssComp];
-// 			if (isset($rows[$index][$this->cssComp]))	$classDyn = $rows[$index][$this->cssComp];
-			else	$classDyn = "";
-				
-			//echo "<div class =\"". $class ."$classDyn list_row row_".($index+1) ." {$component->id} \"style=\"position:relative;width:100%;text-align:{$component->align};overflow:hidden; top:".($index+1)*$this->top ."{$this->measure};height:".$this->height."{$this->measure};\">";
-// 					echo "<label style=\"margin-left:".$margin_left."{$this->measure};\">";
 
-            if ($component->type != "textarea"){
-                echo "<div class =\"". $class ."$classDyn list_row row_".($index+1) ." {$component->id} \"field=\"{$component->id}\" pos=\"".($index+1)."\" style=\"position:relative;width:100%;text-align:justify;text-indent:20%;overflow:hidden; top:".($index+1)*$this->top ."{$this->measure};height:".$this->height."{$this->measure};\">";
+		for($index= 0; $index < $nelem; $index++){
+			if ((isset($this->cssComp)) && ($rows[$index][$this->cssComp] != "")){
+				$classDyn= $rows[$index][$this->cssComp];
+			} else $classDyn= "";
 
-                if (isset($rows[$index]) && isset($rows[$index][$component->id]))
-                    echo $component->OnFormat($rows[$index][$component->id]);
-                else
-                    echo $component->OnFormat("");
-            }
-            else{
-                echo "<div class =\"". $class ."$classDyn list_row row_".($index+1) ." {$component->id} \"name=\"".($index+1)."\" style=\"position:relative;width:100%;text-align:justify;overflow:hidden; top:".($index+1)*$this->top ."{$this->measure};height:".$this->height."{$this->measure};\">";
+			if ($component->type != "textarea"){
+				echo "<div class=\"$classDyn list_row row_" . ($index+1) ." {$component->id}\""
+				." field=\"{$component->id}\" pos=\"" . ($index+1) . "\""
+				." style=\"position: relative; width: 100%; text-align: justify; text-indent: 20%; overflow: hidden;"
+				." top: " . ($index+1)*$this->top . "{$this->measure}; height: {$this->height}{$this->measure};\">";
 
-                if (isset($rows[$index]) && isset($rows[$index][$component->id]))
-                    echo $component->OnPaintList($rows[$index][$component->id],"read");
-                else
-                    echo $component->OnPaintList("","edit");
-            }
+				if (isset($rows[$index]) && isset($rows[$index][$component->id])){
+					echo $component->OnFormat($rows[$index][$component->id]);
+				} else echo $component->OnFormat("");
 
-// 					echo "</label>";
-			echo "</div>";
+				echo "</div>";
+
+			} else {
+				echo "<div class =\"$classDyn list_row row_" . ($index+1) . " {$component->id}\""
+				." name=\"" . ($index+1) . "\""
+				." style=\"position: relative; width: 100%; text-align: justify; overflow: hidden;"
+				." top:" . ($index+1)*$this->top . "{$this->measure}; height: {$this->height}{$this->measure};\">";
+
+				if (isset($rows[$index]) && isset($rows[$index][$component->id])) {
+					echo $component->OnPaintList($rows[$index][$component->id],"read");
+				} else echo $component->OnPaintList("","edit");
+
+				echo "</div>";
+			}
 		}
-	
 	}
 	
 	protected function Paintfixed($rows){
