@@ -56,7 +56,10 @@ class bas_pdf_card extends bas_pdf_form{
 						$kwidth=1;
 						$id = $this->micard->getComponent($index)->id;
 						//$value=utf8_decode("pepe");
-						if (isset($this->micard->record->current[$campo->id]))$value=utf8_decode($this->micard->record->current[$campo->id]);
+						if (isset($this->micard->record->current[$campo->id])){
+							if(!empty($this->micard->record->current[$campo->id]))$value=utf8_decode($this->micard->record->current[$campo->id]);
+							else $value=utf8_decode("");
+						}
 						else $value=utf8_decode("");
 						$kheigth=max($kheigth,$pdf->NbLines($this->cellwidth*$kwidth,$value));//this
 						$kheigth=max($kheigth,$pdf->NbLines($this->cellwidth*$kwidth,$label));//this

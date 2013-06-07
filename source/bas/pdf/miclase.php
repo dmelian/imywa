@@ -19,8 +19,14 @@ class bas_pdf_miclase extends bas_pdf_form{
 
 			for($j=0;$j<$this->mix;$j++){
 				if (isset($rows[$j]) && isset($rows[$j][$component->id])){
+					if(!empty($rows[$j][$component->id])){
 					$this->Resultquery[$j][$i][0]= $this->transformData($component->OnFormat($rows[$j][$component->id]));
 					$this->Resultquery[$j][$i][1]=$component->type;
+					}
+					else{
+						$this->Resultquery[$j][$i][0]= $this->transformData($component->OnFormat(''));
+						$this->Resultquery[$j][$i][1]=$component->type;
+					}
 				} 
 				else {
 					$this->Resultquery[$j][$i][0]= $this->transformData($component->OnFormat(''));
@@ -31,6 +37,23 @@ class bas_pdf_miclase extends bas_pdf_form{
 	}
 	protected function transformData($str){
 		return iconv('UTF-8', 'windows-1252',$str);
+	}
+	
+	protected function interprete($image){
+		$mistring=$image;
+		$count=strpos($mistring,']');
+		$selector=intval(substr($mistring,$count+1,1));
+		$mistring=substr($mistring,1,$count-1);
+		$mistring=explode(',',$mistring);
+		$option=intval($mistring[$selector]);
+		switch($option){
+			case 3: return "Alarma";
+			case 6: return "Error";
+			case 5: return "A. Temporal";
+			case 7: return "X";
+			case 8: return "O.K.";
+			Default: return "";
+		}
 	}
 	/*function loadheader($db, $dbtable){
 		global $_APPLICATION;
@@ -102,7 +125,16 @@ class bas_pdf_miclase extends bas_pdf_form{
 			else $pdf->Rect($x,$y,$ancho,$h);//this
 			//imprimimos el texto
 			if(($this->Resultquery[$i][0][1]=="money")||($this->Resultquery[$i][0][1]=="number")){
+				$vartexto=number_format(floatval($vartexto),2,',','.');
 				$pdf->MultiCell($ancho,$alto,$vartexto,0,'R');
+			}
+			else if($this->Resultquery[$i][0][1]=="boolean"){
+				  if(intval($vartexto)==0){
+					$pdf->MultiCell($ancho,$alto,'No',0,'L');
+				  }
+				  else{
+					$pdf->MultiCell($ancho,$alto,utf8_decode('Sí'),0,'L');
+				  }
 			}
 			else{
 				$pdf->MultiCell($ancho,$alto,$vartexto,0,'L');//this
@@ -111,8 +143,8 @@ class bas_pdf_miclase extends bas_pdf_form{
 			$pdf->SetXY($x+$ancho,$y);//this
 			for($j=$jinicio; $j < $jfin; $j++){
 				$vartexto =$this->Resultquery[$i][$j][0];
-				$_LOG->debug("RESULTQUERY",$this->Resultquery[$i][$j][0]);
-				$_LOG->debug("VARTEXTO",$vartexto);
+				//$_LOG->debug("RESULTQUERY",$this->Resultquery[$i][$j][0]);
+				//$_LOG->debug("VARTEXTO",$vartexto);
 				$x=$pdf->GetX();//this
 				$y=$pdf->GetY();//this
 				//Dibujamos el borde
@@ -120,7 +152,20 @@ class bas_pdf_miclase extends bas_pdf_form{
 				else $pdf->Rect($x,$y,$ancho,$h);//this
 				//Imprimimos el texto
 				if(($this->Resultquery[$i][$j][1]=="money")||($this->Resultquery[$i][$j][1]=="number")){
-					$pdf->MultiCell($ancho,$alto,$vartexto,0,'R');//this
+					$vartexto=number_format(floatval($vartexto),2,',','.');
+					$pdf->MultiCell($ancho,$alto,$vartexto,0,'R');
+				}
+				else if($this->Resultquery[$i][$j][1]=="boolean"){
+					if(intval($vartexto)==0){
+						$pdf->MultiCell($ancho,$alto,'No',0,'L');
+					}
+					else{
+						$pdf->MultiCell($ancho,$alto,utf8_decode('Sí'),0,'L');
+					}
+				}
+				else if($this->Resultquery[$i][$j][1]=="image"){
+					$vartexto=$this->interprete($vartexto);
+					$pdf->MultiCell($ancho,$alto,$vartexto,0,'L');//this
 				}
 				else{
 					$pdf->MultiCell($ancho,$alto,$vartexto,0,'L');//this
