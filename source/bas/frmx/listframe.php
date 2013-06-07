@@ -92,7 +92,7 @@ class bas_frmx_listframe extends bas_frmx_frame{
 		if (isset($this->dataset)) return $this->dataset->getQuerySize(); else return null;
 	}
 	
-	public function addComponent($width=50, $height, $id_field){ 
+	public function addComponent($width, $height, $id_field){ //$width=50
 		array_push($this->components,array("width"=>$width,"height"=>$height,"id"=>$id_field));
 	}
 	

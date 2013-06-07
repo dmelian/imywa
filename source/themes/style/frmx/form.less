@@ -54,12 +54,20 @@ outline:none;
 .crumbs { display: block; }
 .crumbs li {  display: inline; }
 .crumbs li.first { padding-left: 8px; }
-.crumbs li a div {height:11pt; overflow:hidden;}
+.crumbs li a div {font-weight: bold;height:11pt; overflow:hidden;}
 .crumbs li a div:after { font-weight:bold;content:">";height:11pt; overflow:hidden;}
 .crumbs li:last-child a div:after {
   height: 11pt;
   content:"";
   overflow: hidden;
+  font-weight: normal;
+}
+
+.crumbs li:last-child a div:last-child {
+  height: 11pt;
+  content: "";
+  overflow: hidden;
+  font-weight:normal;
 }
 .crumbs li a, .crumbs li a:link, .crumbs li a:visited {height:11pt; overflow:hidden; color: black; display: block; float: left;  margin-left: -13px; padding: 4px 1px 2px 17px; position: relative; text-decoration: none; } //font-size: 12px;color: #666
 
