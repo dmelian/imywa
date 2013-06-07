@@ -38,7 +38,7 @@ class bas_frmx_cronoFrame extends bas_frmx_listframe{
 		$this->cssComp = null;
 		$this->selector = true;
 		
-		$this->periods = array("day"=>"Diario","week"=>"Semanal","month"=>"Mensual","year"=>"Anual");
+		$this->periods = array("day"=>"Diario","week"=>"Semanal","month"=>"Mensual");//,"year"=>"Anual");
 		$this->curPeriod = "year";
 		
 	}
@@ -59,7 +59,8 @@ class bas_frmx_cronoFrame extends bas_frmx_listframe{
 	 public function getPeriods(){
         return $this->periods;
 	 }
-     public function periodSelected(){
+    
+    public function periodSelected(){
         return $this->curPeriod;
      }
 	
