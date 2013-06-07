@@ -40,7 +40,7 @@ class bas_csv_card extends bas_csv_form{
 						else{
 							//$campo=$this->micard->components[$index]["field"];
 							$campo=$this->micard->getComponent($index);
-							$label=$this->micard->getComponent($index)->Onformat($this->micard->getComponent($index)->caption);//\\
+							//$label=$this->micard->getComponent($index)->Onformat($this->micard->getComponent($index)->caption);//\\
 							//$value=$this->micard->record->current[$campo->id];
 							if (isset($this->micard->record->current[$campo->id]))$value=utf8_decode($this->micard->record->current[$campo->id]);
 							else $value=utf8_decode("");

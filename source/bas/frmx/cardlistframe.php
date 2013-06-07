@@ -258,11 +258,11 @@ class bas_frmx_cardlistframe extends bas_frmx_listframe{
 		return $this->dataview->Allrows();
 	}
 	
-	public function Oncsv(){
-		$csvcard=new bas_csv_card();
-		$csvcard->loadcard($this);
-		$csvcard->prepare();
-		$csvcard->Onprint("card.csv");
+	public function Oncsv($csv){
+		$csvcard=new bas_csv_cardlist();
+		$csvcard->loadcardlist($this);
+		//$csvcard->prepare();
+		$csvcard->Onprint($csv);
 	}
 	
 	function OnPdf($pdf){
