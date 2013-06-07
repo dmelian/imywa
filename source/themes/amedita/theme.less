@@ -139,6 +139,26 @@
     		width: @dash_width_title;
 	}
 }
+.dashpendiente_inc{
+	
+	color:@dash_pdte_color;
+	//background:yellow;
+	text-decoration:none;
+
+	&:hover:after{
+    		background: @dash_bg_title;
+   		background: @dash_rgb_title;
+    		border-radius: @dash_bd-radius;
+    		top: @dash_top_title;
+    		color: @dash_color_title;
+    		content: @dash_title;
+    		left: @dash_left_title;
+    		padding: @dash_padding_title;
+    		position: @dash_position_title;
+    		z-index: @dash_z-index_title;
+    		width: @dash_width_title;
+	}
+}
 
 .dashgeneral
 {
@@ -155,15 +175,15 @@
 }
 .titles{
 	background-color:@dash_ano_color;
+	font-weight: bold;
+	text-indent: 25%;
 }
 
 .list{
-	color: #878d95;
-	&:hover{
-		color:black;
-	}
+	color: black;
+	
 	&:before{
-		content:.ui-icon-triangle-1-e { background-position: -32px -16px; }
+		//.ui-icon-triangle-1-e { background-position: -32px -16px; }
 		//content:url(image/contaluz/icon.png);//content: '◙';▶ ';
 		color: #878d95;
 	}
