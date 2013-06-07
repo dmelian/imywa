@@ -63,24 +63,31 @@
 }
 
 .dashvencido{
+	//border: 1px solid #d0d0d3;
+	border-radius: 5px;
+	padding: .1em .4em;
 	color:@dash_vto_color;
 	text-decoration:none;
 	&:hover:after{
-   		background: @dash_bg_title;
-    		background: @dash_rgb_title;
-    		border-radius: @dash_bd-radius;
-    		top: @dash_top_title;
-    		color: @dash_color_title;
-    		content: @dash_title;
-    		left: @dash_left_title;
-    		padding: @dash_padding_title;
-    		position: @dash_position_title;
-    		z-index: @dash_z-index_title;
-    		width: @dash_width_title;
+	   	background: @dash_bg_title;
+	    	background: @dash_rgb_title;
+	    	border-radius: @dash_bd-radius;
+	    	top: @dash_top_title;
+	    	color: @dash_color_title;
+	    	content: @dash_title;
+	    	left: @dash_left_title;
+	    	padding: @dash_padding_title;
+	    	position: @dash_position_title;
+	    	z-index: @dash_z-index_title;
+	    	width: @dash_width_title;
+		
 	}
 }
 
 .dashvencido2{
+	//border: 1px solid #d0d0d3;
+	border-radius: 5px;
+	padding: .1em .4em;
 	color:@dash_vto_color;
 	text-decoration:none;
 }
@@ -88,6 +95,9 @@
 
 
 .dashproxvto{
+	//border: 1px solid #d0d0d3;
+	border-radius: 5px;
+	padding: .1em .4em;
 	color:@dash_prox_color;
 	//background:yellow;
 	text-decoration:none;
@@ -108,6 +118,29 @@
 
 
 .dashpendiente{
+	border: 1px solid #d0d0d3;
+	border-radius: 5px;
+	padding: .1em .4em;
+	color:@dash_pdte_color;
+	//background:yellow;
+	text-decoration:none;
+
+	&:hover:after{
+    		background: @dash_bg_title;
+   		background: @dash_rgb_title;
+    		border-radius: @dash_bd-radius;
+    		top: @dash_top_title;
+    		color: @dash_color_title;
+    		content: @dash_title;
+    		left: @dash_left_title;
+    		padding: @dash_padding_title;
+    		position: @dash_position_title;
+    		z-index: @dash_z-index_title;
+    		width: @dash_width_title;
+	}
+}
+.dashpendiente_inc{
+	padding: .1em .4em;
 	color:@dash_pdte_color;
 	//background:yellow;
 	text-decoration:none;
@@ -133,12 +166,27 @@
 	min-width:30%;
 	height: auto;
 	box-shadow: 0px 1px 1px 1px;
-	border-radius: 10px;
+	border-radius: 5px;
 	float: center;
 }
 
 .dashano{
 	background-color:@dash_ano_color;
+}
+.titles{
+	background-color:@dash_ano_color;
+	font-weight: bold;
+	text-indent: 25%;
+}
+
+.list{
+	color: black;
+	
+	&:before{
+		//.ui-icon-triangle-1-e { background-position: -32px -16px; }
+		//content:url(image/contaluz/icon.png);//content: '◙';▶ ';
+		color: #878d95;
+	}
 }
 
 .test_logo{

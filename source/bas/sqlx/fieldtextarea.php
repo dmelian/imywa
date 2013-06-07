@@ -34,13 +34,14 @@ class bas_sqlx_fieldtextarea extends bas_sqlx_fieldtext {
 	
 	protected function OnPaintInPut($value,$mode,$list=false){
 		if ($list)	echo " <textarea  class=\"ia_inputfield\"  style=\"border-radius: 5px;max-height: 35px;border:0;resize:none;background-color:transparent;height: 100%;width: 100%; text-align:{$this->align}\" name=\"".$this->name."\" "; //cols='auto' rows='auto' background:oldLace,#e7d8bd;
-		else 	echo " <textarea class=\"ia_textfield\" style=\"resize:none;max-height: 35px;background:white;\"";  //style=\"border-radius: 5px;resize:none;border-style:inset;text-align:{$this->align}";
+		else 	echo " <textarea class=\"ia_textfield\" style=\"resize:none;max-height: 35px;\"";  //style=\"border-radius: 5px;resize:none;border-style:inset;text-align:{$this->align}";
 		//if ($this->indexTab) echo "tabindex=\"{$this->indexTab}\"";
 	    if (!$this->editable || $mode =="read"){
-	      echo "style=\"background:#ddd;\" readonly";	    
+	      echo "disabled ";
+	         
 	    }
 	    if ($mode =="resize"){
-	      echo "style=\"resize:none\"";	    
+	      echo "resize:none";	    
 	    }
 	    echo  " name=\"".$this->name."\">".$value."</textarea></br>";
 	}
