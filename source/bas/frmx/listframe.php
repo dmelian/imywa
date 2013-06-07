@@ -18,7 +18,8 @@
 	along with imywa.  If not, see <http://www.gnu.org/licenses/>.
 */
 class bas_frmx_listframe extends bas_frmx_frame{
-
+	
+	public $strict=false;
 	public $jsClass= "bas_frmx_listframe";
 	public $dataset;
 	public $query;
@@ -93,8 +94,18 @@ class bas_frmx_listframe extends bas_frmx_frame{
 		if (isset($this->dataset)) return $this->dataset->getQuerySize(); else return null;
 	}
 	
-	public function addComponent($width=50, $height, $id_field){ 
-		array_push($this->components,array("width"=>$width,"height"=>$height,"id"=>$id_field));
+	public function addComponent($width=50, $height, $id_field, $strict=null){
+		#strict- The field must exists, else the component doesn't insert and a log is created. 
+		global $_LOG;
+		
+		if (is_null($strict)) $strict= $this->strict;
+		$exists= $this->query->existField($id_field);
+		 
+		if ($strict && !$exists) { 
+			$_LOG->log("FRMX: Unknown id for the compoment $id_field. FrameId: {$this->id}", 5, 'frameList');
+		} else {
+			array_push($this->components,array("width"=>$width,"height"=>$height,"id"=>$id_field));
+		}
 	}
 	
 	public function addCssComponent($id_field = "dynamicclass"){
@@ -118,8 +129,9 @@ class bas_frmx_listframe extends bas_frmx_frame{
 // 	}
 
 	public function getComponent($pos){
-		if ($this->query->existField($this->components[$pos]["id"]))	return $this->query->getField($this->components[$pos]["id"]);	
-		return NULL;
+		if ($this->query->existField($this->components[$pos]["id"])) {	
+			return $this->query->getField($this->components[$pos]["id"]);	
+		} else return NULL;
 	}
 	
 	public function getComponentWidth($pos){
