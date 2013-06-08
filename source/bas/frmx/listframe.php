@@ -47,6 +47,7 @@ class bas_frmx_listframe extends bas_frmx_frame{
 		$this->height = 18;
 		$this->dbClick = false;		
 	}
+	
 	public function setRecord($con=""){
 		$this->dataset = new bas_sqlx_dataview($this->query);
 		if ($con)$this->dataset->setConnection($con);
@@ -124,10 +125,6 @@ class bas_frmx_listframe extends bas_frmx_frame{
 		$this->selector = $selector;
 	}
 	
-// 	public function getComponent($pos){
-// 		return $this->query->cols[$this->components[$pos]["id"]];	
-// 	}
-
 	public function getComponent($pos){
 		if ($this->query->existField($this->components[$pos]["id"])) {	
 			return $this->query->getField($this->components[$pos]["id"]);	
@@ -245,62 +242,32 @@ class bas_frmx_listframe extends bas_frmx_frame{
 				
 		}
 	}
-	
-	/*protected function setFormatData($data){
+		
+	protected function setFormatData($data){
 		$content = array();
 		$pos = 0;
-		$cols = $this->query->cols;
-		
+		$cols = $this->query->getcols();
+
 		foreach($data as $row){
-			foreach($row as $key => $value){
-				$obj = $this->query->getField($key);
+			foreach($cols as $key => $obj){
+				if ( isset($row[$key])) $value = $row[$key];
+				else $value = "";
+
 				if ($obj->type != "textarea"){
-                    if (isset($obj)){
-                        $content[$pos][$key] = $obj->OnFormat($value);		
-                    }
+					$content[$pos][$key] = $obj->OnFormat($value);
 				}
 				else{
-                    if (isset($obj)){
-                        ob_start();
-                            $obj->OnPaintList($value,"read"); 
-                            $content[$pos][$key] = ob_get_contents();
-                        ob_end_clean();
-                    }
-                    
+					ob_start();
+					$obj->OnPaintList($value,"read");
+					$content[$pos][$key] = ob_get_contents();
+					ob_end_clean();
 				}
 			}
 			$pos++;
 		}
 		return $content;
-	}*/
-	
-	
-	protected function setFormatData($data){
-        $content = array();
-        $pos = 0;
-        $cols = $this->query->getcols();
-        
-        foreach($data as $row){
-            foreach($cols as $key => $obj){
-//                 $obj = $this->query->getField($key);
-                if ( isset($row[$key])) $value = $row[$key];
-                else $value = "";
-                
-                if ($obj->type != "textarea"){
-                    $content[$pos][$key] = $obj->OnFormat($value);      
-                }
-                else{
-                    ob_start();
-                        $obj->OnPaintList($value,"read"); 
-                        $content[$pos][$key] = ob_get_contents();
-                    ob_end_clean();
-                }
-            }
-            $pos++;
-        }
-        return $content;
-    }
-	
+	}
+
 	protected function sendContent($reset=false){
 		$html = $this->get_rows();
 		$nelem = count($html);
@@ -313,7 +280,6 @@ class bas_frmx_listframe extends bas_frmx_frame{
 		$sel = $this->dataset->selectedPosRelative();
 		$reset= ($this->getQuerySize()+1)*22;
 		echo "{\"command\": \"reloadList\",\"frameid\":\"{$this->id}\",\"selected\": \"".$sel."\",\"size\": \"".$this->n_item."\",\"reset\": \"".$reset."\", \"data\": ".json_encode($html)."}";
-// 		echo "{\"command\": \"reloadList\",\"frameid\":\"{$this->id}\",\"selected\": \"".$sel."\",\"size\": \"".$nelem."\",\"reset\": \"".$reset."\", \"data\": ".json_encode($html)."}";
 		
 	}
 	
@@ -325,7 +291,6 @@ class bas_frmx_listframe extends bas_frmx_frame{
 	function Oncsv($csv){
 		$csvlist=new bas_csv_listnew();
 		$csvlist->loadlist($this);
-		//$csvlist->prepare();
 		$csvlist->Onprint($csv);
 	}
 	

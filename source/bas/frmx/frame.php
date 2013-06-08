@@ -29,7 +29,6 @@ class bas_frmx_frame{
 	
 	
 	public function __construct($id,$title=""){
-		global $_LOG;
 		$this->id= $id;
 		if ($title == "")	$this->title= $id; 
 		else $this->title= $title;
@@ -38,7 +37,7 @@ class bas_frmx_frame{
 	public function setFormClassName($className){ $this->formClassName= $className; }
 	
 	public function saveConfig($config, $id=''){
-		$f= fopen($this->defaultConfigFilename($id),'w');
+		$f= fopen($this->defaultConfigFilename($id, true),'w');
 		foreach($config as $key => $val){
 			if(is_array($val)) {
 				fwrite($f,"[$key]\n");
@@ -59,10 +58,17 @@ class bas_frmx_frame{
 		return parse_ini_file($filename, true);
 	}
 	
-	public function defaultConfigFilename($id){
+	public function defaultConfigFilename($id, $createFolders=false){
+		global $_SESSION;
 		$class= explode('_', $this->formClassName);
 		if ($id) $id= "_$id";
-		return "{$CONFIG['BASDIR']}config".implode('/',$class)."_{$this->id}$id";
+		$userid= $_SESSION->user ? $_SESSION->user : 'default';
+		$filename= "{$CONFIG['BASDIR']}config/$userid/".implode('/',$class)."_{$this->id}$id";
+		if ($createFolders){
+			$filePath= substr($filename, 0 , strrpos($filename, '/'));
+			mkdir($filePath, 0777, true);
+		}
+		return $filename;
 	}
 	
 	public function OnLoad($permission= array('permission'=>'allow')){
