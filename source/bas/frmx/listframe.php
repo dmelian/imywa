@@ -79,6 +79,7 @@ class bas_frmx_listframe extends bas_frmx_frame{
 		$this->dataset->initRecord();
 		
 	}
+	
 	public function setHeight($height=18){
         $this->height = $height;
     }
@@ -105,7 +106,13 @@ class bas_frmx_listframe extends bas_frmx_frame{
 		if ($strict && !$exists) { 
 			$_LOG->log("FRMX: Unknown id for the compoment $id_field. FrameId: {$this->id}", 5, 'frameList');
 		} else {
-			array_push($this->components,array("width"=>$width,"height"=>$height,"id"=>$id_field));
+			array_push($this->components, array(
+				"width" => $width
+				, "height" => $height
+				, "id" => $id_field
+				, 'select-order' => count($this->components)
+				, 'visible' => $exists ? $this->query->getField($id_field)->visible : 'true'
+			));
 		}
 	}
 	
@@ -140,10 +147,6 @@ class bas_frmx_listframe extends bas_frmx_frame{
 		$this->fixedColums = $nelem;
 	}
 	
-	
-// 	private function OnPrepareData(){
-// 	}
-	
 	public function setAttr($id,$attr,$value){
 		if ($this->query->existField($id)){
 			$this->query->getField($id)->setAttr($attr,$value);	
@@ -153,10 +156,30 @@ class bas_frmx_listframe extends bas_frmx_frame{
 			$_LOG->log("Componente $id no asignado. FRMX_ListFrame::setAttr");
 	    }
 	}
+
+	public function loadConfig(){
+		$config= $this->loadConfigFile();
+		for($ix=0; $ix<count($this->components); $ix++){
+			if (isset($config[$this->components[$ix]['id']])){
+				foreach($config[$this->components[$ix]['id']] as $property => $value) {
+					$this->components[$ix][$property]= $value;
+				}
+			}
+		}
+	}
 	
+	public function saveConfig(){
+		# Save all configurable attributes in a config file.
+		$configurableProps= explode(',','width,select-order,visible');
+		$config= array();
+		foreach($this->components as $component){
+			$config[$component['id']]= array();
+			foreach($configurableProps as $property) $config[$component['id']][$property]= $component[$property];
+		}
+		$this->saveConfigFile($config);
+	}
 	
 	public function SetViewPos($pos){
-// 	    return $this->dataset->SetViewPos($pos);	setSelected
 	    return $this->dataset->SetViewPos($pos);	
 
 	}

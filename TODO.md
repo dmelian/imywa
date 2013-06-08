@@ -20,3 +20,7 @@ They can look diferent on the bread-crumb.
 Some times, the jscommand response to a http request has a json parser error, don't fit into the browser alert dialog. 
 Put this one in a specific div where it fit complete.
 
+### Datapointer. Store into indexed files.
+The random access file is not a solution to store a query result in php because of the way php store data types.
+Then another solution is to use an indexed file with blocks of 4k.
+
