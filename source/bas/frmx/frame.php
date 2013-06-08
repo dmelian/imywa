@@ -25,11 +25,44 @@ class bas_frmx_frame{
 	public $permission;
 	public $actions=array();
 	public $paintWrapper= true;
+	public $formClassName;
 	
-	public function __construct($id,$title=""){ 
+	
+	public function __construct($id,$title=""){
+		global $_LOG;
 		$this->id= $id;
 		if ($title == "")	$this->title= $id; 
 		else $this->title= $title;
+	}
+	
+	public function setFormClassName($className){ $this->formClassName= $className; }
+	
+	public function saveConfig($config, $id=''){
+		$f= fopen($this->defaultConfigFilename($id),'w');
+		foreach($config as $key => $val){
+			if(is_array($val)) {
+				fwrite($f,"[$key]\n");
+				foreach($val as $skey => $sval){
+					if (!is_numeric($sval)) $sval= "\"$sval\""; 
+					fwrite($f, "$skey = $sval\n");
+				}
+			} else {
+				if (!is_numeric($val)) $val= "\"$val\""; 
+				fwrite($f, "$key = $val\n");
+			}
+		}
+		fclose($f);
+	}
+
+	public function loadConfig($id=''){
+		$filename= $this->defaultConfigFilename($id);
+		return parse_ini_file($filename, true);
+	}
+	
+	public function defaultConfigFilename($id){
+		$class= explode('_', $this->formClassName);
+		if ($id) $id= "_$id";
+		return "{$CONFIG['BASDIR']}config".implode('/',$class)."_{$this->id}$id";
 	}
 	
 	public function OnLoad($permission= array('permission'=>'allow')){

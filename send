@@ -14,6 +14,7 @@ if [ ! -d /usr/local/$sourceDir/log ] ; then
 	mkdir /usr/local/$sourceDir/log
 	chmod 777 /usr/local/$sourceDir/log
 fi
+chmod 777 /usr/local/$sourceDir/config
 
 # Delete the run dir and logs
 rm -Rf /usr/local/$sourceDir/run/*

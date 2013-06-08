@@ -71,6 +71,7 @@ class bas_frmx_form extends bas_html_page{
 	}
 
 	function addFrame($frame){
+		$frame->setFormClassName(get_class($this));
 		$this->frames[$frame->id]= $frame;
 	}
 	
