@@ -215,7 +215,7 @@ class bas_frmx_form extends bas_html_page{
 	function OnAction($action, $data){
 		global $_LOG;
 		
-		if ($action == 'xhrcommand'){
+		if ($action == 'xhrcommand'){ #this is now obsolete and it is not used
 			
 			if (isset($data['frameid'])) {
 				if (isset($this->frames[$data['frameid']])){
@@ -227,27 +227,35 @@ class bas_frmx_form extends bas_html_page{
 		} else switch($action){
 			case "changeApp":
 				return array("changeApp",$data["app"]);
+				
 			case "close":
 				$jump= isset($data['jump']) ? $data['jump'] : 1; 
 				return array('close', $jump); 
-				break; 
+				break;
+				 
 			case "pdf":
 // 				$_LOG->log("OnAction:: lista de frames del formulario ". count($this->frames));
 				$this->OnPdf(); 
 				return array($action);
-			break;
+				break;
+			
 			case "csv": $this->OnCsv(); return array($action); break;
+			
 			case "ajax_previous": case "ajax_next": case "first": case "previous": case "next": case "last": 
 				foreach($this->frames as $key=>$value){
 					$this->frames[$key]->OnAction($action, $data);
 				}
 				$this->OnPaint("jscommand");
-			break;			
+				break;
+						
 			case "scroll_move":
 				$ret= $this->frames[$data['frameid']]->OnAction($action, $data);
-				if ($ret) return $ret; else break;
-			case 'setColWidth':
+				if ($ret) return $ret; 
+				break;
 				
+			case 'setColWidth':
+				$ret= $this->frames[$data['frameid']]->OnAction($action, $data);
+				if ($ret) return $ret;
 				break;
 			
 			 

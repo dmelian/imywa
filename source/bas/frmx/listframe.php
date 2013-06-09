@@ -138,6 +138,13 @@ class bas_frmx_listframe extends bas_frmx_frame{
 		} else return NULL;
 	}
 	
+	public function getComponentPos($id){
+		for($pos=0; $pos < count($this->components); $pos++){
+			if ($this->components[$pos]['id'] == $id) return $pos;
+		}
+		return -1;
+	}
+	
 	public function getComponentWidth($pos){
 		return $this->components[$pos]["width"];
 	}
@@ -248,24 +255,29 @@ class bas_frmx_listframe extends bas_frmx_frame{
 			case "previous": $this->dataset->previous(); break;
 			case "next": $this->dataset->next(); break;
 			case "last": $this->dataset->last(); break;
-			case "ajax_previous": 
+			case "ajax_previous":
 				$this->dataset->previous();
-			break;
-			case "scroll_move": 
-			
-			global $_LOG;
+				break;
+				
+			case "scroll_move":
 				if (isset($data["selected"])){
 					$this->setSelected($data["selected"]);
-					$_LOG->log("FRMX_LISTFRAME:: SE ha seleccionado el ". $data["selected"]);
 				}
 				$this->SetViewPos($data['pos']);
 				$this->sendContent();
-			return;// array('stay');
-			case "ajax_next": $this->dataset->next(); $this->sendContent(); return array('stay');
+				return;
 				
+			case "ajax_next": $this->dataset->next(); $this->sendContent(); return array('stay');
+			
+			case 'setColWidth':
+				if (($pos=$this->getComponentPos($data['field'])) >= 0) {
+					$this->components[$pos]['width']= $data['width'];
+					$this->saveConfig();
+				} // ELSE LOG INVALID COMPONENT.
+				break;
 		}
 	}
-		
+
 	protected function setFormatData($data){
 		$content = array();
 		$pos = 0;

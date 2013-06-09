@@ -41,7 +41,7 @@ class bas_frmx_frame{
 		$f= fopen($this->defaultConfigFilename($id, true),'w');
 		foreach($config as $key => $val){
 			if(is_array($val)) {
-				fwrite($f,"[$key]\n");
+				fwrite($f,"\n[$key]\n");
 				foreach($val as $skey => $sval){
 					if (!is_numeric($sval)) $sval= "\"$sval\""; 
 					fwrite($f, "$skey = $sval\n");

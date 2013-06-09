@@ -24,3 +24,12 @@ Put this one in a specific div where it fit complete.
 The random access file is not a solution to store a query result in php because of the way php store data types.
 Then another solution is to use an indexed file with blocks of 4k.
 
+### Frame action.
+How are the frame actions used?.
+This is code on bas\_frmx_form.OnAction.
+If the frameid is defined the OnAction is called. This was coded for the old ajax process, whe imywa was managed by submits.
+This must be changed.
+
+### Debugging.
+For a better debug. A history of open forms and actions request and responses with their data, will be stored to watch to them.
+
