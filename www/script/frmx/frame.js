@@ -6,7 +6,7 @@ function bas_frmx_frame(form, id){
 	this.id= id;
 }
 
-bas_frmx_frame.prototype.Specific= function(){}
+bas_frmx_frame.prototype.Specific= function(){};
 
 bas_frmx_frame.prototype.OnLoad= function(){
   

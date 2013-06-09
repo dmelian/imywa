@@ -246,6 +246,9 @@ class bas_frmx_form extends bas_html_page{
 			case "scroll_move":
 				$ret= $this->frames[$data['frameid']]->OnAction($action, $data);
 				if ($ret) return $ret; else break;
+			case 'setColWidth':
+				
+				break;
 			
 			 
 		}

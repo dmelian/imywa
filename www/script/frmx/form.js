@@ -1,152 +1,178 @@
 
-function bas_frmx_form(){}
+function bas_frmx_form() {
+}
 
-bas_frmx_form.prototype.OnLoad= function(){
+bas_frmx_form.prototype.OnLoad = function() {
 
-	
-
-	
-$( ".ia_menuframe" ).menu();
-$( ".ia_menubar" ).menu({ position: { my: "right bottom", at: "left bottom" }, icons: { submenu: "ui-icon-carat-1-w" } }).hide();
-
-$(".ia_submenubar_button").on("click",function(e){
-// 	alert("entramos!!!!");
-	var id = $(e.target).attr("id");
-	if ($(".submenu_Show").length != 0){
-		if (!($("#submenu_"+id).hasClass("submenu_Show"))){
-			$(".submenu_Show").hide().toggleClass("submenu_Show");
+	$(".ia_menuframe").menu();
+	$(".ia_menubar").menu({
+		position : {
+			my : "right bottom",
+			at : "left bottom"
+		},
+		icons : {
+			submenu : "ui-icon-carat-1-w"
 		}
-	}
-	var menu= $("#submenu_"+id).fadeToggle("fast", "linear").position({my: "right bottom", at: "right top", of: this }).toggleClass("submenu_Show");
-// 	alert("visaulizamos el id: "+id);
+	}).hide();
 
-});
-
-$(".ia_menutool_button").on("click",function(e){
-// 	alert("entramos!!!!");
-	var id =  e.target.parentElement.id;
-	if ($(".submenu_Show").length != 0){
-		if (!($("#submenu_"+id).hasClass("submenu_Show"))){
-			$(".submenu_Show").hide().toggleClass("submenu_Show");
+	$(".ia_submenubar_button").on("click", function(e) {
+		// alert("entramos!!!!");
+		var id = $(e.target).attr("id");
+		if ($(".submenu_Show").length != 0) {
+			if (!($("#submenu_" + id).hasClass("submenu_Show"))) {
+				$(".submenu_Show").hide().toggleClass("submenu_Show");
+			}
 		}
-	}
-	$("#submenu_"+id).fadeToggle("fast", "linear").position({my: "right bottom", at: "right top", of: this }).toggleClass("submenu_Show");
-});
+		var menu = $("#submenu_" + id).fadeToggle("fast", "linear").position({
+			my : "right bottom",
+			at : "right top",
+			of : this
+		}).toggleClass("submenu_Show");
+		// alert("visaulizamos el id: "+id);
 
-// #### Control del hover en el BreadCrumb.
-$(".ia_bread_item").hover(function(e){
-	if (!$(e.target).hasClass("ia_bread_fixed")){
-		if (e.target.tagName == "A")$(e.target).toggleClass("ia_bread_hover");
-	}
-});
+	});
 
-
-// #### Ocultación de los submenus al haces click fuera de ellos.
-$(":not(.ia_menu_item)").on("click",function(e){
-	if (!($(e.target).hasClass("ia_submenubar_button"))){
-		if ($(".submenu_Show").length != 0){
-			$(".submenu_Show").hide().toggleClass("submenu_Show");
+	$(".ia_menutool_button").on("click", function(e) {
+		// alert("entramos!!!!");
+		var id = e.target.parentElement.id;
+		if ($(".submenu_Show").length != 0) {
+			if (!($("#submenu_" + id).hasClass("submenu_Show"))) {
+				$(".submenu_Show").hide().toggleClass("submenu_Show");
+			}
 		}
-	}
-});
+		$("#submenu_" + id).fadeToggle("fast", "linear").position({
+			my : "right bottom",
+			at : "right top",
+			of : this
+		}).toggleClass("submenu_Show");
+	});
 
-	//Toolbar
-	if (this.toolbar != undefined){
-	    for (var action in this.toolbar.actions){
-		    // Create the button
-		    $("#toolbar_" + action).button( {
-			    text: false
-			    , icons:{primary: this.toolbar.actions[action]['icon']}
-			    , disabled: !this.toolbar.actions[action]['enabled']
-		    });
-		    
-		    // Link the menu.
-		    if (this.toolbar.actions[action].type == 'menu'){
-			    $("#toolbar_" + action).click(function() {
-				    var menu=$("#toobar_menu_" + action).show()
-					    .position({my: "right top", at: "right bottom", of: this });
-
-			$( document ).on( "click", function() {
-			    menu.hide();
-			});
-				    return false;
-			    });
-			    
-			    $("#toolbar_menu_" + action).hide()
-			    .menu({ position: { my: "right top", at: "left top" }
-			    , icons: { submenu: "ui-icon-carat-1-w" } })
-			    ;
-		    }
-	    }
-	}
-
-	$(".dashboard_loadevents").on("change",function(evt){
-		currentForm.sendAction("changePartition"
-				,{"db": $(evt.target).attr('id'), "partitionId": $(evt.target).attr('value')}
-				,"SessionAction");
-	}).toggleClass("dashboard_loadevents");
-
-
-	$(".dash_element").on("click",function(){
-// 		currentForm.sendAction("changeApp", {'app':$(this).parent().attr("id")},SessionAction);
-		if (!$(this).parent().hasClass("selected_dash")){
-			currentForm.sendAction("changeApp", {'app':$(this).parent().attr("id")},"SessionAction");
- 			$(".selected_dash").toggleClass("selected_dash");
- 			$(this).parent().addClass("selected_dash");
-// 			alert($( "#accordion" ).accordion( "option", "active" ));
+	// #### Control del hover en el BreadCrumb.
+	$(".ia_bread_item").hover(function(e) {
+		if (!$(e.target).hasClass("ia_bread_fixed")) {
+			if (e.target.tagName == "A")
+				$(e.target).toggleClass("ia_bread_hover");
 		}
 	});
-/////////////accordion
+
+	// #### Ocultación de los submenus al haces click fuera de ellos.
+	$(":not(.ia_menu_item)").on("click", function(e) {
+		if (!($(e.target).hasClass("ia_submenubar_button"))) {
+			if ($(".submenu_Show").length != 0) {
+				$(".submenu_Show").hide().toggleClass("submenu_Show");
+			}
+		}
+	});
+
+	// Toolbar
+	if (this.toolbar != undefined) {
+		for ( var action in this.toolbar.actions) {
+			// Create the button
+			$("#toolbar_" + action).button({
+				text : false,
+				icons : {
+					primary : this.toolbar.actions[action]['icon']
+				},
+				disabled : !this.toolbar.actions[action]['enabled']
+			});
+
+			// Link the menu.
+			if (this.toolbar.actions[action].type == 'menu') {
+				$("#toolbar_" + action).click(function() {
+					var menu = $("#toobar_menu_" + action).show().position({
+						my : "right top",
+						at : "right bottom",
+						of : this
+					});
+
+					$(document).on("click", function() {
+						menu.hide();
+					});
+					return false;
+				});
+
+				$("#toolbar_menu_" + action).hide().menu({
+					position : {
+						my : "right top",
+						at : "left top"
+					},
+					icons : {
+						submenu : "ui-icon-carat-1-w"
+					}
+				});
+			}
+		}
+	}
+
+	$(".dashboard_loadevents").on("change", function(evt) {
+		currentForm.sendAction("changePartition", {
+			"db" : $(evt.target).attr('id'),
+			"partitionId" : $(evt.target).attr('value')
+		}, "SessionAction");
+	}).toggleClass("dashboard_loadevents");
+
+	$(".dash_element").on("click", function() {
+		// currentForm.sendAction("changeApp",
+		// {'app':$(this).parent().attr("id")},SessionAction);
+		if (!$(this).parent().hasClass("selected_dash")) {
+			currentForm.sendAction("changeApp", {
+				'app' : $(this).parent().attr("id")
+			}, "SessionAction");
+			$(".selected_dash").toggleClass("selected_dash");
+			$(this).parent().addClass("selected_dash");
+			// alert($( "#accordion" ).accordion( "option", "active" ));
+		}
+	});
+	// ///////////accordion
 	currentForm.loadDashboard();
 
-	if (! $("body").hasClass("evnt_lookup")){
-		
-// 		$("body").on("click",":input",function(e){
-// 			$(e.target).focus();
-// 		});
-		
+	if (!$("body").hasClass("evnt_lookup")) {
+
+		// $("body").on("click",":input",function(e){
+		// $(e.target).focus();
+		// });
+
 		$("body").toggleClass("evnt_lookup");
-		$("body").on("click",".lookup",function(e){
-			var accion=this.name;
+		$("body").on("click", ".lookup", function(e) {
+			var accion = this.name;
 			var parent = $(this).parents(".ia_cardframe").attr("id");
 			if ($(this).parents(".ui-dialog-content").length) {
 				e.preventDefault();
 				$(".ui-dialog-content").dialog('close');
 			}
-			submitlookup(parent,accion);
-		});		
+			submitlookup(parent, accion);
+		});
 	}
-	
 
-// ############################################################################
-// ######################   		buttonBar		############################
-// ###########################################################################
+	// ############################################################################
+	// ###################### buttonBar ############################
+	// ###########################################################################
 
-// 	$( ".ia_menubar" ).menu().hide();
-// 	$( ".ia_menubar_button" ).live("click",function(e){
-// 		$(e.target).next().slideToggle();	
-// 	})
-	
-			
-	$(".ia_framecontainer").sortable({handle: ".ia_frame_header"});//.disableSelection();
-	
+	// $( ".ia_menubar" ).menu().hide();
+	// $( ".ia_menubar_button" ).live("click",function(e){
+	// $(e.target).next().slideToggle();
+	// })
 
-	
-	for (var frameid in this.frames){
+	$(".ia_framecontainer").sortable({
+		handle : ".ia_frame_header"
+	});// .disableSelection();
+
+	for ( var frameid in this.frames) {
 		if (this.frames[frameid].jsClass in window) {
-			var frame= new window[this.frames[frameid].jsClass]();
+			var frame = new window[this.frames[frameid].jsClass]();
 			bas_copyAttributes(this.frames[frameid], frame);
 			this.frames[frameid] = frame;
 			frame.OnLoad();
 			frame.Specific();
-			
+
 		} else {
 			if (this.frames[frameid].jsClass != '') {
-				alert('The javascript <'+ this.frames[frameid].jsClass +'> class is undefined.');
+				alert('The javascript <' + this.frames[frameid].jsClass
+						+ '> class is undefined.');
 			}
 		}
 	}
-	
+
 };
 
 bas_frmx_form.prototype.loadDashboard= function(){

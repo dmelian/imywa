@@ -296,8 +296,6 @@ class bas_frmx_listframe extends bas_frmx_frame{
 		$nelem = count($html);
 		if ($nelem == 0) $nelem=1;
 		if ($nelem < $this->n_item) $html[] = array();
-		global $_LOG;
-		$_LOG->debug("contenido a enviar", $html);
 		$html = $this->setFormatData($html);
 		
 		$sel = $this->dataset->selectedPosRelative();

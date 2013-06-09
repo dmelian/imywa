@@ -115,7 +115,7 @@ class bas_html_listframe{
 	protected function Paintfixed($rows){
 		//$nelem = count($this->fixedColums);
 		for($index=0;$index < $this->frame->fixedColums;$index++){
-			    echo "<div class=\"columStatic\" style=\"position:relative; top:0{$this->measure};height:100%;vertical-align:top;width:";
+				echo "<div class=\"columStatic\" field=\"{$this->frame->components[$index]['id']}\" style=\"position:relative; top:0{$this->measure};height:100%;vertical-align:top;width:";
 			    if (!isset($this->autosize)) echo $this->frame->getComponentWidth($index)."{$this->measure};display:inline-block;overflow:hidden;\">";
 			    else echo $this->autosize."%;display:inline-block;overflow:hidden;\">";
 				   $this->ContentColum($this->frame->getComponent($index),$rows,true);
@@ -126,7 +126,7 @@ class bas_html_listframe{
 	protected function PaintDinamic($rows){
 		$nelem = count($this->frame->components);
 		for($index=$this->frame->fixedColums;$index < $nelem;$index++){
-			    echo "<div class=\"columDinamic\" style=\"position:relative; top:0{$this->measure};height:100%;vertical-align:top;width:";
+			    echo "<div class=\"columDinamic\" field=\"{$this->frame->components[$index]['id']}\" style=\"position:relative; top:0{$this->measure};height:100%;vertical-align:top;width:";
 			    if (!isset($this->autosize)) echo $this->frame->getComponentWidth($index)."{$this->measure};display:inline-block;overflow:hidden;\">";
 			    else echo $this->autosize."%;display:inline-block;overflow:hidden;\">";
 				  $this->ContentColum( $this->frame->getComponent($index),$rows,false);
