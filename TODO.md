@@ -1,5 +1,6 @@
 ### List frame config. 
-Save the bas_list_frame configs. (Header widths, order and visibility).
+Save the bas\_list_frame configs. (Header widths, order and visibility).
+The widths and order have been done, remain the visibility.
 
 ### List frame height.
 Dinamically change the height of the bas_list_frame and adjust the visible lines count. 
@@ -9,7 +10,10 @@ Enable column sorting by dobleclicking on the column header.
 
 ### List frame multiline cell.
 Enable multiline rows, rows with more than one line. (Same height for each row).
-Something similar to Imna's textareas. 
+Something similar to Imna's textareas.
+
+### List Frame.
+Column Resize. When a column is resized, also the others column's size are changed.  
 
 ### Mayfly forms. 
 The forms opened from the dashboard, must not be permanently save on the form's stack (bread crumb). 
