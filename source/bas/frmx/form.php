@@ -257,6 +257,10 @@ class bas_frmx_form extends bas_html_page{
 				$ret= $this->frames[$data['frameid']]->OnAction($action, $data);
 				if ($ret) return $ret;
 				break;
+			case 'setColOrder':
+				$ret= $this->frames[$data['frameid']]->OnAction($action, $data);
+				if ($ret) return $ret;
+				break;
 			
 			 
 		}

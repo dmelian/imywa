@@ -58,9 +58,19 @@ bas_frmx_listframe.prototype.OnLoad= function(){
 		###		Realización del sortable de las distintas columnas.
  ----------------------------------------------------------------*/
 
-	$("#" + this.id).find( ".ia_Colums_dinamic" ).sortable({handle: ".header_columDinamic"});//.disableSelection();
+	$("#" + this.id).find( ".ia_Colums_dinamic" ).sortable({
+		handle: ".header_columDinamic",
+		beforeStop: function( event, ui ) {
+			mainThis.setOrderCol("dinamic");
+		}
+	});//.disableSelection();
 	
-	$("#" + this.id).find( ".ia_Colums_fixed" ).sortable({handle: ".header_columStatic"});//.disableSelection();
+	$("#" + this.id).find( ".ia_Colums_fixed" ).sortable({
+		handle: ".header_columStatic",
+		beforeStop: function( event, ui ) {
+			mainThis.setOrderCol("static");
+		}
+	});//.disableSelection();
 	
 
 /*----------------------------------------------------------------
@@ -71,9 +81,9 @@ bas_frmx_listframe.prototype.OnLoad= function(){
 		handles: "e",
 		stop: function( event, ui ) {
 			var inc = $(ui.element).width() - ui.originalSize.width;
-			//alert($(".ia_Colums_fixed").width()+inc);
 			$(".ia_Colums_fixed").width($(".ia_Colums_fixed").width()+inc);
-			currentForm.sendAction('setColWidth',{'width': $(ui.element).width(),'field':this.attributes.field.value});
+
+			mainThis.setResize(this.attributes.field.value,$(ui.element).width());
 		},
 		//  minHeight: 150,
 		minWidth: 50,
@@ -85,11 +95,8 @@ bas_frmx_listframe.prototype.OnLoad= function(){
 		stop: function( event, ui ) {
 			var inc = $(ui.element).width() - ui.originalSize.width;
 			$(".ia_Colums_dinamic").width($(".ia_Colums_dinamic").width()+inc);
-			currentForm.sendAction('setColWidth',{
-				'width': $(ui.element).width()
-				, 'field': this.attributes.field.value
-				, 'frameid': frameID
-			});
+			
+			mainThis.setResize(this.attributes.field.value,$(ui.element).width());
 		},
 		//  minHeight: 150,
 		minWidth: 50,
@@ -101,7 +108,6 @@ bas_frmx_listframe.prototype.OnLoad= function(){
  ----------------------------------------------------------------*/	
 	
 	$("#" + this.id).on("click",".selector_row",function(event){
-
 		//alert("row_" + $(event.target).attr("id"));
 		
 		var pos = $(event.target).attr("id");
@@ -115,9 +121,10 @@ bas_frmx_listframe.prototype.OnLoad= function(){
 		var pos = $(event.target).attr("pos");
 		mainThis.setSelected(pos);
 	});
-// 	
+	
 	if (this.dbClick){
-		$("#" + this.id).find(".list_row").dblclick(function(event){
+// 		$("#" + this.id).find(".list_row").dblclick(function(event){
+		$("#" + this.id).on("dblclick",".list_row",function(event){
 			var pos = $(event.target).attr("pos");
 			var field = $(event.target).attr("field");
 			var id = String(mainThis.id);
@@ -128,6 +135,43 @@ bas_frmx_listframe.prototype.OnLoad= function(){
 	
 };
 
+
+bas_frmx_listframe.prototype.setResize = function(field, width){
+	var ancho_pt= (3 * width ) / 4;			
+	currentForm.sendAction('setColWidth',{
+		'width': ancho_pt
+		, 'field': field
+		, 'frameid': this.id
+	});
+	
+}
+
+bas_frmx_listframe.prototype.setOrderCol = function(typeCol){
+		var static = $("#" + this.id).find( ".ia_Colums_fixed" ).sortable( "toArray", {attribute:"field"} );
+		var sorted = $("#" + this.id).find( ".ia_Colums_dinamic" ).sortable( "toArray", {attribute:"field"} );
+		
+		if (typeCol == "dinamic"){
+			if ($.isArray(static)){
+				sorted = static.concat(sorted);
+			}
+		}else{
+			if ($.isArray(sorted)){
+				sorted = static.concat(sorted);
+			}
+			else{
+				sorted = static;
+			}			
+		}
+		alert("STOOOP: "+sorted);
+		var frameID = this.id;
+		currentForm.sendAction('setColOrder',{
+				'order': sorted
+				, 'frameid': frameID
+		});
+		
+}
+
+	
 bas_frmx_listframe.prototype.setSelected = function(pos){
 	//alert("row_" + $(event.target).attr("id"));
 

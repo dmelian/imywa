@@ -166,13 +166,20 @@ class bas_frmx_listframe extends bas_frmx_frame{
 
 	public function loadConfig(){
 		$config= $this->loadConfigFile();
+		$aux = array();
 		for($ix=0; $ix<count($this->components); $ix++){
 			if (isset($config[$this->components[$ix]['id']])){
 				foreach($config[$this->components[$ix]['id']] as $property => $value) {
 					$this->components[$ix][$property]= $value;
 				}
+				$aux[$this->components[$ix]['select-order']]= $this->components[$ix];
 			}
 		}
+		global $_LOG;
+		$_LOG->debug("Componeentes",$this->components);
+		unset($this->components);
+		$this->components = $aux;
+		$_LOG->debug("Componeentes Luego",$this->components);
 	}
 	
 	public function saveConfig(){
@@ -184,6 +191,30 @@ class bas_frmx_listframe extends bas_frmx_frame{
 			foreach($configurableProps as $property) $config[$component['id']][$property]= $component[$property];
 		}
 		$this->saveConfigFile($config);
+	}
+	
+	public function setChangeConfig($field,$property, $value){
+		foreach($this->components as &$component){
+			if ($component["id"] == $field){ 
+				$component[$property] = $value;
+			}
+		}
+	}
+	
+	public function setOrderComponents($order){
+		$order = explode(',',$order);
+		$pos =0;
+				global $_LOG;
+
+		foreach($order as $field){
+			$this->setChangeConfig($field,'select-order',$pos);
+			$pos++;
+		}
+		
+		foreach($this->components as $component){
+				$_LOG->log("HAcemos el valor--- ".$component["id"].".".$component["select-order"]);
+		}
+		$this->saveConfig();
 	}
 	
 	public function SetViewPos($pos){
@@ -274,6 +305,9 @@ class bas_frmx_listframe extends bas_frmx_frame{
 					$this->components[$pos]['width']= $data['width'];
 					$this->saveConfig();
 				} // ELSE LOG INVALID COMPONENT.
+				break;
+			case 'setColOrder':
+				$this->setOrderComponents($data["order"]);
 				break;
 		}
 	}
