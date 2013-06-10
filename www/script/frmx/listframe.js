@@ -162,7 +162,7 @@ bas_frmx_listframe.prototype.setOrderCol = function(typeCol){
 				sorted = static;
 			}			
 		}
-		alert("STOOOP: "+sorted);
+// 		alert("STOOOP: "+sorted);
 		var frameID = this.id;
 		currentForm.sendAction('setColOrder',{
 				'order': sorted
