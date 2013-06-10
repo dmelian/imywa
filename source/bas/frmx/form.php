@@ -70,8 +70,9 @@ class bas_frmx_form extends bas_html_page{
 		}
 	}
 
-	function addFrame($frame){
+	function addFrame($frame, $loadConfig= true){
 		$frame->setFormClassName(get_class($this));
+		if ($loadConfig && method_exists($frame,'loadConfig')) $frame->loadConfig();
 		$this->frames[$frame->id]= $frame;
 	}
 	
