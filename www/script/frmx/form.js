@@ -196,7 +196,6 @@ bas_frmx_form.prototype.loadDashboard= function(){
 
  bas_frmx_form.prototype.sendAction= function(action, params, type){//frameid,action, params){
 	var data=  new FormData();
-// 	alert("sendAction");
 
 	// what is type: undefined or ???. Like a class of destination or destination type of the action?
 	if (type == undefined)data.append("action",action);//data = {"action": action};
@@ -205,8 +204,8 @@ bas_frmx_form.prototype.loadDashboard= function(){
 	var row_selected = select_item();
 	if ( row_selected != undefined){
 		data.append("selected", parseInt(row_selected));
-		data.append("selected_ext", this.selectedItems());
-// 		data['selected']= parseInt(row_selected);
+		var temp = this.selectedItems();
+		data.append("selected_ext", this.arraytoJSON(temp));
 	}
 	for (var param in params){
 		if (params[param] != undefined){
@@ -214,7 +213,6 @@ bas_frmx_form.prototype.loadDashboard= function(){
 			else data.append(params[param].name,params[param].value);  //  data[params[param].name]= params[param].value;
 		}
 	}
-// 	alert("la accion a realizar es: "+action);
 
 	data.append("XHR", 1);   // data['XHR']=1;
 	data.append("sessionId", this.sessionId);   // data['sessionId']= this.sessionId;
@@ -376,16 +374,38 @@ bas_frmx_form.prototype.dialogAction= function(dialogId, action, actionParams){
 
 };
 
+// bas_frmx_form.prototype.selectedItems= function(){
+// 	var selectedRows= $(".ia_selected_box");
+// 	var ret= ""; var sep= "";
+// 	for (var sel= 0; sel < selectedRows.length; sel++){
+// 		var frames= $(selectedRows[sel]).parents(".ia_frame");
+// 		ret+= sep + frames[0].id + ":" + selectedRows[sel].id;
+// 		sep= ",";
+// 	}
+// 	return ret;
+// };
+
 bas_frmx_form.prototype.selectedItems= function(){
-	var selectedRows= $(".ia_selected_box");
-	var ret= ""; var sep= "";
-	for (var sel= 0; sel < selectedRows.length; sel++){
-		var frames= $(selectedRows[sel]).parents(".ia_frame");
-		ret+= sep + frames[0].id + ":" + selectedRows[sel].id;
-		sep= ",";
+	var out;
+	var items=[];
+
+	for (x in this.frames){
+		out= this.frames[x].getSelected();
+		if (out != undefined) items[x]=out;
 	}
-	return ret;
+	return items;
 };
+
+bas_frmx_form.prototype.arraytoJSON = function(array){
+	var out = "{";
+	var sep = "";
+	for (x in array){
+		out += sep + "\""+ x +"\":" + "\""+ array[x] +"\"";
+		sep = ",";
+	}
+	out += "}";
+	return out;
+}
 
 
 // -------------------------------------------------

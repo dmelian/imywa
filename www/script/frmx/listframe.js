@@ -120,6 +120,7 @@ bas_frmx_listframe.prototype.OnLoad= function(){
 	$("#" + this.id).on("click",".list_row",function(event){
 		var pos = $(event.target).attr("pos");
 		mainThis.setSelected(pos);
+		mainThis.getSelected();
 	});
 	
 	if (this.dbClick){
@@ -174,16 +175,43 @@ bas_frmx_listframe.prototype.setOrderCol = function(typeCol){
 	
 bas_frmx_listframe.prototype.setSelected = function(pos){
 	//alert("row_" + $(event.target).attr("id"));
+	
+	if (this.multiTask){
+		$("#" + this.id).find(".row_" + pos).toggleClass("ui-selected");
+		$("#" + this.id).find("#"+pos).toggleClass("ia_select_box").toggleClass("ia_selected_box").toggleClass("ui-icon ui-icon-play");
+	}
+	else{
+		$("#" + this.id).find(".ui-selected").toggleClass("ui-selected");
+		$("#" + this.id).find(".ui-icon-play").toggleClass("ui-icon");
+		$("#" + this.id).find(".ui-icon-play").toggleClass("ui-icon-play");
+		$("#" + this.id).find(".ia_selected_box").toggleClass("ia_selected_box").toggleClass("ia_select_box");
 
-	$("#" + this.id).find(".ui-selected").toggleClass("ui-selected");
-	$("#" + this.id).find(".ui-icon-play").toggleClass("ui-icon");
-	$("#" + this.id).find(".ui-icon-play").toggleClass("ui-icon-play");
-	$("#" + this.id).find(".ia_selected_box").toggleClass("ia_selected_box").toggleClass("ia_select_box");
+		$("#" + this.id).find(".row_" + pos).toggleClass("ui-selected");
+		$("#" + this.id).find("#"+pos).toggleClass("ia_select_box").toggleClass("ia_selected_box").toggleClass("ui-icon ui-icon-play");
+	}
+};
+
+
+bas_frmx_listframe.prototype.unSelected = function(pos){
 
 	$("#" + this.id).find(".row_" + pos).toggleClass("ui-selected");
 	$("#" + this.id).find("#"+pos).toggleClass("ia_select_box").toggleClass("ia_selected_box").toggleClass("ui-icon ui-icon-play");
 	
 };
+
+
+bas_frmx_listframe.prototype.getSelected = function(){
+	var selected = "";
+	var aux = $("#" + this.id).find(".ui-icon-play");
+	var sep = "";
+	aux.each(function(event){
+		selected = selected + sep + this.id;
+		sep =",";
+	});
+	return selected;
+}
+
+
 
 bas_frmx_listframe.prototype.Reload = function(data, selected, size, reset){
 	var pos =1;

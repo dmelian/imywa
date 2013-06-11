@@ -30,6 +30,7 @@ class bas_frmx_listframe extends bas_frmx_frame{
 	protected $footer;
 	public $height;
 	public $dbClick;
+	public $multiTask;
 	
 	
 	public $fixedColums; // Número de columnas fijas dentro de components. Se tomarán los primeros X componentes.
@@ -45,7 +46,8 @@ class bas_frmx_listframe extends bas_frmx_frame{
 		$this->cssComp = null;
 		$this->selector = true;
 		$this->height = 18;
-		$this->dbClick = false;		
+		$this->dbClick = false;	
+		$this->multiTask = true;
 	}
 	
 	public function setRecord($con=""){

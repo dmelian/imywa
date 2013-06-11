@@ -88,6 +88,13 @@ class test_frmx_listframe_form extends bas_frmx_form {
 		if (isset($data['selected'])){
 			$this->list->setSelected($data['selected']);	
 		}
+		$_LOG->debug("DAtos enviados:",$data);
+		
+		
+		$_LOG->debug("Decodee enviados:",json_decode($data["selected_ext"]));
+
+		
+
 // 		$this->list->setSelected(3);	
 		switch($action){
 				case 'salir': return array('close');
