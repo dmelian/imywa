@@ -202,9 +202,10 @@ bas_frmx_listframe.prototype.unSelected = function(pos){
 
 bas_frmx_listframe.prototype.getSelected = function(){
 	var selected = "";
-	var aux = $("#" + this.id).find(".ui-icon-play");
+	var items = $("#" + this.id).find(".ui-icon-play");
 	var sep = "";
-	aux.each(function(event){
+	if (items.length == 0) return undefined;
+	items.each(function(event){
 		selected = selected + sep + this.id;
 		sep =",";
 	});
