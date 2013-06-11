@@ -176,7 +176,7 @@ bas_frmx_listframe.prototype.setOrderCol = function(typeCol){
 bas_frmx_listframe.prototype.setSelected = function(pos){
 	//alert("row_" + $(event.target).attr("id"));
 	
-	if (this.multiTask){
+	if (this.multiSelected){
 		$("#" + this.id).find(".row_" + pos).toggleClass("ui-selected");
 		$("#" + this.id).find("#"+pos).toggleClass("ia_select_box").toggleClass("ia_selected_box").toggleClass("ui-icon ui-icon-play");
 	}

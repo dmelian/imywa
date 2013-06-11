@@ -83,6 +83,13 @@ class bas_sqlx_unionquery{
 		}
 	}
 	
+	public function addcondition($condition){
+		foreach($this->querys as $qry){
+			$qry->addcondition($condition);
+		}
+	}
+	
+	
 	public function existField($id){
 		return $this->querys[0]->existField($id);
 	}	
