@@ -4,7 +4,7 @@
 $CONFIG['BASDIR']= '/usr/local/imywa/';
 $CONFIG['WWWDIR']= '/var/www/apps/';
 $CONFIG['DEFAULTLANGUAGE']= 'es';
-$CONFIG['DEFAULTTHEME']= 'amedita';
+$CONFIG['DEFAULTTHEME']= 'padron';
 $CONFIG['DEFAULTHOST']= 'localhost';
 $CONFIG['DEFAULTDATABASE']= 'imywa';
 

@@ -2,7 +2,7 @@
 # Copy all the project files to the local web server folders. 
 
 # declare -a themes=(amedita blitzer cupertino dark-hive eggplant excite-bike flick hot-sneaks humanity le-frog overcast pepper-grinder redmond smoothness south-street start sunny ui-darkness ui-lightness vader)
-declare -a themes=(amedita blitzer cupertino)
+declare -a themes=(amedita padron blitzer cupertino)
 uglify=false
 sourceDir=imywa
 webDir=apps
