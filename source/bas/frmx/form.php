@@ -198,7 +198,15 @@ class bas_frmx_form extends bas_html_page{
 		$pdf->beginDoc();
 // 		global $_LOG;
 // 		$_LOG->log("OnPdf::lista de frames del formulario ". count($this->frames));
-		foreach($this->frames as $frame) $frame->OnPdf($pdf);
+		$nframe=count($this->frames);
+		$pagexframe=1;
+		foreach($this->frames as $frame){
+			$frame->OnPdf($pdf);
+			if($pagexframe<$nframe){
+				$pdf->AddPage();
+			}
+			$pagexframe++;
+		}
 		//$pdf->endparagraph();
 		$pdf->endDoc();
 	}
