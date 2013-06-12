@@ -105,7 +105,7 @@ class bas_sql_myextprocedure{
 				
 			} else {
 				$this->errormsg = $this->connection->error;
-				$this->errorCode = $connection->connect_errno;				
+				$this->errorCode = $this->connection->connect_errno;				
 				$_LOG->log("mysql.error $this->errormsg en query: <$query>",1);
 				if ($end = @$this->connection->rollback()) $_LOG->log('mysql.exec.procedure_ext error and rollback.');
 				else $_LOG->log("mysql.exec.procedure_ext Error on rollback: {$this->connection->error}.");
