@@ -32,6 +32,7 @@ class bas_sql_myprocedure{
 	public $result;
 	public $success;
 	public $errormsg;
+	public $errorCode;
 	
 	
 	public function __construct($procedure, $params=array()){
@@ -54,6 +55,7 @@ class bas_sql_myprocedure{
 					extract($this->result, EXTR_PREFIX_ALL,'');
 					eval ('$this->errormsg = "' . $this->result['message'] . '";');
 					$this->success = !$this->result['error'];
+					$this->errorCode = $this->result['error'];
 				}
 				while ($connection->next_result()) {
 					// Si no se ejecuta el next_result() y el procedimiento devuelve un query el mysql se queda descolocado.
@@ -71,6 +73,7 @@ class bas_sql_myprocedure{
 				
 			} else {
 				$this->errormsg = $connection->error;
+				$this->errorCode = $connection->connect_errno;
 				$_LOG->log("mysql.error $this->errormsg en query: <$query>",1);
 				if ($end = @$connection->rollback()) $_LOG->log('mysql.exec.procedure error and rollback.');
 				else $_LOG->log("mysql.exec.procedure Error on rollback: $connection->error.");

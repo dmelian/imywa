@@ -388,10 +388,11 @@ bas_frmx_form.prototype.dialogAction= function(dialogId, action, actionParams){
 bas_frmx_form.prototype.selectedItems= function(){
 	var out;
 	var items=[];
-
 	for (x in this.frames){
-		out= this.frames[x].getSelected();
-		if (out != undefined) items[x]=out;
+		if (this.frames[x].jsClass  == "bas_frmx_listframe"){
+			out= this.frames[x].getSelected();
+			if (out != undefined) items[x]=out;
+		}
 	}
 	return items;
 };

@@ -38,6 +38,7 @@ class bas_sql_myextprocedure{
 	public $connection;
 	private $rolledback;
 	private $rollbackatclose;
+	public $errorCode;
 	
 	public function __construct($database=''){
 		global $_SESSION;
@@ -84,6 +85,7 @@ class bas_sql_myextprocedure{
 					if (isset($this->result['message'])) eval ('$this->errormsg = "' . $this->result['message'] . '";');
 					else $this->errormsg = "Error {$this->result['error']}.";
 					$this->success = !$this->result['error'];
+					$this->errorCode = $this->result['error'];
 					if (isset($this->result['rollbackatclose'])) $this->rollbackatclose = $this->result['rollbackatclose']; 
 				}
 				while ($this->connection->next_result()) {
@@ -103,6 +105,7 @@ class bas_sql_myextprocedure{
 				
 			} else {
 				$this->errormsg = $this->connection->error;
+				$this->errorCode = $connection->connect_errno;				
 				$_LOG->log("mysql.error $this->errormsg en query: <$query>",1);
 				if ($end = @$this->connection->rollback()) $_LOG->log('mysql.exec.procedure_ext error and rollback.');
 				else $_LOG->log("mysql.exec.procedure_ext Error on rollback: {$this->connection->error}.");
