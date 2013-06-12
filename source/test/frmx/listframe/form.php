@@ -90,9 +90,9 @@ class test_frmx_listframe_form extends bas_frmx_form {
 		}
 		$_LOG->debug("DAtos enviados:",$data);
 		
-		
+		if (isset($data['selected_ext'])){
 		$_LOG->debug("Decodee enviados:",json_decode($data["selected_ext"]));
-
+		}
 		
 
 // 		$this->list->setSelected(3);	

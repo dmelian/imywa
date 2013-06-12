@@ -123,6 +123,29 @@ bas_frmx_listframe.prototype.OnLoad= function(){
 		mainThis.getSelected();
 	});
 	
+	$("#" + this.id).on("contextmenu",".ia_header_colum",function(event){
+		var w = event.pageX;
+		var h = event.pageY;
+		event.preventDefault();
+// 		alert("X: "+w+" Y: "+h);
+		mainThis.showContextMenu();
+
+		
+		w = w - $("#ia_cotextMenu_header").width()/2;
+		h = h - $("#ia_cotextMenu_header").height()/2;
+		$("#ia_cotextMenu_header").css("left",w + "px");
+		$("#ia_cotextMenu_header").css("top",h + "px");
+		
+		$('#ia_cotextMenu_header').fadeIn(1000);
+		
+	});
+
+	if (!$('#ia_cotextMenu_header').length){
+		$(".ia_menuContainer").append("<div id='ia_cotextMenu_header' idFrame='' style='position: absolute;width:90pt;border-color: black;border-style: solid;'></div>");
+		$('#ia_cotextMenu_header').hide();
+
+	}
+	
 	if (this.dbClick){
 // 		$("#" + this.id).find(".list_row").dblclick(function(event){
 		$("#" + this.id).on("dblclick",".list_row",function(event){
@@ -135,6 +158,10 @@ bas_frmx_listframe.prototype.OnLoad= function(){
 	}
 	
 };
+
+bas_frmx_listframe.prototype.getHidenCols = function(){
+	alert(this.id);
+}
 
 
 bas_frmx_listframe.prototype.setResize = function(field, width){
@@ -172,7 +199,19 @@ bas_frmx_listframe.prototype.setOrderCol = function(typeCol){
 		
 }
 
-	
+
+bas_frmx_listframe.prototype.showContextMenu = function(){
+	var acciones = "<ul id='ia_header_ul'name='actions'>";
+	acciones += "<li><a onclick=\"currentForm.frames['"+this.id+"'].getHidenCols();\" >Ocultar</a></li>";
+	acciones += "<li><a onclick=\"currentForm.frames['"+this.id+"'].getHidenCols();\">Ordenar por..</a></li>";
+	acciones += "<li><a onclick=\"currentForm.frames['"+this.id+"'].getHidenCols();\">Mostrar</a> </li>";
+	acciones += "<li><a onclick=\"currentForm.frames['"+this.id+"'].getHidenCols();\">Mostrar todas</a></li>";
+	acciones += "</ul>";
+		
+	$('#ia_cotextMenu_header').html(acciones);
+	$('#ia_cotextMenu_header').children().menu();
+}
+
 bas_frmx_listframe.prototype.setSelected = function(pos){
 	//alert("row_" + $(event.target).attr("id"));
 	
