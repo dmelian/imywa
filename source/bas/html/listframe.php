@@ -73,7 +73,7 @@ class bas_html_listframe{
 		$margin_left= 0; //20;
 		$nelem= $this->initialrowcount; //count($rows);
 
-		echo "<div class=\"$class ia_header_colum\" style=\"position: relative; overflow: hidden;"
+		echo "<div class=\"$class ia_header_colum\" field=\"{$component->id}\" hide=\"no\" style=\"position: relative; overflow: hidden;"
 			. " top: 0{$this->measure}; width:100%; height:{$this->height}{$this->measure};\">";
 		echo "<label style=\"margin-left: $margin_left{$this->measure};\">";
 		echo $component->caption;

@@ -5,6 +5,7 @@ function bas_frmx_listframe(form, id){
 	
 	bas_frmx_frame.apply(this, arguments);
 	this.scroll = 0;
+	this.fieldSelect = "";
 }
 
 bas_frmx_listframe.prototype= new bas_frmx_frame();
@@ -136,14 +137,25 @@ bas_frmx_listframe.prototype.OnLoad= function(){
 		$("#ia_cotextMenu_header").css("left",w + "px");
 		$("#ia_cotextMenu_header").css("top",h + "px");
 		
+// 		alert($(event.target).attr("field"));
+		if (event.target.tagName == "LABEL") mainThis.fieldSelect = $(event.target).parent().attr("field");
+		else mainThis.fieldSelect = $(event.target).attr("field");
+		
 		$('#ia_cotextMenu_header').fadeIn(1000);
+		
 		
 	});
 
 	if (!$('#ia_cotextMenu_header').length){
 		$(".ia_menuContainer").append("<div id='ia_cotextMenu_header' idFrame='' style='position: absolute;width:90pt;border-color: black;border-style: solid;'></div>");
 		$('#ia_cotextMenu_header').hide();
+		$("body").on("click",function(event){
+// 			$('#ia_cotextMenu_header').menu("destroy");
 
+// 			$('#ia_cotextMenu_header').fadeOut(100);
+			$('#ia_cotextMenu_header').hide();
+			$('#ia_cotextMenu_header').html("");
+		});
 	}
 	
 	if (this.dbClick){
@@ -160,9 +172,40 @@ bas_frmx_listframe.prototype.OnLoad= function(){
 };
 
 bas_frmx_listframe.prototype.getHidenCols = function(){
-	alert(this.id);
+// 	alert(this.fieldSelect);
+	var ocultos = [];
+	var pos = 0;
+	var items = $("#"+this.id).find(".ia_header_colum").filter("[hide='yes']");
+	items.each(function(){
+		ocultos[pos] = this.attributes.field.value;
+		pos++;
+// 		alert(this.attributes.field.value);
+	});
+// 	alert(ocultos);
+	return ocultos;
+	
 }
 
+bas_frmx_listframe.prototype.hidenCol = function(hide){
+	var column = $("#"+this.id).find(".ia_header_colum").filter("[field="+this.fieldSelect+"]");
+	if (hide == undefined)	column.attr("hide","yes");
+	else column.attr("hide","no");
+	column = column.parent();
+// 	column.css("display","none");
+	column.slideToggle();
+}
+
+bas_frmx_listframe.prototype.showCol = function(field){
+	this.fieldSelect = field;
+	this.hidenCol("no");
+}
+
+bas_frmx_listframe.prototype.showAllCol = function(){
+	var hiddenCols = this.getHidenCols();
+	for(var ind=0; ind< hiddenCols.length; ind++){
+		this.showCol(hiddenCols[ind]);
+	}
+}
 
 bas_frmx_listframe.prototype.setResize = function(field, width){
 	var ancho_pt= (3 * width ) / 4;			
@@ -201,15 +244,28 @@ bas_frmx_listframe.prototype.setOrderCol = function(typeCol){
 
 
 bas_frmx_listframe.prototype.showContextMenu = function(){
+	var hiddenCols = this.getHidenCols();
+	var ocultos = "";
+	if (hiddenCols.length != 0){
+		ocultos = "<ul>";
+		for(var ind=0; ind< hiddenCols.length; ind++){
+			ocultos += "<li ><a onclick=\"currentForm.frames['"+this.id+"'].showCol('"+hiddenCols[ind]+"');\" >"+hiddenCols[ind]+"   </a> </li>";
+		}
+		ocultos += "</ul>";
+	}
 	var acciones = "<ul id='ia_header_ul'name='actions'>";
-	acciones += "<li><a onclick=\"currentForm.frames['"+this.id+"'].getHidenCols();\" >Ocultar</a></li>";
+	acciones += "<li><a onclick=\"currentForm.frames['"+this.id+"'].hidenCol();\" >Ocultar</a></li>";
 	acciones += "<li><a onclick=\"currentForm.frames['"+this.id+"'].getHidenCols();\">Ordenar por..</a></li>";
-	acciones += "<li><a onclick=\"currentForm.frames['"+this.id+"'].getHidenCols();\">Mostrar</a> </li>";
-	acciones += "<li><a onclick=\"currentForm.frames['"+this.id+"'].getHidenCols();\">Mostrar todas</a></li>";
+	if (hiddenCols.length != 0){
+		acciones += "<li><a >Mostrar</a>" + ocultos +" </li>";
+		acciones += "<li><a onclick=\"currentForm.frames['"+this.id+"'].showAllCol();\">Mostrar todas</a></li>";
+	}
 	acciones += "</ul>";
 		
 	$('#ia_cotextMenu_header').html(acciones);
-	$('#ia_cotextMenu_header').children().menu();
+	$('#ia_cotextMenu_header').children().menu({icons : {
+			submenu : "ui-icon-carat-1-w"
+			}});
 }
 
 bas_frmx_listframe.prototype.setSelected = function(pos){
