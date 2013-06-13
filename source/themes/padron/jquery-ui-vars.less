@@ -60,11 +60,11 @@
 /*----------------------------------*/
 
   /* Overlays */
-  @bgColorOverlay:#2d5d8e url(images/ui-bg_flat_0_2d5d8e_40x100.png) 50% 50% repeat-x;
+  @bgColorOverlay: lighten(@main-color, 20%);
   @opacityOverlay:Alpha(Opacity=30);
   @marginShadow:-8px 0 0 -8px;
   @paddingShadow:8px; 
-  @bgColorShadow: #aaaaaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x;
+  @bgColorShadow: darken(@main-color, 20%);
   @opacityShadow:Alpha(Opacity=30);
   @cornerRadiusShadow:8px;
 /*----------------------------------*/

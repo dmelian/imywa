@@ -1,29 +1,30 @@
-body{background-color: @ia_bckg_theme;}
+body{
+	background-color: @ia_bckg_theme;
+}
 
 focus:selected{
-border:none;
-outline:none;
--moz-font-size: 0.7em;
+	border:none;
+	outline:none;
+	-moz-font-size: 0.7em;
 }
+
 .ia_form{
-	
 	position: relative;
-	//background-color: white;
 	left: 0px; width: 100%;
 	top: 0px;  height: 100%;
 	background-color: @ia_bckg_theme;
 }
+
 .ia_logo{
 	margin:0px;
-	
 }
+
 .ia_logo2{
 	margin:0px;
-	//position:absolute;
 	float:right;
 }
+
 .ia_formheader{
-	//height: 10pt;
 	padding:@ia_head_pad; 
 	background: @ia_bg_headerfrom;
 	background: -moz-linear-gradient(left, @ia_bg_headerfrom,@ia_bg_headerto);
@@ -38,84 +39,84 @@ outline:none;
 	float:center;
 }
 
-
-.ia_breadcrumb { float: left; display: block;
-	font-size: 0.87em;
+.ia_breadcrumb { 
+	float: left; display: block;
 	max-width:70%; 
 	overflow: hidden; 
-	font: @fcDefault;
 	height: 33pt;
-	content:">";
-}
-.ia_breadcrumb ul { list-style: none;
-					//list-style: @ia_bread_list-style;
 }
 
-.crumbs { display: block; }
-.crumbs li {  display: inline; }
-.crumbs li.first { padding-left: 8px; }
-.crumbs li a div {height:11pt; overflow:hidden;}
-.crumbs li a, .crumbs li a:link, .crumbs li a:visited {height:11pt; overflow:hidden; color: #666; display: block; float: left; font-size: 12px; margin-left: -13px; padding: 7px 17px 11px 25px; position: relative; text-decoration: none; }
+.ia_breadcrumb ul { 
+	list-style: none;
+}
 
-.crumbs li a { background-image: url('/apps/image/bread/bg-crumbs-yellow.png');  background-repeat: no-repeat; background-position: 100% 0; position: relative; }
-
-.crumbs li a:hover { color: #333; background-position: 100% -48px; cursor: pointer; }
-.crumbs li a:active { color: #333; background-position: 100% -96px; }
-.crumbs li.first a span { height: 29px; width: 3px; border-left: 1px solid #d9d9d9; position: absolute; top: 0px; left: 0px; }
-
-.ia_bread_hover{width:0%;}
-/*
-.ia_breadcrumb { 
-	font-size: 0.87em;
-	max-width:70%;
-	list-style: @ia_bread_list-style; 
-	overflow: hidden; 
-	font: @fcDefault;//@ia_bread_font;
+.crumbs {
+	display: block;
+	margin-top: 10px;
 	
-		li { 
-			float: left; 
-		
-			span {
-				color:@fcDefault;//@ia_span_color;
-				text-decoration: none; 
-				padding: @ia_span_padding;
-				background: @ia_span_bg;              
-				position: relative; 
-				display: block;
-				float: left;
-			}
-		}
+	li { 
+		display: inline; 
+	}
 	
-		li:first-child span {
-			padding-left: 10px;
-		}
-		li:nth-child(2) span       { background:        @ia_span_bg; }
-		li:nth-child(2) span:after { border-left-color: @ia_span_bg; }
-		li:nth-child(3) span       { background:        @ia_span_bg; }
-		li:nth-child(3) span:after { border-left-color: @ia_span_bg; }
-		li:nth-child(4) span       { background:        @ia_span_bg; }
-		li:nth-child(4) span:after { border-left-color: @ia_span_bg; }
-		li:nth-child(5) span       { background:        @ia_span_bg; }
-		li:nth-child(5) span:after { border-left-color: @ia_span_bg; }
-		li:last-child span {
-			background: white !important;
-			color: @fcDefault;//black;
-			pointer-events: none;
- 			cursor: default;
-		}
-		li:last-child span:after { border: 0; }
-		li span:hover { background: @ia_span_hover; }
-		li span:hover:after { border-left-color: @ia_span_hover !important; }
-}
-*/
+	li .first {
+		padding-left: 8px; 
+	}
+	
+	li a div {
+		height:11pt; 
+		overflow:hidden;
+	}
 
+	li a, li a:link, li a:visited {
+		height:11pt; 
+		overflow:hidden; 
+		color: @fcDefault;
+		display: block; 
+		float: left; 
+		margin-left: -13px; 
+		padding: 7px 17px 11px 25px; 
+		position: relative; 
+		text-decoration: none; 
+	}
+
+	li a { 
+		background-image: url('/apps/image/bread/bg-crumbs-orange.png');  
+		background-repeat: no-repeat; 
+		background-position: 100% 0; 
+		position: relative;
+		font-family: @fontdefault;
+		font-size: @fontdefaultsize; 
+	}
+
+	li a:hover {
+		color: @fcHover; 
+		background-position: 100% -48px; 
+		cursor: pointer; 
+	}
+
+	li a:active {
+		color: @fcActive; 
+		background-position: 100% -96px; 
+	}
+
+	li.first a span { 
+		height: 29px; 
+		width: 3px; 
+		border-left: 1px solid @borderColorDefault; 
+		position: absolute; 
+		top: 0px; 
+		left: 0px; 
+	}
+}
+
+
+
+.ia_bread_hover{
+	width:0%;
+}
 
 .ia_toolbar{
-	
 	clear: both;
-	
-	//background:@ia_bg_bread;
-	//bottom:10px ;
 	border-radius:@ia_bd_bread_radius;
 	-moz-border-radius:@ia_bd_bread_radius; /* Firefox 3.6 and earlier */
 	float:@ia_tool_float;
@@ -124,72 +125,46 @@ outline:none;
 	margin:@ia_bread_margin;
 
 	button {
-  		background: @ia_span_bg;//#4162a8;
- 		//border-top: 1px solid #38538c;
-  		//border-right: 1px solid #1f2d4d;
-  		//border-bottom: 1px solid #151e33;
-  		//border-left: 1px solid #1f2d4d;
-  		//border-radius: 4px;
-  		//-webkit-box-shadow: inset 0 1px 10px 1px #5c8bee, 0px 1px 0 #1d2c4d, 0 6px 0px #1f3053, 			0 8px 4px 1px #111111;
-  		//box-shadow: inset 0 1px 10px 1px #5c8bee, 0px 1px 0 #1d2c4d, 0 6px 0px #1f3053, 0 8px 			4px 1px #111111;
-  		color: #fff;
-  		font: bold 20px/1 "helvetica neue", helvetica, arial, sans-serif;
-  		margin-bottom: 10px;
-  		padding: 0.2px 5px 0 7px;//5px 5px 2px 7px;
-  		text-align: center;
-  		text-shadow: 0px -1px 1px #1e2d4d;
-  		//width: 150px;
-  		-webkit-background-clip: padding-box; }
-  	button:hover {
-    		-webkit-box-shadow: inset 0 0px 20px 1px #87adff, 0px 1px 0 #1d2c4d, 0 6px 0px #1f3053, 0 8px 4px 1px #111111;
-    		box-shadow: inset 0 0px 20px 1px #87adff, 0px 1px 0 #1d2c4d, 0 6px 0px #1f3053, 0 8px 4px 1px #111111;
-    		cursor: pointer; }
-  	button:active {
-    		-webkit-box-shadow: inset 0 1px 10px 1px #5c8bee, 0 1px 0 #1d2c4d, 0 2px 0 #1f3053, 0 	4px 3px 0 #111111;
-    		box-shadow: inset 0 1px 10px 1px #5c8bee, 0 1px 0 #1d2c4d, 0 2px 0 #1f3053, 0 4px 3px 0 #111111;
-    		}
-	
+		background: @bgColorActive;
+		color: @fcHeader;
+		font: 20px/1 @fontdefault;
+		margin-bottom: 10px;
+		padding: 0.2px 5px 0 7px;
+		text-align: center;
+		text-shadow: 0px -1px 1px fcActive;
+		-webkit-background-clip: padding-box; 
+	}
 
+	button:hover {
+		-webkit-box-shadow: inset 0 0px 20px 1px #87adff, 0px 1px 0 #1d2c4d, 0 6px 0px #1f3053, 0 8px 4px 1px #111111;
+		box-shadow: inset 0 0px 20px 1px #87adff, 0px 1px 0 #1d2c4d, 0 6px 0px #1f3053, 0 8px 4px 1px #111111;
+		cursor: pointer;
+	}
+
+	button:active {
+		-webkit-box-shadow: inset 0 1px 10px 1px #5c8bee, 0 1px 0 #1d2c4d, 0 2px 0 #1f3053, 0 	4px 3px 0 #111111;
+		box-shadow: inset 0 1px 10px 1px #5c8bee, 0 1px 0 #1d2c4d, 0 2px 0 #1f3053, 0 4px 3px 0 #111111;
+	}
 }
 
 
 .ia_formcontent{
 	clear: both;
-	//background-color:@ia_bgform_cont;
 	background-color: @ia_bckg_theme;
-	
 }
 
 .ia_dashboardcontainer{
-
-	
-
 	height: auto;
 	width:@ia_das_width;
 	position:@ia_das_position;
 	float: @ia_das_float;
-	//background-color: @ia_das_bg;
 	height: 100%;
-	//margin-right: @ia_das_margin_right;
 
 }
 
-#accordion{margin-top: 0.8em;}//margin-top:1em;
+#accordion{margin-top: 0.8em;}
 
 .ia_framecontainer{
-	
-	
-	//background:@ia_frame_bg;
-
-	/*position: @ia_frame_location;
-	background-color:@ia_frame_bg;
-	position:relative;
-	float:left;
-	right:10px;
-	top:3px;
-	bottom:20px;
-	height: 600px;*/
-	
 	height: 100%;
 	position:relative;
 	float:left;
@@ -197,8 +172,6 @@ outline:none;
 }
 
 .ia_formfooter{
-	
-	
 	margin:@ia_footer_margin;
 	float: @ia_footer_float;
 	background: @ia_footer_bg;
@@ -206,15 +179,9 @@ outline:none;
 	width:@ia_footer_width;
 	bottom:@ia_footer_bottom;
 	margin-top:@ia_footer_margin_top;
-
-
-
-	
 }
 
 .ia_statusbar{
-	
-	
 	font-family: @fontdefault;
 	font-size: @fontdefaultsize; 
   	color:@fcDefault;
@@ -230,8 +197,6 @@ outline:none;
 }
 
 .ia_buttonbar{
-	
-	
 	width:@ia_button_width;
 	background:@ia_status_bg;
 	border-radius:@ia_status_bd_radius;
@@ -243,98 +208,41 @@ outline:none;
 	position:@ia_status_location;
 	border-radius: 0em ;
 	.ia_list_actions{
-			margin-top: -10px;
-				/*button {
-					font-family: @fontdefault;
-					font-size: 1em;//@fontdefaultsize; 
-	  				color:@fcDefault;
-					float:left;
-					right:1%;
-					border-radius: 2em 0em;
-			  		background: @bgColorDefault;//#4162a8;
-			  		margin-bottom: 10px;
-			  		padding: 5px 10px 5px 25px;
-			  		text-align: center;
-			  		text-shadow: 0px -1px 1px #1e2d4d;
-			  		-webkit-background-clip: padding-box; }
-			  	button:hover {
-					//color:@fcHover;
-			    		//-webkit-box-shadow: inset 0 0px 20px 1px #87adff, 0px 1px 0 #1d2c4d, 0 6px 0px #1f3053, 0 8px 4px 1px #111111;
-			    		//box-shadow: inset 0 0px 20px 1px #87adff, 0px 1px 0 #1d2c4d, 0 6px 0px #1f3053, 0 8px 4px 1px #111111;
-			    		//cursor: pointer; 
-					color: @fcDefault; 
-  					text-decoration: none; 
-					}
-			  	button:active {
-					color:@fcActive;
-			    		-webkit-box-shadow: inset 0 1px 10px 1px #5c8bee, 0 1px 0 #1d2c4d, 0 2px 0 #1f3053, 0 4px 3px 0 #111111;
-			    		box-shadow: inset 0 1px 10px 1px #5c8bee, 0 1px 0 #1d2c4d, 0 2px 0 #1f3053, 0 4px 3px 0 #111111;
-			    		}*/
-			    .ia_menubar_button {
-					font-family: @fontdefault;
-					font-size: 1em;//@fontdefaultsize; 
-	  				color:@fcDefault;
-					float:left;
-					right:5%;
-					border-radius: 10px;//25px;
-					border: 1px solid #aaaaaa;//outset;
-			  		background: @bgColorDefault;//#4162a8;
-			  		margin-bottom: 10px;
-			  		padding: 8px 25px 8px 35px;
-			  		text-align: center;
-			  		//text-shadow: 0px 1px 0px #1e2d4d;
-			  		-webkit-background-clip: padding-box; }
-			  	.ia_menubar_button:hover {
-					color: black;//@fcHover; 
-					background: #e7d8bd;//#f5e175 50% 50% repeat-x;
-  					text-decoration: none; 
-					/*color:@fcHover;
-			    		-webkit-box-shadow: inset 0 0px 20px 1px #87adff, 0px 1px 0 #1d2c4d, 0 6px 0px #1f3053, 0 8px 4px 1px #111111;
-			    		box-shadow: inset 0 0px 20px 1px #87adff, 0px 1px 0 #1d2c4d, 0 6px 0px #1f3053, 0 8px 4px 1px #111111;
-			    		cursor: pointer;*/ }
-			  	.ia_menubar_button:active {
-					color:@fcActive;
-			    		-webkit-box-shadow: inset 0 1px 10px 1px #5c8bee, 0 1px 0 #1d2c4d, 0 2px 0 #1f3053, 0 4px 3px 0 #111111;
-			    		box-shadow: inset 0 1px 10px 1px #5c8bee, 0 1px 0 #1d2c4d, 0 2px 0 #1f3053, 0 4px 3px 0 #111111;
-			    		}
-			}
-	
+		margin-top: -10px;
+		.ia_menubar_button {
+			font-family: @fontdefault;
+			font-size: @fontdefaultsize; 
+			color:@fcDefault;
+			float:left;
+			right:5%;
+			border-radius: 10px;
+			border: 1px solid #aaaaaa;
+			background: @bgColorDefault;
+			margin-bottom: 10px;
+			padding: 8px 25px 8px 35px;
+			text-align: center;
+			-webkit-background-clip: padding-box; 
+		}
+		.ia_menubar_button:hover {
+			color: black; 
+			background: #e7d8bd;
+			text-decoration: none;
+		} 
+		.ia_menubar_button:active {
+			color:@fcActive;
+			-webkit-box-shadow: inset 0 1px 10px 1px #5c8bee, 0 1px 0 #1d2c4d, 0 2px 0 #1f3053, 0 4px 3px 0 #111111;
+			box-shadow: inset 0 1px 10px 1px #5c8bee, 0 1px 0 #1d2c4d, 0 2px 0 #1f3053, 0 4px 3px 0 #111111;
+		}
+	}
 }
 
 .ia_list_actions{float:right;}
 
 .ia_icon{
-    	background: url(images/iconosimywa.png) no-repeat top left;
+	background: url(images/iconosimywa.png) no-repeat top left;
 	z-index:2;
 	display:block;
-	//width:48px;
-	//height:48px;
-	
 }
-
-
-
-
-/*.ia_icon_acrobat{ background-position: 0 0; width: 48px; height: 48px; } 
-.ia_icon_anterior{ background-position: 0 -96px; width: 48px; height: 48px; } 
-.ia_icon_antes{ background-position: 0 -192px; width: 48px; height: 48px; } 
-.ia_icon_configuracion{ background-position: 0 -288px; width: 48px; height: 48px; } 
-.ia_icon_csv{ background-position: 0 -384px; width: 48px; height: 48px; } 
-.ia_icon_descarga1{ background-position: 0 -480px; width: 48px; height: 48px; } 
-.ia_icon_descarga2{ background-position: 0 -576px; width: 48px; height: 48px; } 
-.ia_icon_despues{ background-position: 0 -672px; width: 48px; height: 48px; } 
-.ia_icon_down{ background-position: 0 -768px; width: 48px; height: 48px; } 
-.ia_icon_imagen{ background-position: 0 -864px; width: 48px; height: 48px; } 
-.ia_icon_imagenes{ background-position: 0 -960px; width: 48px; height: 48px; } 
-.ia_icon_next{ background-position: 0 -1056px; width: 48px; height: 48px; } 
-.ia_icon_papel{ background-position: 0 -1152px; width: 48px; height: 48px; } 
-.ia_icon_play{ background-position: 0 -1248px; width: 48px; height: 48px; } 
-.ia_icon_previous{ background-position: 0 -1344px; width: 48px; height: 48px; } 
-.ia_icon_primero{ background-position: 0 -1440px; width: 48px; height: 48px; } 
-.ia_icon_siguiente{ background-position: 0 -1536px; width: 48px; height: 48px; } 
-.ia_icon_ultimo{ background-position: 0 -1632px; width: 48px; height: 48px; } 
-.ia_icon_up{ background-position: 0 -1728px; width: 48px; height: 48px; } 
-.ia_icon_user{ background-position: 0 -1824px; width: 48px; height: 48px; }*/
 
 .ia_icon_acrobat{ background-position: 0 0; width: 48px; height: 48px; } 
 .ia_icon_antes{ background-position: 0 -96px; width: 48px; height: 48px; } 

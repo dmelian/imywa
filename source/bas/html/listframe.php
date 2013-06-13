@@ -88,7 +88,7 @@ class bas_html_listframe{
 			if ($component->type != "textarea"){
 				echo "<div class=\"$classDyn list_row row_" . ($index+1) ." {$component->id}\""
 				." field=\"{$component->id}\" pos=\"" . ($index+1) . "\""
-				." style=\"position: relative; width: 100%; text-align: justify; text-indent: 20%; overflow: hidden;"
+				." style=\"position: relative; width: 100%; text-align: justify; text-indent: 4px; overflow: hidden;"
 				." top: " . ($index+1)*$this->top . "{$this->measure}; height: {$this->height}{$this->measure};\">";
 
 				if (isset($rows[$index]) && isset($rows[$index][$component->id])){
@@ -126,14 +126,14 @@ class bas_html_listframe{
 	protected function PaintDinamic($rows){
 		$nelem = count($this->frame->components);
 		for($index=$this->frame->fixedColums;$index < $nelem;$index++){
-			    echo "<div class=\"columDinamic\" field=\"{$this->frame->components[$index]['id']}\" style=\"position:relative; top:0{$this->measure};height:100%;vertical-align:top;width:";
-			    if (!isset($this->autosize)) echo $this->frame->getComponentWidth($index)."{$this->measure};display:inline-block;overflow:hidden;\">";
-			    else echo $this->autosize."%;display:inline-block;overflow:hidden;\">";
-				  $this->ContentColum( $this->frame->getComponent($index),$rows,false);
-			    echo "</div>";
+			echo "<div class=\"columDinamic\" field=\"{$this->frame->components[$index]['id']}\" style=\"position:relative; top:0{$this->measure};height:100%;vertical-align:top;width:";
+			if (!isset($this->autosize)) echo $this->frame->getComponentWidth($index)."{$this->measure};display:inline-block;overflow:hidden;\">";
+			else echo $this->autosize."%;display:inline-block;overflow:hidden;\">";
+			$this->ContentColum( $this->frame->getComponent($index),$rows,false);
+			echo "</div>";
 		}
 	}
-	
+
 	
 	protected function sizeColumns($begin,$end){
 		$size = 0;
@@ -147,76 +147,73 @@ class bas_html_listframe{
 	
 	public function OnPaint(){
 		$this->OnPaintBlock();
-		
+
 		if(isset($this->footer)){
-            $this->OnPaintFooter();	
+			$this->OnPaintFooter();
 		}
-		
+
 	}
 	
 	protected function OnPaintFooter(){
-         echo "<div style=\"margin-left: 40%;\">";
-            echo "<button onclick=\"ajaxaction('listPrev',{'idFrame':'{$this->frame->id}'});\" ><span class=\"ui-icon ui-icon-triangle-1-w\"></span></button>";
-            echo "<input type='text' value='{$this->footer}' disabled=\"disabled\">";
-            echo "<button onclick=\"ajaxaction('listNext',{'idFrame':'{$this->frame->id}'});\"><span class=\"ui-icon ui-icon-triangle-1-e\"></span></button>";
-        echo "</div>";
-	
+		echo "<div style=\"margin-left: 40%;\">";
+		echo "<button onclick=\"ajaxaction('listPrev',{'idFrame':'{$this->frame->id}'});\" ><span class=\"ui-icon ui-icon-triangle-1-w\"></span></button>";
+		echo "<input type='text' value='{$this->footer}' disabled=\"disabled\">";
+		echo "<button onclick=\"ajaxaction('listNext',{'idFrame':'{$this->frame->id}'});\"><span class=\"ui-icon ui-icon-triangle-1-e\"></span></button>";
+		echo "</div>";
+
 	}
-	
+
 	public function setFooter($value){
         $this->footer = $value;
 	}
 	
 	protected function OnPaintBlock(){
-        // Calculamos el ancho total de cada división para evitar el conflicto del position relative.
-        
-        $size_components = count($this->frame->components);
-        $fixed_width = $this->sizeColumns(0,$this->frame->fixedColums);
-        $dinamic_width = $this->sizeColumns($this->frame->fixedColums,$size_components);
-        
-//      $size_components = count($this->frame->components);
-//      $fixed_width = (100+2)*$this->frame->fixedColums ;
-//      $dinamic_width = (100 +10)*($size_components - $this->frame->fixedColums);
+		// Calculamos el ancho total de cada división para evitar el conflicto del position relative.
 
-    // Obtenemos los registros a mostrar.
-        $rows = $this->frame->get_rows();
+		$size_components = count($this->frame->components);
+		$fixed_width = $this->sizeColumns(0,$this->frame->fixedColums);
+		$dinamic_width = $this->sizeColumns($this->frame->fixedColums,$size_components);
 
-        
-        if ($size_components < $this->frame->fixedColums){
-            $this->frame->fixedColums= $size_components; // Lo hacemos mediante la funcion¿? o Solo lo almacenamos en local¿?
-            global $_LOG;
-            $_LOG->log("html_listFrame::OnPaint - Se han solicitado un número inexistente de columnas fijas");
-        }
-        
-        
-        
-        echo "<div class=\"ia_list\" style=\"position:relative;white-space:nowrap;height:";//TODO: A revisar correctamente (presentacion amedita)
-        $nreg = $this->initialrowcount;//count($rows);
-        if( $nreg >= 5)echo (7+($this->frame->n_item+1)*($this->height+$this->top))."{$this->measure};width:100%;\">";
-        else  echo (7+($nreg+1)*($this->height+$this->top))."{$this->measure};width:100%;\">";
-        
-            if ($this->selector){
-                // Se crea el encapsulado de los selectores de fila.
-                echo "<div class=\"ia_selector\" style=\"position:absolute;overflow:left:0px;hidden;height:100%; width:25{$this->measure};\">"; // Mostrará la fila seleccionada.
-                    $this->PaintSelector($nreg);
-                echo "</div>";
-            }
-            
-            echo "<div class=\"ia_list_container\" style=\"position:absolute;white-space:nowrap;height:100%;";
-            if ($this->selector) echo "left:25{$this->measure};";
-            else echo "left:0{$this->measure};";
-            echo "right:16{$this->measure};\">";
-                $this->OnPaintList($rows);
-            echo "</div>";
-            
-            echo "<div class=\"scroll_List\"style=\"position:absolute;top:0px;right: 0px;overflow:auto;width:16{$this->measure};height:100%\">";//($this->frame->n_item+1)*$this->height."{$this->measure};\">";
-                echo "<div style=\"width:1px;height:".($this->frame->getQuerySize()+1)*($this->height+$this->top)."{$this->measure};\"></div>";
-            echo "</div>";
 
-        echo "</div>";
-	
+		// Obtenemos los registros a mostrar.
+		$rows = $this->frame->get_rows();
+
+
+		if ($size_components < $this->frame->fixedColums){
+			$this->frame->fixedColums= $size_components; // Lo hacemos mediante la funcion¿? o Solo lo almacenamos en local¿?
+			global $_LOG;
+			$_LOG->log("html_listFrame::OnPaint - Se han solicitado un número inexistente de columnas fijas");
+		}
+
+
+
+		echo "<div class=\"ia_list\" style=\"position:relative;white-space:nowrap;height:";//TODO: A revisar correctamente (presentacion amedita)
+		$nreg = $this->initialrowcount;//count($rows);
+		if( $nreg >= 5)echo (7+($this->frame->n_item+1)*($this->height+$this->top))."{$this->measure};width:100%;\">";
+		else  echo (7+($nreg+1)*($this->height+$this->top))."{$this->measure};width:100%;\">";
+
+		if ($this->selector){
+			// Se crea el encapsulado de los selectores de fila.
+			echo "<div class=\"ia_selector\" style=\"position:absolute;overflow:left:0px;hidden;height:100%; width:20px;\">"; // Mostrará la fila seleccionada.
+			$this->PaintSelector($nreg);
+			echo "</div>";
+		}
+
+		echo "<div class=\"ia_list_container\" style=\"position:absolute;white-space:nowrap;height:100%;";
+		if ($this->selector) echo "left:20px;";
+		else echo "left:0{$this->measure};";
+		echo "right:16{$this->measure};\">";
+		$this->OnPaintList($rows);
+		echo "</div>";
+
+		echo "<div class=\"scroll_List\"style=\"position:absolute;top:0px;right: 0px;overflow:auto;width:16{$this->measure};height:100%\">";//($this->frame->n_item+1)*$this->height."{$this->measure};\">";
+		echo "<div style=\"width:1px;height:".($this->frame->getQuerySize()+1)*($this->height+$this->top)."{$this->measure};\"></div>";
+		echo "</div>";
+
+		echo "</div>";
+
 	}
-	
+
 	public function OnPaintList($rows){
 	
 		$listDinamic_width = 60;
