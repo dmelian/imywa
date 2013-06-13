@@ -186,8 +186,6 @@ class bas_pdf_form extends lib_fpdf_fpdf{
 	
 	public function beginDoc(){
 		$this->SetAutoPageBreak(true);
-		$this->AddPage();
-		
 	}
 	
 	public function endDoc(){

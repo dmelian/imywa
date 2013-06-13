@@ -239,11 +239,10 @@ class bas_pdf_miclase extends bas_pdf_form{
 		//$this->load($db,$dbtable); //cargamos los datos de la tabla de datos esta funcion y la anterior deberian ir juntas pero me da fallos si las junto. le pasaremos la tabla.
 		$this->load($frame);
 		$pdf->loadtitle($frame->title);//this
+		$pdf->AddPage();
 		$pdf->SetFont('Arial','',6); //definimos la letra y el tamaño de la letra
-		//$this->beginDoc();
 		$this->adjustment($pdf);
 		$this->Onprint($pdf);
-		//$this->endDoc();
 	}
 	
 }

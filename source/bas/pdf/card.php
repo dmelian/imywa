@@ -91,7 +91,7 @@ class bas_pdf_card extends bas_pdf_form{
 									$y=$pdf->GetY();//this
 									//$this->imagencelda($label,$value,$kwidth);
 									$ancho=$anchofijo*$kwidth;
-									$pdf->SetFont('Arial','',9);//$this
+									$pdf->SetFont('Arial','',6);//$this
 									$x=$pdf->GetX();//this
 									$y=$pdf->GetY();//this
 									$pdf->MultiCell($ancho,$alto,$label,0);//$pdf->MultiCell($ancho,$alto*$kheigth,$label,0);//$this->
@@ -114,7 +114,7 @@ class bas_pdf_card extends bas_pdf_form{
 									$x=$pdf->GetX();//this
 									$y=$pdf->GetY();//this
 									$ancho=$anchofijo*$kwidth;
-									$pdf->SetFont('Arial','',9);//this->
+									$pdf->SetFont('Arial','',6);//this->
 									$x=$pdf->GetX();//this
 									$y=$pdf->GetY();//this
 									$pdf->MultiCell($ancho,$alto,utf8_decode($label),0);//($ancho,$alto*$this->kheigth,utf8_decode($label),0);this
@@ -144,11 +144,10 @@ class bas_pdf_card extends bas_pdf_form{
 	function OnPdf($pdf, $card){
 		$this->loadcard($card);
 		$pdf->loadtitle($card->title);//this
-		$pdf->SetFont('Arial','',9);
+		$pdf->AddPage();
+		$pdf->SetFont('Arial','',6);
 		$this->adjust($card->grid["width"],$card->grid["height"]);
-		//$this->beginDoc();
 		$this->Onprint($pdf);
-		//$this->endDoc();
 	}
 	
 	
