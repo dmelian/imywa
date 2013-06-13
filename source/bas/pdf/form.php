@@ -91,7 +91,7 @@ class bas_pdf_form extends lib_fpdf_fpdf{
 		$y=$this->GetY();
 		$xinicio=$x;
 		$yinicio=$y;
-		$this->Rect($x,$y,95,15,'F');
+		$this->Rect($x,$y,95,10,'F');//95,15
 		//($ancho,$alto,$this->myhead[0],1,0,'L',$fill);
 		$this->Cell(95,15,$title,0,0,'L');
 		$this->SetXY($x+95,$y);
@@ -102,10 +102,14 @@ class bas_pdf_form extends lib_fpdf_fpdf{
 			coger el dato partitionValue;
 			y despues intentar ir con a empresa y recoger el nif y el nombre....
 		*/
+		
+		$cliente=$_SESSION->currentApp;
+		$cliente=substr($cliente,strpos($cliente,'-')+1);
+		
 		$x=$this->GetX();
 		$y=$this->GetY();
 		$this->Rect($x,$y,95,5,'F');
-		$this->Cell(95,5,"CLIENTE: ",0,0,'R');
+		$this->Cell(95,5,"CLIENTE: ".strtoupper($cliente),0,0,'R');
 		$this->Ln(5);
 		//CIF
 		$x=$this->GetX();
@@ -113,19 +117,19 @@ class bas_pdf_form extends lib_fpdf_fpdf{
 		$this->SetXY($x+95,$y);
 		$x=$this->GetX();
 		$this->Rect($x,$y,95,5,'F');
-		$this->Cell(95,5,"CIF/DNI:",0,0,'R');
+		$this->Cell(95,5,"USUARIO: ".strtoupper($_SESSION->user),0,0,'R');
 		//Usuario
 		
-		$this->Ln(5);
+		/*$this->Ln(5);
 		$x=$this->GetX();
 		$y=$this->GetY();
 		$this->SetXY($x+95,$y);
 		$x=$this->GetX();
 		$this->Rect($x,$y,95,5,'F');
-		$this->Cell(95,5,"USUARIO: ".$_SESSION->user,0,0,'R');
+		//$this->Cell(95,5,"CIF/DNI:",0,0,'R');*/
 		
 		$this->SetXY($xinicio,$yinicio);
-		$this->Ln(16);
+		$this->Ln(10);//16
 		//$this->SetXY($x,$y);
 		$x=$this->GetX();
 		$y=$this->GetY();
@@ -205,7 +209,7 @@ class bas_pdf_form extends lib_fpdf_fpdf{
 	
 	
 	public function Footer(){
-		$this->SetY(-23);
+		$this->SetY(-26);//23
 		$texto="En cumplimiento de lo establecido en la Ley Organica 15/99 de Protección de Datos Carácter Personal que sus datos personales quedarán incorporados y serán tratados en los fichero de A&M EDITA S.L. Asimismo, le informamos de la posiblidad de que ejerza los derechos de acceso, rectificación, cancelación y oposición en la siguiente dirección C/ Pío XII, 64 local 5.";
 		$texto2="En caso de que este documento deban incluirse datos de carácter personal referentes a personas físicas o juridicas distintas de quien lo presente deberá con carácter previo a su inclusión, informales de los extremos contenidos  en el parrafo anterior. Asimismo, se prohibe el uso, divulgación y tratamiento de la información contenida en dicho documento por terceras partes no autorizadas al efecto.";
 		$texto = utf8_decode($texto);
@@ -245,7 +249,7 @@ class bas_pdf_form extends lib_fpdf_fpdf{
 		$x=$this->GetX();
 		$y=$this->GetY();
 		$this->Rect($x,$y,47,$hr,'F');
-		$this->Cell(47,$hr,"C/ PIO XII, 64 (LOCAL B)",0,0,'L',true);
+		$this->Cell(47,$hr,utf8_decode("C/ Pío XII, 64 (Local B)"),0,0,'L',true);//C/ PIO XII, 64 (LOCAL B)
 		$this->SetXY($x+47,$y);
 		$x=$this->GetX();
 		$this->Rect($x,$y,47,$hr,'F');
