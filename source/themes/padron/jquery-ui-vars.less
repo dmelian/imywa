@@ -1,47 +1,42 @@
-/* Component containers vars
-----------------------------------*/
+// Component containers
+	@fontdefault: @ia-font-default;
+	@fontdefaultsize: @ia-font-default-size;
 
-  @fontdefault:lucida_granderegular;//Lucida sans;//Verdana,Arial,sans-serif;
-  @fontdefaultsize:1em;//0.9em;//0.6 em;
-  @borderColorContent: 1px solid #214225; //verde borde absoluto
-  @bgColorContent:#ffffff url(images/ui-bg_flat_75_ffffff_40x100.png) 50% 50% repeat-x;
-  @fcContent: #222222;
-  @fcHeader:#fff;
-  @borderColorHeader:1px solid rgba(33, 66, 37, 0.16);//1px solid #214225; //borde de las cabeceras y background
-  @bgColorHeader:rgba(8, 77, 110, 0.71);//#2d5d8e url(images/ui-bg_highlight-soft_75_2d5d8e_1x100.png) 50% 50% repeat-x;
-/*--------------------------------*/
+	@bgColorContent: lighten(@main-color, 45%);
+	@fcContent: darken(@main-color, 35%);
+	@borderColorContent: 1px solid darken(@main-color, 25%); 
 
+	@bgColorHeader: lighten(@main-color, 35%);
+	@fcHeader: darken(@main-color, 35%);
+	@borderColorHeader: 1px solid darken(@main-color, 25%);
 
+// Interaction states
+// Default
+	@borderColorDefault: 1px solid darken(@main-color, 25%);
+	@bgColorDefault: lighten(@main-color, 45%);
+	@fwDefault: normal;
+	@fcDefault: darken(@main-color, 35%);
 
-/* Interaction states vars
-----------------------------------*/
-  /*-----default ------*/ //eventos con el raton pasar por encima, estar seleccionado y por defecto
-  @borderColorDefault:1px solid #aaa;
-  @bgColorDefault:rgba(149, 184, 201, 0.71);//#f5c040 url(ui-bg_flat_0_2d5d8e_40x100.png) 50% 50% repeat-x;
-  @fwDefault:normal;
-  @fcDefault:#555;
+// Hover
+	@borderColorHover: 1px solid darken(@hover-color, 25%);
+	@bgColorHover: lighten(@main-color, 45%);
+	@fcHover: darken(@main-color, 35%);
 
-  /*------hover-------*/
-  @borderColorHover:1px solid #999999;
-  @bgColorHover:#e7d8bd;//#f5e175 50% 50% repeat-x;
-  @fcHover:black;//#214225;
-
-  /*------active------*/
-  @borderColorActive:1px solid #214225;
-  @bgColorActive:rgba(8, 77, 110, 0.5);//#ccc url(images/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x;
-  @fcActive:white;//#555;
-/*--------------------------------*/
+// Active
+	@borderColorActive: 1px solid darken(@main-color, 25%);
+	@bgColorActive: @main-color;
+	@fcActive: darken(@main-color, 35%);
 
 
-/* Interaction Cues vars
-----------------------------------*/
- @borderColorHighlight:1px solid #214225;
- @bgColorHighlight:#fbf9ee url(images/ui-bg_glass_55_fbf9ee_1x400.png) 50% 50% repeat-x;
- @fcHighlight:#363636;
- @borderColorError:1px solid #cd0a0a;
- @bgColorError:#fef1ec url(images/ui-bg_glass_95_fef1ec_1x400.png) 50% 50% repeat-x;
- @fcError: #cd0a0a;
-/*--------------------------------*/
+// Interaction Cues
+	@borderColorHighlight: 1px solid darken(@highlight-color, 25%);
+	@bgColorHighlight: lighten(@highlight-color, 45%);
+	@fcHighlight: darken(@highlight-color, 35%);
+
+	@borderColorError:1px solid darken(@error-color, 25%);
+	@bgColorError: lighten(@error-color, 45%);
+	@fcError: darken(@error-color, 35%);
+
 
 /* Icons vars
 ----------------------------------*/
