@@ -200,19 +200,25 @@ class bas_pdf_miclase extends bas_pdf_form{
 			$nveces=(int)($this->mix/$this->totalrow);
 			$nveces++;
 		}
-
+		$pdf->Ln();
 		for($a=0;$a<$nveces;$a++){//imprimimos las paginas
 			for($b=0;$b<$npags;$b++){
 				if($jfin>$this->miy)$jfin=$this->miy;
 				if($ifin>$this->mix)$ifin=$this->mix;
 				$this->mypage($iinicio,$ifin,$jinicio,$jfin,$pdf);
-				if($b != $npags-1) $pdf->Addpage();//si no lo controlamos se genera una pagina extra que no nos interesa hay que cortarlo en la ultima iteración this
+				if($b != $npags-1){
+					$pdf->Addpage();//si no lo controlamos se genera una pagina extra que no nos interesa hay que cortarlo en la ultima iteración this
+					$pdf->Ln();
+				}
 				$jinicio+=$column;
 				$jfin+=$column;
 			}
 			$jinicio=1;
 			$jfin=$column+1;
-			if($a != $nveces-1) $pdf->Addpage(); //se genera una pagina extra que no nos interesa. this
+			if($a != $nveces-1){
+				$pdf->Addpage(); //se genera una pagina extra que no nos interesa. this
+				$pdf->Ln();
+			}
 			$iinicio+=$this->totalrow;
 			$ifin+=$this->totalrow;
 		}
@@ -239,11 +245,10 @@ class bas_pdf_miclase extends bas_pdf_form{
 		//$this->load($db,$dbtable); //cargamos los datos de la tabla de datos esta funcion y la anterior deberian ir juntas pero me da fallos si las junto. le pasaremos la tabla.
 		$this->load($frame);
 		$pdf->loadtitle($frame->title);//this
+		$pdf->AddPage();
 		$pdf->SetFont('Arial','',6); //definimos la letra y el tamaño de la letra
-		//$this->beginDoc();
 		$this->adjustment($pdf);
 		$this->Onprint($pdf);
-		//$this->endDoc();
 	}
 	
 }
