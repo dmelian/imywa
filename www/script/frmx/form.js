@@ -275,13 +275,9 @@ bas_frmx_form.prototype.executeJsCommand= function(data){
 		break;
 		
 	case "dialog":
-		//this.dialogs[data.id]= data;
-// 		alert(data.content);
-		
 		$("body").append(data.content);
 		var buttons={};
 		for (var action=0; action < data.actions.length; action++){
-// 			alert("caption: "+data.actions[action].caption +" id: "+data.id  +" action: "+data.actions[action].id );
 			buttons[data.actions[action].caption]= 
 				new Function("currentForm.dialogAction(\"" + data.id + "\",\"" + data.actions[action].id + "\");");
 		}
@@ -292,10 +288,6 @@ bas_frmx_form.prototype.executeJsCommand= function(data){
 			, "close": new Function("currentForm.dialogAction(\"" + data.id + "\",\"cancel\");")
 			, "buttons": buttons
 		}).data("dialog", data);
-		
-// 		$("input:focus").blur();
-		
-// 		alert($("#" + data.id).html());
 		break;
 		
 	case "alert":
@@ -328,8 +320,13 @@ bas_frmx_form.prototype.executeJsCommand= function(data){
 bas_frmx_form.prototype.actionError= function(error, textStatus, jqXHR){
 	switch(textStatus){
 	case "parsererror":
-		alert("Parser Error: " + error.responseText);
-// 		$("body").append(error.responseText);
+//		alert("Parser Error: " + error.responseText);
+		$("body").append("<div id='parser_error'><pre><code><textarea>" + error.responseText + "</textarea></code></pre></div>");
+		$("#parser_error").dialog({
+			"modal": true, "width": 400
+			, "title": "Parser Error"
+			, "id": "parser_error"
+		});
 		break;
 		
 	default:
