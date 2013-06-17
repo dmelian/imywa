@@ -1,0 +1,261 @@
+body{
+	background-color: @ia_bckg_theme;
+}
+
+focus:selected{
+	border:none;
+	outline:none;
+	-moz-font-size: 0.7em;
+}
+
+.ia_form{
+	position: relative;
+	left: 0px; width: 100%;
+	top: 0px;  height: 100%;
+	background-color: @ia_bckg_theme;
+}
+
+.ia_logo{
+	margin:0px;
+}
+
+.ia_logo2{
+	margin:0px;
+	float:right;
+}
+
+.ia_formheader{
+	padding:@ia_head_pad; 
+	background: @ia_bg_headerfrom;
+	background: -moz-linear-gradient(left, @ia_bg_headerfrom,@ia_bg_headerto);
+	background: -webkit-gradient(linear,left bottom,right bottom, from(@ia_bg_headerfrom), to(@ia_bg_headerto));
+	background: -webkit-linear-gradient(left, @ia_bg_headerfrom,@ia_bg_headerto);
+	background: -o-linear-gradient(left, @ia_bg_headerfrom, @ia_bg_headerto);
+	background: -ms-linear-gradient(left,@ia_bg_headerfrom,@ia_bg_headerto);
+	background: linear-gradient(left,@ia_bg_headerfrom, @ia_bg_headerto);     
+	position:@ia_head_location;
+	border-radius:@ia_bd_radius;
+	-webkit-border-radius:@ia_bd_radius;/* Safari */
+	float:center;
+}
+
+.ia_breadcrumb { 
+	float: left; display: block;
+	max-width:70%; 
+	overflow: hidden; 
+	height: 33pt;
+}
+
+.ia_breadcrumb ul { 
+	list-style: none;
+}
+
+.crumbs {
+	display: block;
+	margin-top: 10px;
+	
+	li { 
+		display: inline; 
+	}
+	
+	li .first {
+		padding-left: 8px; 
+	}
+	
+	li a div {
+		height:11pt; 
+		overflow:hidden;
+	}
+
+	li a, li a:link, li a:visited {
+		height:11pt; 
+		overflow:hidden; 
+		color: @fcDefault;
+		display: block; 
+		float: left; 
+		margin-left: -13px; 
+		padding: 7px 17px 11px 25px; 
+		position: relative; 
+		text-decoration: none; 
+	}
+
+	li a { 
+		background-image: url('/apps/image/bread/bg-crumbs-orange.png');  
+		background-repeat: no-repeat; 
+		background-position: 100% 0; 
+		position: relative;
+		font-family: @fontdefault;
+		font-size: @fontdefaultsize; 
+	}
+
+	li a:hover {
+		color: @fcHover; 
+		background-position: 100% -48px; 
+		cursor: pointer; 
+	}
+
+	li a:active {
+		color: @fcActive; 
+		background-position: 100% -96px; 
+	}
+
+	li.first a span { 
+		height: 29px; 
+		width: 3px; 
+		border-left: 1px solid @borderColorDefault; 
+		position: absolute; 
+		top: 0px; 
+		left: 0px; 
+	}
+}
+
+
+
+.ia_bread_hover{
+	width:0%;
+}
+
+.ia_toolbar{
+	clear: both;
+	border-radius:@ia_bd_bread_radius;
+	-moz-border-radius:@ia_bd_bread_radius; /* Firefox 3.6 and earlier */
+	float:@ia_tool_float;
+	position:@ia_bread_location;
+	right:@ia_tool_right;
+	margin:@ia_bread_margin;
+
+	button {
+		background: @bgColorActive;
+		color: @fcHeader;
+		font: 20px/1 @fontdefault;
+		margin-bottom: 10px;
+		padding: 0.2px 5px 0 7px;
+		text-align: center;
+		text-shadow: 0px -1px 1px fcActive;
+		-webkit-background-clip: padding-box; 
+	}
+
+	button:hover {
+		-webkit-box-shadow: inset 0 0px 20px 1px #87adff, 0px 1px 0 #1d2c4d, 0 6px 0px #1f3053, 0 8px 4px 1px #111111;
+		box-shadow: inset 0 0px 20px 1px #87adff, 0px 1px 0 #1d2c4d, 0 6px 0px #1f3053, 0 8px 4px 1px #111111;
+		cursor: pointer;
+	}
+
+	button:active {
+		-webkit-box-shadow: inset 0 1px 10px 1px #5c8bee, 0 1px 0 #1d2c4d, 0 2px 0 #1f3053, 0 	4px 3px 0 #111111;
+		box-shadow: inset 0 1px 10px 1px #5c8bee, 0 1px 0 #1d2c4d, 0 2px 0 #1f3053, 0 4px 3px 0 #111111;
+	}
+}
+
+
+.ia_formcontent{
+	clear: both;
+	background-color: @ia_bckg_theme;
+}
+
+.ia_dashboardcontainer{
+	height: auto;
+	width:@ia_das_width;
+	position:@ia_das_position;
+	float: @ia_das_float;
+	height: 100%;
+
+}
+
+#accordion{margin-top: 0.8em;}
+
+.ia_framecontainer{
+	height: 100%;
+	position:relative;
+	float:left;
+	width:80%;
+}
+
+.ia_formfooter{
+	margin:@ia_footer_margin;
+	float: @ia_footer_float;
+	background: @ia_footer_bg;
+	position:@ia_footer_location;
+	width:@ia_footer_width;
+	bottom:@ia_footer_bottom;
+	margin-top:@ia_footer_margin_top;
+}
+
+.ia_statusbar{
+	font-family: @fontdefault;
+	font-size: @fontdefaultsize; 
+  	color:@fcDefault;
+	width:@ia_status_width;
+	background:@ia_status_bg;
+	border-radius:@ia_status_bd_radius;
+	-moz-border-radius:@ia_status_bd_radius; /* Firefox 3.6 and earlier */
+	height:@ia_status_height;
+	bottom:@ia_status_bottom;
+	float:left;
+	position:@ia_status_location;
+	border-radius: 0em;
+}
+
+.ia_buttonbar{
+	width:@ia_button_width;
+	background:@ia_status_bg;
+	border-radius:@ia_status_bd_radius;
+	-moz-border-radius:@ia_status_bd_radius; /* Firefox 3.6 and earlier */
+	height:@ia_status_height;
+	bottom:@ia_status_bottom;
+	left:20%;
+	float:right;
+	position:@ia_status_location;
+	border-radius: 0em ;
+	.ia_list_actions{
+		margin-top: -10px;
+		.ia_menubar_button {
+			font-family: @fontdefault;
+			font-size: @fontdefaultsize; 
+			color:@fcDefault;
+			float:left;
+			right:5%;
+			border-radius: 10px;
+			border: 1px solid #aaaaaa;
+			background: @bgColorDefault;
+			margin-bottom: 10px;
+			padding: 8px 25px 8px 35px;
+			text-align: center;
+			-webkit-background-clip: padding-box; 
+		}
+		.ia_menubar_button:hover {
+			color: black; 
+			background: #e7d8bd;
+			text-decoration: none;
+		} 
+		.ia_menubar_button:active {
+			color:@fcActive;
+			-webkit-box-shadow: inset 0 1px 10px 1px #5c8bee, 0 1px 0 #1d2c4d, 0 2px 0 #1f3053, 0 4px 3px 0 #111111;
+			box-shadow: inset 0 1px 10px 1px #5c8bee, 0 1px 0 #1d2c4d, 0 2px 0 #1f3053, 0 4px 3px 0 #111111;
+		}
+	}
+}
+
+.ia_list_actions{float:right;}
+
+.ia_icon{
+	background: url(images/iconosimywa.png) no-repeat top left;
+	z-index:2;
+	display:block;
+}
+
+.ia_icon_acrobat{ background-position: 0 0; width: 48px; height: 48px; } 
+.ia_icon_antes{ background-position: 0 -96px; width: 48px; height: 48px; } 
+.ia_icon_configuracion{ background-position: 0 -192px; width: 48px; height: 48px; } 
+.ia_icon_configuracion2{ background-position: 0 -288px; width: 40px; height: 40px; } 
+.ia_icon_excel{ background-position: 0 -376px; width: 48px; height: 48px; } 
+.ia_icon_filtro{ background-position: 0 -472px; width: 48px; height: 48px; } 
+.ia_icon_next{ background-position: 0 -568px; width: 48px; height: 48px; } 
+.ia_icon_play{ background-position: 0 -664px; width: 48px; height: 48px; } 
+.ia_icon_play2{ background-position: 0 -760px; width: 40px; height: 40px; } 
+.ia_icon_primero{ background-position: 0 -848px; width: 48px; height: 48px; } 
+.ia_icon_salir{ background-position: 0 -944px; width: 48px; height: 48px; } 
+.ia_icon_ultimo{ background-position: 0 -1040px; width: 48px; height: 48px; } 
+.ia_icon_vuser{ background-position: 0 -1136px; width: 48px; height: 48px; } 
+
+ 

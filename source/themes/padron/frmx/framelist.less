@@ -1,0 +1,162 @@
+
+div.xlist{
+	position: relative;
+/*	height: 200px;*/
+	margin: 10px;
+	background-color: green;
+}
+
+
+div.xlist div.frozencolscontainer{
+	position: absolute;
+	left: 25px;
+	top: 0px; bottom: 25px;
+	overflow: hidden;
+	background-color: black;	
+}
+	
+div.xlist div.content{
+	position: relative;
+	height: 100%;
+}	
+	
+div.xlist div.listcontainer{
+	position: absolute;
+	right: 25px;
+	top: 0px; bottom: 25px;	
+	overflow: hidden;
+	background-color: navy;
+}
+
+div.xlist div.head{
+	position: absolute;
+	left: 0px;
+	top: 0px; height: 25px;
+	overflow: hidden;
+	background-color: cyan;
+}	
+
+div.xlist div.body{
+	position: absolute;
+	left: 0px;
+	top: 25px; bottom: 25px;
+	overflow: hidden;
+	background-color: white;
+}
+
+div.xlist div.body div.row:nth-child(odd){
+	background-color: yellow;
+}
+
+div.xlist div.body div.row:nth-child(even){
+	background-color: whitesmoke;
+}
+
+div.xlist div.row{
+	position: relative;
+	height: 25px;
+	overflow: hidden;
+}
+
+div.xlist div.cell{
+	position: relative;
+	height: 100%;
+	display: inline-block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+div.xlist div.foot{
+	position: absolute;
+	left: 0px;
+	bottom: 0px; height: 25px;
+	overflow: hidden;
+	background-color: orange;
+}	
+
+
+div.xlist div.tableselector{
+	position: absolute;
+	left: 0px; width: 25px;
+	top: 0px; height: 25px;
+	overflow: hidden;
+	background-color: silver;
+}
+
+div.xlist div.rowselector{
+	position: absolute;
+	left: 0px; width: 25px;
+	top: 25px; bottom: 50px;
+	overflow: hidden;
+	background-color: silver;
+}
+
+div.xlist div.footselector{
+	position: absolute;
+	left: 0px; width: 25px;
+	bottom: 25px; height: 25px;
+	overflow: hidden;
+	background-color: silver;
+}
+
+div.xlist div.maximize{
+	position: absolute;
+	right: 0px; width: 25px;
+	top: 0px; height: 25px;
+	overflow: hidden;
+	background-color: silver;
+}
+
+div.xlist div.resize{
+	position: absolute;
+	right: 0px; width: 25px;
+	bottom: 0px; height: 25px;
+	overflow: hidden;
+	background-color: silver;
+}
+
+div.xlist div.colresize{
+	position: absolute;
+	right: 0px; width: 10px;
+	top: 0px; height: 100%; 
+	overflow: hidden;
+	background-position: center-top;
+	background-image: url("image/list_widthpull.png");
+	background-repeat: repeat-y; 
+	cursor: ew-resize;
+	background-color: green;
+}
+
+div.xlist div.vscroll{
+	position: absolute;
+	right: 0px; width: 25px;
+	top: 25px; bottom: 50px;
+	overflow: hidden;
+	background-color: silver;
+}
+
+div.xlist div.hscroll{
+	position: absolute;
+	right: 25px;
+	bottom: 0px; height: 25px;
+	overflow: hidden;
+	background-color: silver;
+}
+
+div.xlist div.frozencolshscroll{
+	position: absolute;
+	left: 25px;
+	bottom: 0px; height: 25px;
+	overflow: hidden;
+	background-color: silver;
+}
+
+/*this.config.fixedWidth
+	dynamics
+	--------------------------------------
+	especified by calcs in js.
+*/
+
+div.xlist div.content{
+	width: 1200px;
+}
