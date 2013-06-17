@@ -98,9 +98,9 @@ class bas_frmx_panelGrid {
 		return NULL;
 	}
 	
-	public function OnPaint(){
+	public function OnPaint($mainGrid=""){
 		$html = new bas_html_panelGrid($this);
-		$html->OnPaint();	
+		$html->OnPaint($mainGrid);	
 	}
 	
 	public function addComponent($y=0, $x=0, $field_id,$caption,$event=""){

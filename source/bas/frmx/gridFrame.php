@@ -31,7 +31,7 @@ class bas_frmx_gridFrame extends bas_frmx_frame{
 	public $classSuper;
 	public $classSub;
 	
-	protected $mode;
+	protected $mode; // ###: ABORRAR
 // 	protected $actions=array();
 	
 	public function __construct($id,$tabs,$grid="",$query="") {
@@ -45,6 +45,8 @@ class bas_frmx_gridFrame extends bas_frmx_frame{
 		$this->mode = "edit";
 	}
 	
+	
+	/*  // ###: ABORRAR
 	public function SetMode($mode="edit"){
 		switch ($mode){
 			case "edit":case "read": // ### en el caso del new, ¿tenemos que limpiar el contenido del current? (si)
@@ -64,6 +66,8 @@ class bas_frmx_gridFrame extends bas_frmx_frame{
 		return $this->mode;		
 	}
 	
+	*/
+	
 	public function setRecord(){
 	  	$this->record = new bas_sqlx_record($this->query);		
 		$this->record->load_data();
@@ -73,8 +77,8 @@ class bas_frmx_gridFrame extends bas_frmx_frame{
 	public function initRecord(){
 	  	$this->record = new bas_sqlx_record($this->query);		
 		$this->record->initRecord();
-		
 	}
+	
 	public function createRecord(){
 		$this->record = new bas_sqlx_record($this->query);
 // 		$this->record->SetViewWidth($this->n_item);
@@ -116,12 +120,15 @@ class bas_frmx_gridFrame extends bas_frmx_frame{
 		return NULL;
 	}
 	
-	protected function getObjComponent($id){
+	public function getObjComponent($id){
         for($y=1;$y <= $this->grid["height"]; $y++){
             for($x=1;$x <= $this->grid["width"]; $x++){
                 if(isset($this->components[$y][$x])){
                     $componente = $this->components[$y][$x];
-                    if ($id == $componente["id"]) return $componente["obj"];
+                    if ($id == $componente["id"]){
+						$aux = &$this->components[$y][$x]["obj"];
+						return $aux;
+                    }
                 }
                 
             }
@@ -129,6 +136,8 @@ class bas_frmx_gridFrame extends bas_frmx_frame{
         
         return null;
 	}
+	
+	
 	
 	public function setAttr($id,$attr,$value){
 // 	    if (isset($this->query->cols[$id])){

@@ -22,6 +22,8 @@ class bas_html_panelGrid{
 	public $card;
 	private $top,$size_height;
 	private $measure;
+	private $mainGrid;
+	
 
 	public function __construct($card){
 		$this->card = $card;
@@ -29,9 +31,9 @@ class bas_html_panelGrid{
 		$this->measure = "%";
 	}
 	
-	public function OnPaint(){
+	public function OnPaint($mainGrid=""){
 		global $_SESSION;
-		
+		$this->mainGrid = $mainGrid;
 		echo "<div style=\"width:100%;height:100%;\">";
             $this->paintComponents();
 		echo "</div>";
@@ -51,7 +53,7 @@ class bas_html_panelGrid{
                             //$id = $this->card->getComponent($pos)->id;
 //                         echo "<button style=\"height:100%;width:100%;\"> </button>";
                         $component = $this->card->components[$row][$colom];
-                        $onclick = "onclick=\"ajaxaction('{$component["event"]}', {'idPanel':'{$this->card->id}','idFrame':'grid'});\"";
+                        $onclick = "onclick=\"ajaxaction('{$component["event"]}', {'idPanel':'{$this->card->id}','idFrame':'{$this->mainGrid}','item':'{$component["id"]}'});\"";
                         echo "<button style=\"height:100%;width:100%;\" $onclick value=\"".$component["id"]."\">".$component["id"]." </button>";
 //                             echo "<button style=\"height:100%;width:100%;\" value=\"".$id."\">".$id." </button>";
 

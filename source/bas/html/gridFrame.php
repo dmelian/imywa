@@ -52,10 +52,10 @@ class bas_html_gridFrame{
                 if (isset($this->card->components[$row][$colom])){
                     $width = $this->card->components[$row][$colom]["width"] *$percentX;
                     $height = $percentY * $this->card->components[$row][$colom]["height"];
-                    echo "<div class=\"\" style=\"border-style: solid;display: inline-table;top:".(($row-1) * $percentY) ."{$this->measure};height:{$height}{$this->measure};left:".($colom-1)*$percentX."%;width:".$width."%\">";
+                    echo "<div class=\"\" style=\"border-style: solid;position:absolute;display: inline-table;top:".(($row-1) * $percentY) ."{$this->measure};height:{$height}{$this->measure};left:".($colom-1)*$percentX."%;width:".$width."%\">";
                         //$id = $this->card->getComponent($pos)->id;
 //                         echo "<button style=\"height:100%;width:100%;\"> </button>";
-                        $this->card->components[$row][$colom]["obj"]->OnPaint();
+                        $this->card->components[$row][$colom]["obj"]->OnPaint($this->card->id);
                     echo "</div>";                
                 }
 				
