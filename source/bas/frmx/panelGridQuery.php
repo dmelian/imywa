@@ -28,6 +28,7 @@ class bas_frmx_panelGridQuery extends bas_frmx_panelGrid {
         if (!$query) $query = new bas_sqlx_querydef();
         $this->query = $query;
         $this->posFin = $this->posIni = 1;
+        $this->type = "gridQuery";
     }
 	
 	public function setRecord(){

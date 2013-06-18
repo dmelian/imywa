@@ -99,10 +99,11 @@ class bas_html_page{
 
 // Divs
 	
-	public function addDiv($div, $id=''){
+	public function addDiv($div, $id='', $style=""){
 		array_push($this->_openDivs, $div);
 		$id= $id ? " id=\"$id\"" : '';
-		echo "<div class=\"$div\"$id>";
+		$style= $style ? " style=\"$style\"" : '';
+		echo "<div class=\"$div\"$id $style>";
 	}
 	
 	public function nextDiv($div, $id=''){

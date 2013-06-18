@@ -42,7 +42,7 @@ class bas_frmx_panelGrid {
 		$this->grid= $grid;
 		$this->labelwidth = 30;
 		$this->mode = "edit";
-		$this->type = "normal";
+		$this->type = "gridPanel";
 	}
 	
 	public function SetMode($mode="edit"){

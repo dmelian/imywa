@@ -24,11 +24,14 @@ class bas_html_panelGrid{
 	private $measure;
 	private $mainGrid;
 	
+	protected $typePanel;
+	
 
 	public function __construct($card){
 		$this->card = $card;
 		$this->size_height = 31;
 		$this->measure = "%";
+		$this->typePanel = $card->type;
 	}
 	
 	public function OnPaint($mainGrid=""){
@@ -41,14 +44,15 @@ class bas_html_panelGrid{
 	
 	private function paintComponents(){
 	   
-	    $percentX=(100 - $this->card->grid["width"])/$this->card->grid["width"];
+// 	    $percentX=(100 - $this->card->grid["width"])/$this->card->grid["width"];
+	    $percentX=100/$this->card->grid["width"];
         $percentY=100/$this->card->grid["height"];
         global $_LOG;
 
 	    for($row = 1; $row<=$this->card->grid["height"];$row++){
 			for($colom = 1; $colom<=$this->card->grid["width"];$colom++){
                 
-                echo "<div class=\"\" style=\"float:left;top:".(($row-1) * $percentY) ."{$this->measure};height:{$percentY}{$this->measure};left:".($colom-1)*$percentX."%;width:".$percentX."%\">";
+                echo "<div class=\"{$this->typePanel}_button\" style=\"float:left;top:".(($row-1) * $percentY) ."{$this->measure};height:{$percentY}{$this->measure};left:".($colom-1)*$percentX."%;width:".$percentX."%\">";
                     if (isset($this->card->components[$row][$colom])){
                             //$id = $this->card->getComponent($pos)->id;
 //                         echo "<button style=\"height:100%;width:100%;\"> </button>";
@@ -71,19 +75,15 @@ class bas_html_panelGrid{
 	
 	private function paintTabs(){
 		$nelem = count($this->card->tabs);
-// 		$gridTab = $this->card->sortComponents();
 		for($index=0;$index<$nelem;$index++){
 		    echo "<div  id=\"tabs-".($index+1)."\"style=\"position:relative;width:100%;height: 100%;\" >";
 		      $this->paintComponents();
 		    echo "</div>";
 		}
-// 		echo "<div class=\"prueba\" style=\"height:".$this->card->grid['height']*$this->size_height ."pt\"> </div>";
 		
 	}
 	
 	private function includeTabs(){
-// 		echo "<div  class=\"ia_frame_header\">";
-// 	    echo "<ul class=\"ia_listtab \">";
 	    echo "<ul class=\"ia_listtab ia_frame_header\">";
 
 	    
@@ -93,14 +93,10 @@ class bas_html_panelGrid{
 			echo $this->card->tabs[$index]."</a></li>";
 	    }
 	    echo "</ul>";
-// 	    echo "</div>";
 	}
 	
 	public function OnPaintContent(){
-//         echo "<div style=\"height:300pt;width:100%;\">";
 	    $this->paintTabs();	   
-//         echo "</div>";
-
 	}
 }
 ?>

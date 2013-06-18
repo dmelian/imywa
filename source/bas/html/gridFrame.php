@@ -31,11 +31,11 @@ class bas_html_gridFrame{
 	
 	public function OnPaint($page){
 		global $_SESSION;
-		$page->addDiv('ia_cardframe', $this->card->id);
-		$page->addDiv('ia_tabs');
+		$page->addDiv('ia_cardframe', $this->card->id,"height:100%;");
+		$page->addDiv('ia_tabs','',"height:100%;");
 
 		$this->includeTabs();
-		$page->addDiv('ia_frame_content');
+		$page->addDiv('ia_frame_content','',"height:100%;");
             $this->OnPaintContent();
 		$page->closeDiv('ia_cardframe');
 	}
@@ -52,34 +52,29 @@ class bas_html_gridFrame{
                 if (isset($this->card->components[$row][$colom])){
                     $width = $this->card->components[$row][$colom]["width"] *$percentX;
                     $height = $percentY * $this->card->components[$row][$colom]["height"];
-                    echo "<div class=\"\" style=\"border-style: solid;position:absolute;display: inline-table;top:".(($row-1) * $percentY) ."{$this->measure};height:{$height}{$this->measure};left:".($colom-1)*$percentX."%;width:".$width."%\">";
-                        //$id = $this->card->getComponent($pos)->id;
-//                         echo "<button style=\"height:100%;width:100%;\"> </button>";
+                    $top = (($row-1) * $percentY);
+                    $left = ($colom-1)*$percentX ;
+                    $class = "ia_Grid_$row:$colom";
+                    echo "<div class=\"$class\" style=\"border-style: solid;position:absolute;display: inline-table;top:$top{$this->measure};height:{$height}{$this->measure};left:".$left."%;width:".$width."%\">";
                         $this->card->components[$row][$colom]["obj"]->OnPaint($this->card->id);
                     echo "</div>";                
                 }
 				
 				
-// 				$_LOG->log("posicion Row: $row, Colum: $colom");
 			}
 	    }
 	}
 	
 	private function paintTabs(){
 		$nelem = count($this->card->tabs);
-// 		$gridTab = $this->card->sortComponents();
 		for($index=0;$index<$nelem;$index++){
 		    echo "<div  id=\"tabs-".($index+1)."\"style=\"position:relative;width:100%;height: 100%;\" >";
 		      $this->paintComponents();
 		    echo "</div>";
 		}
-// 		echo "<div class=\"prueba\" style=\"height:".$this->card->grid['height']*$this->size_height ."pt\"> </div>";
-		
 	}
 	
 	private function includeTabs(){
-// 		echo "<div  class=\"ia_frame_header\">";
-// 	    echo "<ul class=\"ia_listtab \">";
 	    echo "<ul class=\"ia_listtab ia_frame_header\">";
 
 	    
@@ -89,13 +84,10 @@ class bas_html_gridFrame{
 			echo $this->card->tabs[$index]."</a></li>";
 	    }
 	    echo "</ul>";
-// 	    echo "</div>";
 	}
 	
 	public function OnPaintContent(){
-//         echo "<div style=\"height:300pt;width:100%;\">";
 	    $this->paintTabs();	   
-//         echo "</div>";
 
 	}
 }
