@@ -157,6 +157,31 @@ bas_frmx_form.prototype.OnLoad = function() {
 		handle : ".ia_frame_header"
 	});// .disableSelection();
 
+	$(window).resize(function(evt) {
+		console.log("Resizing. New window width: " + $(window).width());
+	});
+/*
+	var rtime = new Date(1, 1, 2000, 12,00,00);
+	var timeout = false;
+	var delta = 200;
+	$(window).resize(function() {
+	    rtime = new Date();
+	    if (timeout === false) {
+	        timeout = true;
+	        setTimeout(resizeend, delta);
+	    }
+	});
+
+	function resizeend() {
+	    if (new Date() - rtime < delta) {
+	        setTimeout(resizeend, delta);
+	    } else {
+	        timeout = false;
+	        alert('Done resizing');
+	    }               
+	}
+*/ // Resizing 	with time out.
+
 	for ( var frameid in this.frames) {
 		if (this.frames[frameid].jsClass in window) {
 			var frame = new window[this.frames[frameid].jsClass]();
