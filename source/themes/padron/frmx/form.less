@@ -1,6 +1,3 @@
-body{
-	background-color: @ia_bckg_theme;
-}
 
 focus:selected{
 	border:none;
@@ -9,11 +6,14 @@ focus:selected{
 }
 
 .ia_form{
-	position: relative;
+	position: absolute;
 	left: 0px; width: 100%;
 	top: 0px;  height: 100%;
 	background-color: @ia_bckg_theme;
 }
+
+// Header
+///////////////////////////////////////////////////////////
 
 .ia_logo{
 	margin:0px;
@@ -25,18 +25,21 @@ focus:selected{
 }
 
 .ia_formheader{
-	padding:@ia_head_pad; 
 	background: @ia_bg_headerfrom;
 	background: -moz-linear-gradient(left, @ia_bg_headerfrom,@ia_bg_headerto);
 	background: -webkit-gradient(linear,left bottom,right bottom, from(@ia_bg_headerfrom), to(@ia_bg_headerto));
 	background: -webkit-linear-gradient(left, @ia_bg_headerfrom,@ia_bg_headerto);
 	background: -o-linear-gradient(left, @ia_bg_headerfrom, @ia_bg_headerto);
 	background: -ms-linear-gradient(left,@ia_bg_headerfrom,@ia_bg_headerto);
-	background: linear-gradient(left,@ia_bg_headerfrom, @ia_bg_headerto);     
-	position:@ia_head_location;
-	border-radius:@ia_bd_radius;
+	background: linear-gradient(left,@ia_bg_headerfrom, @ia_bg_headerto);
+	border-radius: @ia_bd_radius;
 	-webkit-border-radius:@ia_bd_radius;/* Safari */
-	float:center;
+
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	right: 0px;
+	height: @ia_header_height;
 }
 
 .ia_breadcrumb { 
@@ -147,38 +150,48 @@ focus:selected{
 	}
 }
 
+// CONTENT
+///////////////////////////////////////////////////////////////////
 
 .ia_formcontent{
-	clear: both;
 	background-color: @ia_bckg_theme;
+	
+	position: absolute;
+	top: @ia_header_height;
+	left: 0;
+	right: 0;
+	bottom: @ia_footer_height;
+	overflow: hidden;
 }
 
 .ia_dashboardcontainer{
-	height: auto;
-	width:@ia_das_width;
-	position:@ia_das_position;
-	float: @ia_das_float;
-	height: 100%;
-
+	position: absolute;
+	top: 0px; bottom: 2px;
+	left: 0px;
+	width: @ia_das_width;
 }
 
-#accordion{margin-top: 0.8em;}
 
 .ia_framecontainer{
-	height: 100%;
-	position:relative;
-	float:left;
-	width:80%;
+	position: absolute;
+	top:0px; bottom: 0px;
+	right: 0px;
+	width: 100% - @ia_das_width;
+	overflow: auto;
 }
 
+// FOOTER
+/////////////////////////////////////////////////////
+
 .ia_formfooter{
-	margin:@ia_footer_margin;
-	float: @ia_footer_float;
 	background: @ia_footer_bg;
-	position:@ia_footer_location;
-	width:@ia_footer_width;
-	bottom:@ia_footer_bottom;
-	margin-top:@ia_footer_margin_top;
+
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	height: @ia_footer_height;
+
 }
 
 .ia_statusbar{
@@ -189,8 +202,7 @@ focus:selected{
 	background:@ia_status_bg;
 	border-radius:@ia_status_bd_radius;
 	-moz-border-radius:@ia_status_bd_radius; /* Firefox 3.6 and earlier */
-	height:@ia_status_height;
-	bottom:@ia_status_bottom;
+	height: 100%;
 	float:left;
 	position:@ia_status_location;
 	border-radius: 0em;
@@ -201,12 +213,12 @@ focus:selected{
 	background:@ia_status_bg;
 	border-radius:@ia_status_bd_radius;
 	-moz-border-radius:@ia_status_bd_radius; /* Firefox 3.6 and earlier */
-	height:@ia_status_height;
-	bottom:@ia_status_bottom;
+	height: 100%;
 	left:20%;
 	float:right;
 	position:@ia_status_location;
 	border-radius: 0em ;
+	
 	.ia_list_actions{
 		margin-top: -10px;
 		.ia_menubar_button {
@@ -236,7 +248,11 @@ focus:selected{
 	}
 }
 
+
 .ia_list_actions{float:right;}
+
+// ICONS
+/////////////////////////////////////////////////////
 
 .ia_icon{
 	background: url(images/iconosimywa.png) no-repeat top left;

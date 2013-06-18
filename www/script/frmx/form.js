@@ -182,7 +182,8 @@ bas_frmx_form.prototype.loadDashboard= function(){
 		pos = (size_accodion - pos)%size_accodion;
 		$(".selected_dash_first").toggleClass("selected_dash").toggleClass("selected_dash_first");//.toggleClass("selected_dash");
 		$( "#accordion" ).accordion({
-				heightStyle: "content",
+				//heightStyle: "content",
+				heightStyle: "fill",
 				header: "> div > h3",
 				active: pos
 			}).sortable({
