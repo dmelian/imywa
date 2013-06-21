@@ -31,6 +31,8 @@ class bas_frmx_gridFrame extends bas_frmx_frame{
 	public $classSuper;
 	public $classSub;
 	
+	public $header;
+	
 	protected $mode; // ###: ABORRAR
 // 	protected $actions=array();
 	
@@ -43,6 +45,8 @@ class bas_frmx_gridFrame extends bas_frmx_frame{
 		$this->tabs= $tabs;
 		$this->labelwidth = 30;
 		$this->mode = "edit";
+		
+		$this->header= "";
 	}
 	
 	
@@ -111,6 +115,10 @@ class bas_frmx_gridFrame extends bas_frmx_frame{
 	
 	public function setLabelWidth($width){
 		$this->labelwidth = $width;
+	}
+	
+	public function setHeader($header=""){
+		$this->header = $header;
 	}
 	
 	public function getComponent($pos){
