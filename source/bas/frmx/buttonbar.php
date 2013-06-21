@@ -60,6 +60,10 @@ class bas_frmx_buttonbar {
 	public function addSubmitAction($id,$caption="", $action=""){
 		$this->addElement($id,null,null,$caption,"submit");
 	}
+
+	public function addEcliveAction($id,$caption="", $action=""){
+			$this->addElement($id,null,null,$caption,"submiteclive");		
+		}
 	
 	public function addMenu($id, $menu,  $caption="",$frame=NULL){
 		$this->addElement($id,$frame,$menu,$caption);
@@ -84,27 +88,49 @@ class bas_frmx_buttonbar {
 		// 					$this->OnPaintMenu($this->actions[$action]['menu'],$action); ### Desde ahora se pintara externamente
 			}
 			else{
-				if ($this->actions[$action]['type']!= 'ajax'){
-					echo "<form style=\"float: left;\" name=\"form_down$action\" method=\"post\" enctype=\"multipart/form-data\">";
-					echo "<input type=\"hidden\" name=\"sessionId\" value=\"".$_SESSION->sessionId."\">";
-					echo "<a id=\"menulbar_$action\" class=\"ia_menubar_button\" name=\"".$action."\" value=\"$action\" onclick=\"javascript:ajaxaction('".$action."');\">"
-							.$this->actions[$action]["caption"]."</a>"; 
-					echo "</form>";
+				
+				switch($this->actions[$action]['type']){
+
+					case 'ajax':
+						echo " <button id='$action' class=\"ia_menubar_button\" name=\"".$action."\"";
+		// 					if (isset($this->actions[$action]["frame"])) echo "onclick=\"javascript:frameAction('".$this->actions[$action]["action"]."','".$this->actions[$action]["frame"]."');\" >";		
+						if (isset($this->actions[$action]["frame"])) echo "onclick=\"javascript:frameAction('".$action."','".$this->actions[$action]["frame"]."');\" >";
+						else echo "onclick=\"javascript:ajaxaction('".$action."');\" >";
+						echo $this->actions[$action]["caption"]."</button>";			
+
+					break;
+					case 'submiteclive':
+						echo "<form style=\"float: left;\" name=\"form_down$action\" method=\"post\" enctype=\"multipart/form-data\">";
+						echo "<input type=\"hidden\" name=\"user\" value=\"".$_SESSION->user."\">";
+						echo "<input type=\"hidden\" name=\"cups\" value=\"\">";
+						echo "<a id=\"cluz_$action\" class=\"ia_eclive_button ia_menubar_button\" name=\"".$action."\" value=\"$action\" onclick=\"currentForm.sendEclive();\">"
+								.$this->actions[$action]["caption"]."</a>"; 
+						echo "</form>";
+
+					break;
+					default:
+						echo "<form style=\"float: left;\" name=\"form_down$action\" method=\"post\" enctype=\"multipart/form-data\">";
+						echo "<input type=\"hidden\" name=\"sessionId\" value=\"".$_SESSION->sessionId."\">";
+						echo "<a id=\"menulbar_$action\" class=\"ia_menubar_button\" name=\"".$action."\" value=\"$action\" onclick=\"javascript:ajaxaction('".$action."');\">"
+								.$this->actions[$action]["caption"]."</a>"; 
+						echo "</form>";
+				}
+
+					//if ($this->actions[$action]['type']!= 'ajax'){
+					
 					
 					
 // 					echo "<button id=\"menulbar_$action\" class=\"ia_menubar_button\" name=\"".$action."\" value=\"$action\" onclick=\"javascript:submitaction('".$action."');\">"
 // 							.$this->actions[$action]["caption"]."</button>"; 
 // 					echo "</form>";
-				}
-				else{
-					echo " <button id='$action' class=\"ia_menubar_button\" name=\"".$action."\"";
-		// 					if (isset($this->actions[$action]["frame"])) echo "onclick=\"javascript:frameAction('".$this->actions[$action]["action"]."','".$this->actions[$action]["frame"]."');\" >";		
-					if (isset($this->actions[$action]["frame"])) echo "onclick=\"javascript:frameAction('".$action."','".$this->actions[$action]["frame"]."');\" >";
-					else echo "onclick=\"javascript:ajaxaction('".$action."');\" >";
-					echo $this->actions[$action]["caption"]."</button>";				
-				}
+				//}
+				//else{
+						
+				//}
 			}
+
 		}
+
 	}
 	
 	public function OnPaintMenu(){
