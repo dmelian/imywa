@@ -36,8 +36,17 @@ class bas_html_gridFrame{
 
 		$this->includeTabs();
 		$page->addDiv('ia_frame_content','',"height:100%;");
+			if ($this->card->header != ""){
+				$this->OnPaintHeader();
+			}
             $this->OnPaintContent();
 		$page->closeDiv('ia_cardframe');
+	}
+	
+	private function OnPaintHeader(){
+		echo "<div >";
+			echo "<h3 style=\"text-align: center;\"> {$this->card->header}</h3>";
+		echo "</div>";
 	}
 	
 	private function paintComponents(){
@@ -67,8 +76,9 @@ class bas_html_gridFrame{
 	
 	private function paintTabs(){
 		$nelem = count($this->card->tabs);
+		$height = ($this->card->header == "") ? '100' : '90';
 		for($index=0;$index<$nelem;$index++){
-		    echo "<div  id=\"tabs-".($index+1)."\"style=\"position:relative;width:100%;height: 100%;\" >";
+		    echo "<div  id=\"tabs-".($index+1)."\"style=\"position:relative;width:100%;height: $height%;\" >";
 		      $this->paintComponents();
 		    echo "</div>";
 		}
