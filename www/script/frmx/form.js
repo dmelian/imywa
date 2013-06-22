@@ -23,7 +23,7 @@ bas_frmx_form.prototype.OnLoad = function() {
 				$(".submenu_Show").hide().toggleClass("submenu_Show");
 			}
 		}
-		var menu = $("#submenu_" + id).fadeToggle("fast", "linear").position({
+		$("#submenu_" + id).fadeToggle("fast", "linear").position({
 			my : "right bottom",
 			at : "right top",
 			of : this
@@ -157,31 +157,22 @@ bas_frmx_form.prototype.OnLoad = function() {
 		handle : ".ia_frame_header"
 	});// .disableSelection();
 
-// Browser resizing.	
+/* Browser resizing.	
 	$(window).resize(function(evt) {
 		console.log("Resizing. New window width: " + $(window).width());
 	});
-
+*/
 	$(window).resize(function() {
-		if (resizeStart == undefined){
-			resizeStart= new Date();
-			resizeEventCount= 0;  
-			timer= setTimeout(endResize, 100, args);
-		} else resizeEventCount++;
+		if (currentForm.resizing == undefined){
+			currentForm.resizing= {
+				eventCount: 1,
+				startWidth: $(window).width(),
+				startHeight: $(window).height(),
+				timerId: setTimeout(currentForm.endResize, 100)
+			};
+		} else currentForm.resizing.eventCount++;
 	});
 
-/*
-	function endResize(){
-		if (resizeEventCount){
-			timer= setTimeout(endResize, 100, args);
-		} else {
-			// do the resize end action.
-			$(window).width();
-			$(window).height();
-			resizeStart= null; // or delete resizeStart.
-		}
-	}
-*/	
 	for ( var frameid in this.frames) {
 		if (this.frames[frameid].jsClass in window) {
 			var frame = new window[this.frames[frameid].jsClass]();
@@ -198,6 +189,23 @@ bas_frmx_form.prototype.OnLoad = function() {
 		}
 	}
 
+};
+
+bas_frmx_form.prototype.endResize= function(){
+
+	if (currentForm.resizing.eventCount > 0){
+		currentForm.resizing.eventCount= 0;
+		currentForm.resizing.timerId= setTimeout(currentForm.endResize, 100);
+	} else {
+		var oldWidth= currentForm.resizing.startWidth;
+		var oldHeight= currentForm.resizing.startHeight;
+		delete currentForm.resizing;
+		currentForm.OnResize($(window).width(), $(window).height(), oldWidth, oldHeight);
+	}
+};
+
+bas_frmx_form.prototype.OnResize= function($newWidth, $newHeight, $oldWidth, $oldHeight){
+	$("#accordion").accordion("refresh");
 };
 
 bas_frmx_form.prototype.loadDashboard= function(){
@@ -365,7 +373,7 @@ bas_frmx_form.prototype.dialogAction= function(dialogId, action, actionParams){
 	
 // 	var params= $("#"+dialogId+" :input").serializeArray();  // ### TODO: Posible problema con los tipos checkbox
 	var params={};
-	var a=2;
+//	var a=2;
 	params["dialog"]= dialogId;
 	var $inputs = $('form[name="form_'+dialogId+'"] :input');//.filter('input[type="text"]');
 		$inputs.each(function() {
@@ -429,7 +437,7 @@ bas_frmx_form.prototype.arraytoJSON = function(array){
 	}
 	out += "}";
 	return out;
-}
+};
 
 
 // -------------------------------------------------
