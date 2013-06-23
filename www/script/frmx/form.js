@@ -16,7 +16,6 @@ bas_frmx_form.prototype.OnLoad = function() {
 	}).hide();
 
 	$(".ia_submenubar_button").on("click", function(e) {
-		// alert("entramos!!!!");
 		var id = $(e.target).attr("id");
 		if ($(".submenu_Show").length != 0) {
 			if (!($("#submenu_" + id).hasClass("submenu_Show"))) {
@@ -28,12 +27,10 @@ bas_frmx_form.prototype.OnLoad = function() {
 			at : "right top",
 			of : this
 		}).toggleClass("submenu_Show");
-		// alert("visaulizamos el id: "+id);
 
 	});
 
 	$(".ia_menutool_button").on("click", function(e) {
-		// alert("entramos!!!!");
 		var id = e.target.parentElement.id;
 		if ($(".submenu_Show").length != 0) {
 			if (!($("#submenu_" + id).hasClass("submenu_Show"))) {
@@ -112,25 +109,18 @@ bas_frmx_form.prototype.OnLoad = function() {
 	}).toggleClass("dashboard_loadevents");
 
 	$(".dash_element").on("click", function() {
-		// currentForm.sendAction("changeApp",
-		// {'app':$(this).parent().attr("id")},SessionAction);
 		if (!$(this).parent().hasClass("selected_dash")) {
 			currentForm.sendAction("changeApp", {
 				'app' : $(this).parent().attr("id")
 			}, "SessionAction");
 			$(".selected_dash").toggleClass("selected_dash");
 			$(this).parent().addClass("selected_dash");
-			// alert($( "#accordion" ).accordion( "option", "active" ));
 		}
 	});
 	// ///////////accordion
 	currentForm.loadDashboard();
 
 	if (!$("body").hasClass("evnt_lookup")) {
-
-		// $("body").on("click",":input",function(e){
-		// $(e.target).focus();
-		// });
 
 		$("body").toggleClass("evnt_lookup");
 		$("body").on("click", ".lookup", function(e) {
@@ -148,20 +138,10 @@ bas_frmx_form.prototype.OnLoad = function() {
 	// ###################### buttonBar ############################
 	// ###########################################################################
 
-	// $( ".ia_menubar" ).menu().hide();
-	// $( ".ia_menubar_button" ).live("click",function(e){
-	// $(e.target).next().slideToggle();
-	// })
-
 	$(".ia_framecontainer").sortable({
 		handle : ".ia_frame_header"
-	});// .disableSelection();
-
-/* Browser resizing.	
-	$(window).resize(function(evt) {
-		console.log("Resizing. New window width: " + $(window).width());
 	});
-*/
+
 	$(window).resize(function() {
 		if (currentForm.resizing == undefined){
 			currentForm.resizing= {
@@ -215,7 +195,6 @@ bas_frmx_form.prototype.loadDashboard= function(){
 		pos = (size_accodion - pos)%size_accodion;
 		$(".selected_dash_first").toggleClass("selected_dash").toggleClass("selected_dash_first");//.toggleClass("selected_dash");
 		$( "#accordion" ).accordion({
-				//heightStyle: "content",
 				heightStyle: "fill",
 				header: "> div > h3",
 				active: pos
@@ -250,16 +229,13 @@ bas_frmx_form.prototype.loadDashboard= function(){
 
 	data.append("XHR", 1);   // data['XHR']=1;
 	data.append("sessionId", this.sessionId);   // data['sessionId']= this.sessionId;
-// 	if (console) console.debug('ajax:', data);
 	$.ajax({type:'POST'
 		, dataType: "json"
 		, contentType:false
 		, data: data //TODO: include session data.
-        , processData:false
-        , cache:false
+		, processData:false
+		, cache:false
 		, context: this
-//		, success: this.recvActionResponse
-//		, error: this.actionError
 	}).done(this.recvActionResponse).fail(this.actionError);			
 }; 
 
@@ -273,13 +249,11 @@ bas_frmx_form.prototype.executeJsCommand= function(data){
 	case "changeAttr":
 		for (var i=0; i < data.attrs.length; i++){
 			$(data.attrs[i].selector).attr(data.attrs[i].attr, data.attrs[i].value);
-			//alert("selector:"+data.attrs[i].selector+" attr:"+data.attrs[i].attr+" value:"+data.attrs[i].value);
 		}
 		
 	
 	case "reload": 
 		$(data.selector).html(data.content);
-// 		this.frames[data.frameid].Customer();
 		break;
 		
 	case "refreshDashboard":
@@ -295,8 +269,6 @@ bas_frmx_form.prototype.executeJsCommand= function(data){
 			else
 				$(data.contents[content].selector).html(data.contents[content].content);
 
-// 			alert("selector: "+data.contents[content].selector);
-// 			alert("contenido:"+data.contents[content].content);
 		}
 		var currentFormClass= window[data.currentForm]; 
 		currentForm= new currentFormClass();
@@ -330,13 +302,6 @@ bas_frmx_form.prototype.executeJsCommand= function(data){
 		
 	case "void":
 		break;
-		
-// 	case "file":
-// 		alert(data.contents);
-// 		myWindow=window.open('','_blank','width=200,height=100',false);
-// // 		myWindow.document.write(data.contents);
-// // 		window.open();
-// 		break;
 		
 	case "download":
 		submitaction(data.action);
@@ -373,13 +338,11 @@ bas_frmx_form.prototype.dialogAction= function(dialogId, action, actionParams){
 	
 // 	var params= $("#"+dialogId+" :input").serializeArray();  // ### TODO: Posible problema con los tipos checkbox
 	var params={};
-//	var a=2;
 	params["dialog"]= dialogId;
 	var $inputs = $('form[name="form_'+dialogId+'"] :input');//.filter('input[type="text"]');
 		$inputs.each(function() {
 			switch (this.type){
 				case "checkbox":
-	// 				alert(this.checked);
 					params[this.name] = this.checked;
 					break;
 				case "file":
@@ -396,25 +359,12 @@ bas_frmx_form.prototype.dialogAction= function(dialogId, action, actionParams){
 			}
 		});
 	for (var param in actionParams) params[param]= actionParams[param];
-	
-// 	$("body").delay(81100);
 
 	this.sendAction(action, params);	
 	$("#" + dialogId).dialog("destroy");
 	$("#dlg_" + dialogId).remove();
 
 };
-
-// bas_frmx_form.prototype.selectedItems= function(){
-// 	var selectedRows= $(".ia_selected_box");
-// 	var ret= ""; var sep= "";
-// 	for (var sel= 0; sel < selectedRows.length; sel++){
-// 		var frames= $(selectedRows[sel]).parents(".ia_frame");
-// 		ret+= sep + frames[0].id + ":" + selectedRows[sel].id;
-// 		sep= ",";
-// 	}
-// 	return ret;
-// };
 
 bas_frmx_form.prototype.selectedItems= function(){
 	var out;
@@ -509,32 +459,13 @@ function frameAction(action,form,lookup){
 		});
 		
 	}
-// 		if (this.type == "file"){	values.append([this.name],this.files[0]);		}
-// 		else	{				values.append([this.name],this.value);		}
 	currentForm.sendAction(action,values); 
 }
 
 function ajaxaction(action,params){ 
-//  	alert($('form[name="form_ficha_incidencia"] > input[type="text"]').size());
-// 	alert($('form[name="form_ficha_incidencia"] :input').filter('input[type="text"]').size());
 	currentForm.sendAction(action,params); 
 };
 	
-	
-// function submitlookup(node,lookupForm){
-// 	
-// 	var idForm= $(node).parents(".ia_cardframe").attr("id");
-// 	if ($(".ia_filterbox").length == 0){
-// 		frameAction("lookup",idForm,lookupForm);
-// 		if (console != undefined) console.log('lookup.NO.dialog');
-// 		
-// 	} else {
-// 		var dialogId = $(".ia_filterbox").attr("id");
-// 		currentForm.dialogAction(dialogId, 'lookup', {lookup: lookupForm});
-// 		if (console != undefined) console.log('lookup.dialog');
-// 	}
-// 	
-// };
 
 
 function submitlookup(idForm,lookupForm){
@@ -561,14 +492,12 @@ function addhidden(hidname, hidvalue, hidform){
 	newinput.setAttribute("value", hidvalue);
 	if (hidform == undefined)	document.forms["form_"+hidvalue].appendChild(newinput);
 	else	document.forms["form_"+hidform].appendChild(newinput);
-// 	$("#form_"+hidvalue).appendChild(newinput);
 };
 
 function submitaction(action){
 	addhidden('action', action);
 	var item = select_item();
 	if (item != undefined) addhidden('selected', item,action);
-// 	$("#form_"+action).submit();
 	document.forms["form_"+action].submit();
 	
 };

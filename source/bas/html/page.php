@@ -130,7 +130,7 @@ class bas_html_page{
 		echo "<html lang=\"$language\">";
 		echo '<head>';
 		echo '<meta charset="utf-8" />';
-		echo '<meta  name="viewport"  content="width=device-width; initial-scale=1.0">';
+		echo '<meta  name="viewport"  content="width=device-width, initial-scale=1.0">';
 		echo '<link rel="icon" href="image/imywa.png" type="image/png">';
 		echo "<title>$this->title</title>";
 		foreach($this->styles as $style) echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"$style\">";
