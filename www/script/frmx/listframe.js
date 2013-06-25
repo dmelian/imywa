@@ -139,7 +139,7 @@ bas_frmx_listframe.prototype.setSelected = function(pos){
 	
 }
 
-bas_frmx_listframe.prototype.getSelectedFIeld = function(field){
+bas_frmx_listframe.prototype.getSelectedField = function(field){
        var selected = "";
        var items = $("#" + this.id).find(".ui-selected").filter("[field = "+field+"]");
        var sep = "";
