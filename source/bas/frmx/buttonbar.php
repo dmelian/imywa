@@ -103,8 +103,8 @@ class bas_frmx_buttonbar {
 						echo "<form style=\"float: left;\" action='../ecl/validaec.php' name=\"form_down$action\" method=\"post\" enctype=\"multipart/form-data\">";
 						echo "<input type=\"hidden\" name=\"us\" value=\"".$_SESSION->user."\">";
 						echo "<input type=\"hidden\" name=\"cups\" value=\"\">";
-						echo "<button id=\"cluz_$action\" class=\"ia_eclive_button ia_menubar_button\" name=\"".$action."\" value=\"$action\" formtarget='_blank' onclick=\"currentForm.sendEclive();\">"
-								.$this->actions[$action]["caption"]."</button>"; 
+						echo "<a id=\"cluz_$action\" class=\"ia_eclive_button ia_menubar_button\" name=\"".$action."\" value=\"$action\" formtarget='_blank' onclick=\"currentForm.sendEclive();\">"
+								.$this->actions[$action]["caption"]."</a>"; 
 						echo "</form>";
 
 					break;
