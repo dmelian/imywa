@@ -103,11 +103,27 @@ class bas_frmx_panelGrid {
 		$html->OnPaint($mainGrid);	
 	}
 	
-	public function addComponent($y=0, $x=0, $field_id,$caption,$event=""){
+	public function addComponent($y=0, $x=0, $field_id,$caption,$event="",$subItem=""){
         if (!$event) $event = $this->gnrEvent;
-		$this->components[$y][$x] = array("x"=>$x,"y"=>$y,"id"=>$field_id,"caption"=>$caption,"event"=>$event);
+		$this->components[$y][$x] = array("x"=>$x,"y"=>$y,"id"=>$field_id,"caption"=>$caption,"subItem"=>$subItem,"event"=>$event);
 	}
 	
+	public function setAttrPos($x,$y,$attr,$value){
+		if (isset($this->components[$y][$x])) $this->components[$y][$x][$attr] = $value;
+	}
+	
+	public function setAttrId($id,$attr,$value){
+		for ($row = 0; $row < $this->grid["height"]; $row++){
+			for($column = 0; $column < $this->grid["width"]; $column++){
+				if (isset($this->components[$row][$column])){
+					if($this->components[$row][$column]["id"] == $id){ 
+						$this->components[$row][$column][$attr] = $value;
+						break;
+					}
+				}
+			}
+		}
+	}
 	
 	public function delComponent($id){
         foreach($this->components as $item => $component){

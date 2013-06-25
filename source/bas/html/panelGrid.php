@@ -54,21 +54,18 @@ class bas_html_panelGrid{
                 
                 echo "<div class=\"{$this->typePanel}_button\" style=\"float:left;top:".(($row-1) * $percentY) ."{$this->measure};height:{$percentY}{$this->measure};left:".($colom-1)*$percentX."%;width:".$percentX."%\">";
                     if (isset($this->card->components[$row][$colom])){
-                            //$id = $this->card->getComponent($pos)->id;
-//                         echo "<button style=\"height:100%;width:100%;\"> </button>";
                         $component = $this->card->components[$row][$colom];
+                        
                         $onclick = "onclick=\"ajaxaction('{$component["event"]}', {'idPanel':'{$this->card->id}','idFrame':'{$this->mainGrid}','item':'{$component["id"]}'});\"";
-                        echo "<button style=\"height:100%;width:100%;\" $onclick value=\"".$component["id"]."\">".$component["id"]." </button>";
-//                             echo "<button style=\"height:100%;width:100%;\" value=\"".$id."\">".$id." </button>";
-
-//                         echo "<button style=\"height:100%;width:100%;\" value=\"".$this->card->components[$row][$colom]['id']."\">".$this->card->components[$row][$colom]['id']." </button>";
+                        echo "<button style=\"height:100%;width:100%;position:relative;\" $onclick value=\"".$component["id"]."\">".
+								"<label style=\"position: absolute;top: 0px;left: 50%;\"> {$component["subItem"]} </label>".
+								"<label >{$component["caption"]}</label>".
+								" </button>";
                     }
                     else{
                         echo "<button style=\"height:100%;width:100%;\"> </button>";
                     }
                 echo "</div>";                
-
-// 				$_LOG->log("posicion Row: $row, Colum: $colom");
 			}
 	    }
 	}

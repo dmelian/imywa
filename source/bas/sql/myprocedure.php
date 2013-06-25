@@ -53,7 +53,7 @@ class bas_sql_myprocedure{
 					$this->result = $result->fetch_assoc();
 					$result->close();
 					extract($this->result, EXTR_PREFIX_ALL,'');
-					eval ('$this->errormsg = "' . $this->result['message'] . '";');
+					if (isset($this->result['message']))eval ('$this->errormsg = "' . $this->result['message'] . '";');
 					$this->success = !$this->result['error'];
 					$this->errorCode = $this->result['error'];
 				}
