@@ -145,7 +145,7 @@ bas_frmx_listframe.prototype.getSelectedField = function(field){
        var sep = "";
        if (items.length == 0) return undefined;
        items.each(function(event){
-               selected = selected + sep + this.field;
+               selected = selected + sep + this.innerText;
                sep =",";
        });
        return selected;
