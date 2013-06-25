@@ -139,6 +139,18 @@ bas_frmx_listframe.prototype.setSelected = function(pos){
 	
 }
 
+bas_frmx_listframe.prototype.getSelectedFIeld = function(field){
+       var selected = "";
+       var items = $("#" + this.id).find(".ui-selected").filter("[field = "+field+"]");
+       var sep = "";
+       if (items.length == 0) return undefined;
+       items.each(function(event){
+               selected = selected + sep + this.field;
+               sep =",";
+       });
+       return selected;
+}
+
 bas_frmx_listframe.prototype.Reload = function(data, selected, size, scrollSize){
 	var pos =1;
 	var nelem = data.length;
