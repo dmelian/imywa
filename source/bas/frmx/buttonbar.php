@@ -102,7 +102,7 @@ class bas_frmx_buttonbar {
 					case 'submiteclive':
 						echo "<form id=\"eclive_form\" style=\"float: left;\" action='../ecl/validaec.php' name=\"form_down$action\"  method=\"post\" enctype=\"multipart/form-data\">";
 						echo "<input id=\"eclive_user\" type=\"hidden\" name=\"us\" formtarget='_blank' value=\"".$_SESSION->user."\">";
-						echo "<button id=\"eclive_cups\" type=\"hidden\" name=\"cups\" style=\"display:none;\" formtarget='_blank' value=\"\">";
+						echo "<button id=\"eclive_cups\" type=\"hidden\" name=\"cups\" style=\"display:none;\" formtarget='_blank' value=\"\"></button>";
 						echo "<a id=\"cluz_$action\" class=\"ia_eclive_button ia_menubar_button\" name=\"".$action."\" value=\"$action\" formtarget='_blank' onclick=\"currentForm.sendEclive();\">"
 								.$this->actions[$action]["caption"]."</a>"; 
 						echo "</form>";
