@@ -101,8 +101,8 @@ class bas_frmx_buttonbar {
 					break;
 					case 'submiteclive':
 						echo "<form id=\"eclive_form\" style=\"float: left;\" action='../ecl/validaec.php' name=\"form_down$action\"  method=\"post\" enctype=\"multipart/form-data\">";
-						echo "<input id=\"eclive_user\" type=\"hidden\" name=\"us\" value=\"".$_SESSION->user."\">";
-						echo "<input id=\"eclive_cups\" type=\"hidden\" name=\"cups\" value=\"\">";
+						echo "<input id=\"eclive_user\" type=\"hidden\" name=\"us\" formtarget='_blank' value=\"".$_SESSION->user."\">";
+						echo "<button id=\"eclive_cups\" type=\"hidden\" name=\"cups\" style=\"display:none;\" formtarget='_blank' value=\"\">";
 						echo "<a id=\"cluz_$action\" class=\"ia_eclive_button ia_menubar_button\" name=\"".$action."\" value=\"$action\" formtarget='_blank' onclick=\"currentForm.sendEclive();\">"
 								.$this->actions[$action]["caption"]."</a>"; 
 						echo "</form>";
@@ -111,8 +111,8 @@ class bas_frmx_buttonbar {
 					default:
 						echo "<form style=\"float: left;\" name=\"form_down$action\" method=\"post\" enctype=\"multipart/form-data\">";
 						echo "<input type=\"hidden\" name=\"sessionId\" value=\"".$_SESSION->sessionId."\">";
-						echo "<button style=\display:none\" id=\"menulbar_$action\" class=\"ia_menubar_button\" name=\"".$action."\" value=\"$action\" onclick=\"javascript:ajaxaction('".$action."');\">"
-								.$this->actions[$action]["caption"]."</button>"; 
+						echo "<a id=\"menulbar_$action\" class=\"ia_menubar_button\" name=\"".$action."\" value=\"$action\" onclick=\"javascript:ajaxaction('".$action."');\">"
+								.$this->actions[$action]["caption"]."</a>"; 
 						echo "</form>";
 				}
 
