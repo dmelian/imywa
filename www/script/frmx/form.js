@@ -363,7 +363,7 @@ bas_frmx_form.prototype.selectedItems= function(){
 
 bas_frmx_form.prototype.sendEclive= function(){
 	$("#eclive_cups").attr("value",currentForm.frames["cups"].getSelectedField("cups"));
-	$("#eclive_form").click();
+	$("#eclive_cups").click();
 };
 
 // -------------------------------------------------
