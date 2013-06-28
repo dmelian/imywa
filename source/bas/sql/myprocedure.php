@@ -35,9 +35,10 @@ class bas_sql_myprocedure{
 	public $errorCode;
 	
 	
-	public function __construct($procedure, $params=array()){
+	public function __construct($procedure, $params=array(), $langId=''){
 		global $_SESSION;
 		global $_LOG;
+		global $_LANG;
 		$_SESSION->apps[$_SESSION->currentApp]->getMainDb($hostname, $databasename);
 		
 		$connection = mysqli_init();
@@ -52,8 +53,15 @@ class bas_sql_myprocedure{
 				if ($result = $connection->use_result()){
 					$this->result = $result->fetch_assoc();
 					$result->close();
-					extract($this->result, EXTR_PREFIX_ALL,'');
-					if (isset($this->result['message']))eval ('$this->errormsg = "' . $this->result['message'] . '";');
+					if (isset($this->result['idMessage'])) {
+						if (!$langId) $langId= $_SESSION->apps[$_SESSION->currentApp]->source . '_sqlerr';
+						$_LANG->load($langId);
+						$this->errormsg= $_LANG->getCaption("{$langId}_{$this->result['idMessage']}", $this->result);
+					} elseif(isset($this->result['message'])) {
+						extract($this->result, EXTR_PREFIX_ALL,'');
+						$msgPattern= $this->result['message'];
+						eval ("\$this->errormsg = \"$msgPattern\";");
+					}
 					$this->success = !$this->result['error'];
 					$this->errorCode = $this->result['error'];
 				}
