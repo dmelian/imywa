@@ -218,7 +218,9 @@ class bas_frmx_gridFrame extends bas_frmx_frame{
 		
 	}
 
-
+	public function OnChiquito(){
+		echo "Este es el caballo que viene de Bonanza";
+	}
 	
 /*
 ###################################################################################################
