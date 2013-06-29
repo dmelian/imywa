@@ -26,9 +26,9 @@ class bas_frmx_panelGrid {
 	public $grid;
 	public $components=array();
 	
-	public $classMain;
-	public $classSuper;
-	public $classSub;
+	public $classMain; // what's that ? it is not used on code.
+	public $classSuper; //?
+	public $classSub; //?
 	public $id;
 	
 	protected $mode;
@@ -98,7 +98,7 @@ class bas_frmx_panelGrid {
 		return NULL;
 	}
 	
-	public function OnPaint($mainGrid=""){
+	public function OnPaint($mainGrid=""){ // ¿que es maingrid? Parece ser el identificador del FrameGrid al que pertenece el PanelGrid
 		$html = new bas_html_panelGrid($this);
 		$html->OnPaint($mainGrid);	
 	}

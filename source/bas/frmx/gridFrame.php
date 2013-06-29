@@ -121,13 +121,14 @@ class bas_frmx_gridFrame extends bas_frmx_frame{
 		$this->header = $header;
 	}
 	
+/*	¿¿¿¿¿ accede a components[pos] cuando components[y][x] ?????
 	public function getComponent($pos){
 		if ($this->query->existField($this->components[$pos]["id"]))	return $this->query->getField($this->components[$pos]["id"]);	
 		
 // 		if (isset($this->query->cols[$this->components[$pos]["id"]]))	return $this->query->cols[$this->components[$pos]["id"]];	
 		return NULL;
 	}
-	
+*/	
 	public function getObjComponent($id){
         for($y=1;$y <= $this->grid["height"]; $y++){
             for($x=1;$x <= $this->grid["width"]; $x++){
@@ -170,7 +171,7 @@ class bas_frmx_gridFrame extends bas_frmx_frame{
 	}
 	
 	
-	public function delComponent($id){
+	public function delComponent($id){ //no funciona ahorra components es una array de arrays
         foreach($this->components as $item => $component){
             if ($component['id'] == $id)  unset($this->components[$item]);
         }
@@ -262,6 +263,7 @@ class bas_frmx_gridFrame extends bas_frmx_frame{
 						if ($sort[$tabCurrent][$y][$x+$indice] != -2) $this->conflictPos($tabCurrent,$x,$y,$this->components[$indComp]["id"]);
 						$sort[$tabCurrent][$y][$x+$indice] = -1;
 					}
+					// ¿ que pasa con la altura ? no existen componentes de mas de 1 fila.?
 				}
 			}	
 	    }
