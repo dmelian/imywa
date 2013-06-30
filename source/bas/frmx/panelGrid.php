@@ -45,6 +45,8 @@ class bas_frmx_panelGrid {
 		$this->type = "gridPanel";
 	}
 	
+// Beware with the cut and paste. We are including ghost code which never are going to be executed.
+// setMode, getMode, uploadFile, ...
 	public function SetMode($mode="edit"){
 		switch ($mode){
 			case "edit":case "read": // ### en el caso del new, ¿tenemos que limpiar el contenido del current? (si)

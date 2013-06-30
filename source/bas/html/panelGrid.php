@@ -19,10 +19,10 @@ along with imywa.  If not, see <http://www.gnu.org/licenses/>.
 */
 class bas_html_panelGrid{
 
-	public $card;
-	private $top,$size_height;
-	private $measure;
-	private $mainGrid;
+	public $card; //what card?. It is a pannel, isn't it?
+	private $top,$size_height; //we don't use this.
+	private $measure; // Is this really needed?
+	private $parentFrameId; //$mainGrid;
 	
 	protected $typePanel;
 	
@@ -34,9 +34,8 @@ class bas_html_panelGrid{
 		$this->typePanel = $card->type;
 	}
 	
-	public function OnPaint($mainGrid=""){
-		global $_SESSION;
-		$this->mainGrid = $mainGrid;
+	public function OnPaint($parentFrameId=""){
+		$this->parentFrameId = $parentFrameId;
 		echo "<div style=\"width:100%;height:100%;\">";
             $this->paintComponents();
 		echo "</div>";
@@ -56,7 +55,7 @@ class bas_html_panelGrid{
                     if (isset($this->card->components[$row][$colom])){
                         $component = $this->card->components[$row][$colom];
                         
-                        $onclick = "onclick=\"ajaxaction('{$component["event"]}', {'idPanel':'{$this->card->id}','idFrame':'{$this->mainGrid}','item':'{$component["id"]}'});\"";
+                        $onclick = "onclick=\"ajaxaction('{$component["event"]}', {'idPanel':'{$this->card->id}','idFrame':'{$this->parentFrameId}','item':'{$component["id"]}'});\"";
                         echo "<button style=\"height:100%;width:100%;position:relative;\" $onclick value=\"".$component["id"]."\">".
 								"<label style=\"position: absolute;top: 0px;left: 50%;\"> {$component["subItem"]} </label>".
 								"<label >{$component["caption"]}</label>".
