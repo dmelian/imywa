@@ -23,10 +23,17 @@ class bas_frmx_panelGridQuery extends bas_frmx_panelGrid {
 	public $query;
 	protected $posIni;
 	protected $posFin;
+	
+	public $mainField; // query field id for the main caption. 
+	public $topField; // query field id for the top caption.
+	public $bottomField; // query field id for the bottom caption. 
+	
+	
+	
 	public function __construct($id,$grid="",$query="") {
         parent::__construct($id,$grid);
         if (!$query) $query = new bas_sqlx_querydef();
-        $this->query = $query;
+        $this->query = $query;	
         $this->posFin = $this->posIni = 1;
         $this->type = "gridQuery";
     }
@@ -57,8 +64,6 @@ class bas_frmx_panelGridQuery extends bas_frmx_panelGrid {
 // 		$this->record->SetViewWidth($this->n_item);
 	}	
 	
-	public function reloadData(){}
-	
 	public function Reload(){
 		$this->record->query = $this->query;
 		$this->record->load_data();
@@ -66,47 +71,7 @@ class bas_frmx_panelGridQuery extends bas_frmx_panelGrid {
 		$this->createGrid();
 	}
 	
-	public function uploadFile($id,$name){
-		global $_SESSION;	
-		$localDir = "/var/www/apps/upload/".$_SESSION->apps[$_SESSION->currentApp]->source."/docs/";
-			// Insertamos el fichero en el servidor	
-		if  ($_FILES[$id]["size"] < 20000)	{
-			if ($_FILES[$id]["error"] > 0){
-				return "Return Code: " . $_FILES[$id]["error"] . "<br />";
-			}
-			else{ // alamacenamos el fichelos en el directorio indicado.
-				move_uploaded_file($_FILES[$id]["tmp_name"],
-				$localDir . $id);			  //### TODO:sustituir el contaluz por la aplicacion actual   // "/var/www/apps/upload/contaluz/docs/"
-			}
-		}
-		else{ return "Invalid file"; }
-		return NULL;	
-	}
-	
-	public function setLabelWidth($width){
-		$this->labelwidth = $width;
-	}
-	
-// 	public function getComponent($y,$x){
-// 		if (isset($this->components[$y][$x]))	return $this->components[$y][$x]["id"];	
-// 		return NULL;
-// 	}
-	
-	public function setAttr($id,$attr,$value){
-// 	    if (isset($this->query->cols[$id])){
-// 			$this->query->cols[$id]->setAttr($attr,$value);	
-// 	    }
-		if ($this->query->existField($id)){
-			$this->query->getField($id)->setAttr($attr,$value);	
-	    }
-	    else{
-			global $_LOG;
-			$_LOG->log("Componente $id no asignado. FRMX_CardFrame::setAttr");
-	    }
-	}
 
- 
-    
     protected function createGrid(){
         unset($this->components);
         $this->component = array();
@@ -136,7 +101,7 @@ class bas_frmx_panelGridQuery extends bas_frmx_panelGrid {
                     if (! isset($data[$sig])) break;
                     if (($ultimo== 1) and ( (($y*$this->grid["width"]) +$x) == ($this->numItems()-1)))$this->addComponent($this->grid["height"],$this->grid["width"],"#","#","nextGrid");
                     else  {
-                        $this->addComponent($y+1,$x+1,$data[$sig][$this->classMain],$data[$sig][$this->classMain]);
+                        $this->addComponent($y+1,$x+1,$data[$sig][$this->mainField],$data[$sig][$this->mainField]);
                         $ind++;
                     }
                     
@@ -150,30 +115,14 @@ class bas_frmx_panelGridQuery extends bas_frmx_panelGrid {
 //         $_LOG->log("Valor anterior al actual!!". $this->posIni);
     }
 	
-	public function saveData($data){
-	  //unset($this->record->current);
-		
-		if (isset($data)){
-//			$this->record->current = [];
-			foreach ($data as $field => $value){
-				$this->record->current[$field] = $value;
-			}
-		}
-	}
-	
-	public function selecttab($tab){// marcamos como seleccionado el tab indicado
-		
-	}
-	
-
 	
 	public function OnAction($action, $data){
-	global $_LOG;
 	
 		switch($action){
-			case "nextGrid": $this->nextView(); break; //
+			case "nextGrid": $this->nextView(); break; 
 			case "prevGrid": $this->previousView(); break;
-			case "pdf":  $this->OnPdf(); break;
+			case "pdf":   $this->OnPdf(); break;
+			case "csv":  $this->OnCsv(); break;
 		}
 	}
 	
@@ -198,18 +147,6 @@ class bas_frmx_panelGridQuery extends bas_frmx_panelGrid {
     }
 	
 	
-	public function Oncsv($csv){
-		$csvcard=new bas_csv_card();
-		$csvcard->loadcard($this);
-		//$csvcard->prepare();
-		$csvcard->Onprint($csv);
-	}
-	
-	public function OnPdf($pdf){
-		$pdfcard=new bas_pdf_card();
-		$pdfcard->OnPdf($pdf,$this);
-		
-	}
 }
 
 ?>

@@ -18,17 +18,13 @@
 	along with imywa.  If not, see <http://www.gnu.org/licenses/>.
 */
 class bas_frmx_panelGrid {
+
 	public $jsClass= "bas_frmx_cardframe";
-// 	public $record;
-	public $query;
 	public $labelwidth;
 	
 	public $grid;
 	public $components=array();
 	
-	public $classMain; // what's that ? it is not used on code.
-	public $classSuper; //?
-	public $classSub; //?
 	public $id;
 	
 	protected $mode;
@@ -141,11 +137,8 @@ class bas_frmx_panelGrid {
 	public function OnAction($action, $data){
 	global $_LOG;
 		switch($action){
-			case "first": $this->record->first(); break;
-			case "previous": $this->record->previous(); break;
-			case "next": $this->record->next(); break;
-			case "last": $this->record->last(); break;
 			case "pdf":  $this->OnPdf(); break;
+			case "csv":  $this->OnCsv(); break;
 		}
 	}
 	

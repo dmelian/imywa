@@ -27,10 +27,6 @@ class bas_frmx_gridFrame extends bas_frmx_frame{
 	public $grid;
 	public $components=array();
 	
-	public $classMain;
-	public $classSuper;
-	public $classSub;
-	
 	public $header;
 	
 	protected $mode; // ###: ABORRAR
