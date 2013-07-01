@@ -31,13 +31,14 @@ class bas_frmx_panelGrid {
 	public $type;
 	protected $gnrEvent;
 	
-	public function __construct($id,$grid="") {
+	public function __construct($id,$grid="",$event=null) {
 		$this->id = $id;
 		if (!$grid) $grid = array('width'=>4,'height'=>5);
 		$this->grid= $grid;
 		$this->labelwidth = 30;
-		$this->mode = "edit";
+		$this->mode = "enable";
 		$this->type = "gridPanel";
+		$this->gnrEvent = $event;
 	}
 	
 // Beware with the cut and paste. We are including ghost code which never are going to be executed.
@@ -61,23 +62,6 @@ class bas_frmx_panelGrid {
 		return $this->mode;		
 	}
 	
-// 	public function uploadFile($id,$name){
-// 		global $_SESSION;	
-// 		$localDir = "/var/www/apps/upload/".$_SESSION->apps[$_SESSION->currentApp]->source."/docs/";
-// 			// Insertamos el fichero en el servidor	
-// 		if  ($_FILES[$id]["size"] < 20000)	{
-// 			if ($_FILES[$id]["error"] > 0){
-// 				return "Return Code: " . $_FILES[$id]["error"] . "<br />";
-// 			}
-// 			else{ // alamacenamos el fichelos en el directorio indicado.
-// 				move_uploaded_file($_FILES[$id]["tmp_name"],
-// 				$localDir . $id);			  //### TODO:sustituir el contaluz por la aplicacion actual   // "/var/www/apps/upload/contaluz/docs/"
-// 			}
-// 		}
-// 		else{ return "Invalid file"; }
-// 		return NULL;	
-// 	}
-	
 	public function setLabelWidth($width){
 		$this->labelwidth = $width;
 	}
@@ -90,10 +74,7 @@ class bas_frmx_panelGrid {
         $this->gnrEvent = $event;
     }
 	
-	public function getComponent($y,$x){
-		if (isset($this->components[$y][$x]))	return $this->components[$y][$x]["id"];	
-		return NULL;
-	}
+	
 	
 	public function OnPaint($mainGrid=""){ // ¿que es maingrid? Parece ser el identificador del FrameGrid al que pertenece el PanelGrid
 		$html = new bas_html_panelGrid($this);
@@ -109,7 +90,7 @@ class bas_frmx_panelGrid {
 		if (isset($this->components[$y][$x])) $this->components[$y][$x][$attr] = $value;
 	}
 	
-	public function setAttrId($id,$attr,$value){
+	/*public function setAttrId($id,$attr,$value){
 		for ($row = 0; $row < $this->grid["height"]; $row++){
 			for($column = 0; $column < $this->grid["width"]; $column++){
 				if (isset($this->components[$row][$column])){
@@ -120,21 +101,50 @@ class bas_frmx_panelGrid {
 				}
 			}
 		}
+	}*/
+	
+	public function setAttrId($id,$attr,$value){
+		$component = $this->getComponent($id);
+		if (isset($component)){ 
+			$this->components[$component["row"]][$component["column"]][$attr] = $value;
+			return true;
+		}
+		else{
+			global $_LOG;
+			$_LOG->log("No existe el componente $id. ".get_class($this)."::setAttrId");
+			return false;
+		}
+	}
+	
+	public function getComponent($id){
+		for ($row = 0; $row < $this->grid["height"]; $row++){
+			for($column = 0; $column < $this->grid["width"]; $column++){
+				if (isset($this->components[$row][$column])){
+					if($this->components[$row][$column]["id"] == $id){ 
+						$aux = array("row"=>$row,"column" =>$column);
+						return $aux;
+					}
+				}
+			}
+		}
+		return null;
 	}
 	
 	public function delComponent($id){
-        foreach($this->components as $item => $component){
-            if ($component['id'] == $id)  unset($this->components[$item]);
-        }
-	}
-	
-	
-	public function selecttab($tab){// marcamos como seleccionado el tab indicado
-		
+        $component = $this->getComponent($id);
+		if (isset($component)){ 
+			unset ($this->components[$component["row"]][$component["column"]]);
+			return true;
+		}
+		else{
+			global $_LOG;
+			$_LOG->log("No existe el componente $id. ".get_class($this)."::setAttrId");
+			return false;
+		}
 	}
 	
 	public function OnAction($action, $data){
-	global $_LOG;
+		global $_LOG;
 		switch($action){
 			case "pdf":  $this->OnPdf(); break;
 			case "csv":  $this->OnCsv(); break;
