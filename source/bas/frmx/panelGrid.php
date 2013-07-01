@@ -30,7 +30,6 @@ class bas_frmx_panelGrid {
 	protected $mode;
 	public $type;
 	protected $gnrEvent;
-// 	protected $actions=array();
 	
 	public function __construct($id,$grid="") {
 		$this->id = $id;
@@ -43,12 +42,12 @@ class bas_frmx_panelGrid {
 	
 // Beware with the cut and paste. We are including ghost code which never are going to be executed.
 // setMode, getMode, uploadFile, ...
-	public function SetMode($mode="edit"){
+	public function SetMode($mode="enable"){
 		switch ($mode){
-			case "edit":case "read": // ### en el caso del new, ¿tenemos que limpiar el contenido del current? (si)
+			case "disable":
 				$this->mode = $mode;
 			break;
-			case "new":	
+			case "enable":	
 				$this->mode = $mode;
 				$this->record->original = $this->record->current = array();
 			break;
@@ -62,22 +61,22 @@ class bas_frmx_panelGrid {
 		return $this->mode;		
 	}
 	
-	public function uploadFile($id,$name){
-		global $_SESSION;	
-		$localDir = "/var/www/apps/upload/".$_SESSION->apps[$_SESSION->currentApp]->source."/docs/";
-			// Insertamos el fichero en el servidor	
-		if  ($_FILES[$id]["size"] < 20000)	{
-			if ($_FILES[$id]["error"] > 0){
-				return "Return Code: " . $_FILES[$id]["error"] . "<br />";
-			}
-			else{ // alamacenamos el fichelos en el directorio indicado.
-				move_uploaded_file($_FILES[$id]["tmp_name"],
-				$localDir . $id);			  //### TODO:sustituir el contaluz por la aplicacion actual   // "/var/www/apps/upload/contaluz/docs/"
-			}
-		}
-		else{ return "Invalid file"; }
-		return NULL;	
-	}
+// 	public function uploadFile($id,$name){
+// 		global $_SESSION;	
+// 		$localDir = "/var/www/apps/upload/".$_SESSION->apps[$_SESSION->currentApp]->source."/docs/";
+// 			// Insertamos el fichero en el servidor	
+// 		if  ($_FILES[$id]["size"] < 20000)	{
+// 			if ($_FILES[$id]["error"] > 0){
+// 				return "Return Code: " . $_FILES[$id]["error"] . "<br />";
+// 			}
+// 			else{ // alamacenamos el fichelos en el directorio indicado.
+// 				move_uploaded_file($_FILES[$id]["tmp_name"],
+// 				$localDir . $id);			  //### TODO:sustituir el contaluz por la aplicacion actual   // "/var/www/apps/upload/contaluz/docs/"
+// 			}
+// 		}
+// 		else{ return "Invalid file"; }
+// 		return NULL;	
+// 	}
 	
 	public function setLabelWidth($width){
 		$this->labelwidth = $width;

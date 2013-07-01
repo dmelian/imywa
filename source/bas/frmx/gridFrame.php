@@ -32,10 +32,8 @@ class bas_frmx_gridFrame extends bas_frmx_frame{
 	protected $mode; // ###: ABORRAR
 // 	protected $actions=array();
 	
-	public function __construct($id,$tabs,$grid="",$query="") {
+	public function __construct($id,$tabs,$grid="") {
 		parent::__construct($id);
-		if ($query == "")$this->query = new bas_sqlx_querydef();
-		else $this->query = $query;
 		if ($grid=="") $grid=array('width'=>4,'height'=>5);
 		$this->grid= $grid;
 		$this->tabs= $tabs;
@@ -45,52 +43,28 @@ class bas_frmx_gridFrame extends bas_frmx_frame{
 		$this->header= "";
 	}
 	
-	
-	/*  // ###: ABORRAR
-	public function SetMode($mode="edit"){
-		switch ($mode){
-			case "edit":case "read": // ### en el caso del new, ¿tenemos que limpiar el contenido del current? (si)
-				$this->mode = $mode;
-			break;
-			case "new":	
-				$this->mode = $mode;
-				$this->record->original = $this->record->current = array();
-			break;
-			default:		
-				global $_LOG;
-				$_LOG->log("El modo insertado en FRMX_CardFrame::SetMode es incorrecto");
-		}
-	}
-	
-	public function GetMode(){
-		return $this->mode;		
-	}
-	
-	*/
-	
-	public function setRecord(){
-	  	$this->record = new bas_sqlx_record($this->query);		
-		$this->record->load_data();
-		$this->record->first();
-	}
-	
-	public function initRecord(){
-	  	$this->record = new bas_sqlx_record($this->query);		
-		$this->record->initRecord();
-	}
-	
-	public function createRecord(){
-		$this->record = new bas_sqlx_record($this->query);
-// 		$this->record->SetViewWidth($this->n_item);
-	}	
-	
-	public function reloadData(){}
-	
-	public function Reload(){
-		$this->record->query = $this->query;
-		$this->record->load_data();
-		$this->record->first();
-	}
+	// ### A BORRRAR
+// 	public function setRecord(){
+// 	  	$this->record = new bas_sqlx_record($this->query);		
+// 		$this->record->load_data();
+// 		$this->record->first();
+// 	}
+// 	
+// 	public function initRecord(){
+// 	  	$this->record = new bas_sqlx_record($this->query);		
+// 		$this->record->initRecord();
+// 	}
+// 	
+// 	public function createRecord(){
+// 		$this->record = new bas_sqlx_record($this->query);
+// // 		$this->record->SetViewWidth($this->n_item);
+// 	}	
+// 	
+// 	public function Reload(){
+// 		$this->record->query = $this->query;
+// 		$this->record->load_data();
+// 		$this->record->first();
+// 	}
 	
 	public function uploadFile($id,$name){
 		global $_SESSION;	
@@ -117,15 +91,7 @@ class bas_frmx_gridFrame extends bas_frmx_frame{
 		$this->header = $header;
 	}
 	
-/*	¿¿¿¿¿ accede a components[pos] cuando components[y][x] ?????
-	public function getComponent($pos){
-		if ($this->query->existField($this->components[$pos]["id"]))	return $this->query->getField($this->components[$pos]["id"]);	
-		
-// 		if (isset($this->query->cols[$this->components[$pos]["id"]]))	return $this->query->cols[$this->components[$pos]["id"]];	
-		return NULL;
-	}
-*/	
-	public function getObjComponent($id){
+/*	public function getObjComponent($id){
         for($y=1;$y <= $this->grid["height"]; $y++){
             for($x=1;$x <= $this->grid["width"]; $x++){
                 if(isset($this->components[$y][$x])){
@@ -138,22 +104,40 @@ class bas_frmx_gridFrame extends bas_frmx_frame{
                 
             }
         }
-        
+        return null;
+	}*/
+
+	public function getObjComponent($id){
+        $component = $this->getComponent($id);
+        if (isset($component)) {
+			$aux = &$component["obj"];
+			return $aux;
+        }
+        else return null;
+	}
+	
+	private function getComponent($id){
+		for($y=1;$y <= $this->grid["height"]; $y++){
+            for($x=1;$x <= $this->grid["width"]; $x++){
+                if(isset($this->components[$y][$x])){
+                    if ($id == $this->components[$y][$x]["id"]){
+						$aux = &$this->components[$y][$x];
+						return $aux;
+                    }
+                }
+                
+            }
+        }
         return null;
 	}
 	
-	
-	
-	public function setAttr($id,$attr,$value){
-// 	    if (isset($this->query->cols[$id])){
-// 			$this->query->cols[$id]->setAttr($attr,$value);	
-// 	    }
-		if ($this->query->existField($id)){
-			$this->query->getField($id)->setAttr($attr,$value);	
-	    }
+	public function setAttr($grid,$id,$attr,$value){
+		$objGrid = $this->getObjComponent($grid);
+		if (isset($objGrid)) return $objGrid->setAttr($id,$attr,$value);
 	    else{
 			global $_LOG;
-			$_LOG->log("Componente $id no asignado. FRMX_CardFrame::setAttr");
+			$_LOG->log("Grid  $grid inexistente. ".get_class($this).":SetAttr");
+			return false;
 	    }
 	}
 
@@ -162,33 +146,23 @@ class bas_frmx_gridFrame extends bas_frmx_frame{
 		$html->OnPaint($page);	
 	}
 	
-	public function addComponent( $field_id,$obj,$y=0, $x=0,$width=1,$height=1,$paintCaption=true){
-          $this->components[$y][$x] = array("id"=>$field_id,"obj"=>$obj,"width"=>$width,"height"=>$height,"caption"=>$paintCaption);
+	public function addComponent( $field_id,$obj,$y=0, $x=0,$width=1,$height=1){
+          $this->components[$y][$x] = array("id"=>$field_id,"obj"=>$obj,"width"=>$width,"height"=>$height);
 	}
 	
 	
 	public function delComponent($id){ //no funciona ahorra components es una array de arrays
-        foreach($this->components as $item => $component){
-            if ($component['id'] == $id)  unset($this->components[$item]);
+        $component = $this->getComponent($id);
+        if (isset($component)){
+			unset($component); // ###! a testear.
+			return true;
+        }
+        else{ 
+			global $_LOG;
+			$_LOG->log("No existe el componente $id. ".get_class($this)."::delComponent");
+			return false;
         }
 	}
-	
-	public function saveData($data){
-	  //unset($this->record->current);
-		
-		if (isset($data)){
-//			$this->record->current = [];
-			foreach ($data as $field => $value){
-				$this->record->current[$field] = $value;
-			}
-		}
-	}
-	
-	public function selecttab($tab){// marcamos como seleccionado el tab indicado
-		
-	}
-	
-
 	
 	public function OnAction($action, $data){
 	global $_LOG;
@@ -214,10 +188,6 @@ class bas_frmx_gridFrame extends bas_frmx_frame{
 		
 	}
 
-	public function OnChiquito(){
-		echo "Este es el caballo que viene de Bonanza";
-	}
-	
 /*
 ###################################################################################################
 #######		funciones utilizadas para la organización de los componentes ordenados.  ##########
