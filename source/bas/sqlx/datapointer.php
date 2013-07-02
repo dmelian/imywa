@@ -23,16 +23,20 @@ class bas_sqlx_datapointer{
 	public $query; // private o protected ¿?
 	public $current;
 	public $original;
-	protected $pos_current, $size;
+	protected $currentPos, $size;
 	protected $key;
 	protected $fileName;	
 	protected $connect;
 	protected $pivot;			// Será un array asociativo donde pivot["pivot"] = campo pivotante y pivot["value"] = "campo contenedor del valor"
 	
+	protected $offset_PosFile=0;
+	protected $maxSize_Record=0;
+	protected $sizeMax_record=0;
+	
 	public function __construct($queryObj){
 	    $this->query = $queryObj;
 	    $this->size = 0;  // ### Lo establecemos para la realización de las pruebas
-	    $this->pos_current = 0;
+	    $this->currentPos = 0;
 	    
 	    $pref = (get_called_class() == "bas_sqlx_record")? "RC":"DTV";
 	    global $_SESSION; //bas_sysx_session;
@@ -62,37 +66,37 @@ class bas_sqlx_datapointer{
 	
 	public function first_pos($limit){	    
 	    $this->MySQL($this->createQueryPos($limit,0),$limit);
-	    $this->pos_current = 0;
+	    $this->currentPos = 0;
 	}
 	
 	public function last_pos($limit){	    
 	   /* $this->MySQL($this->createQueryPos($limit,$this->size-$limit),$limit); //antes true
-	    $this->pos_current = $this->size -$limit;*/
+	    $this->currentPos = $this->size -$limit;*/
 	    $pos = $this->size - ($limit % $this->size);
 	    if ($pos >= 0){
 		$this->MySQL($this->createQueryPos($limit,$pos),$limit); 
-		$this->pos_current = $pos;
+		$this->currentPos = $pos;
 	    }
 	}
 	
 	public function prox_next($limit,$pos=""){
 		if ($pos === ""){
-			$pos = $this->pos_current + $limit;
+			$pos = $this->currentPos + $limit;
 		}	    
 	    if ($pos<$this->size){
 			$this->MySQL($this->createQueryPos($limit,$pos),$limit);
-			$this->pos_current = $pos;
+			$this->currentPos = $pos;
 	    }
 	}
 	
 	public function prox_previous($limit,$pos=""){
 	    if ($pos === ""){
-			$pos = $this->pos_current - $limit;
+			$pos = $this->currentPos - $limit;
 		}
 		
 	    if ($pos > -1){
 			$this->MySQL($this->createQueryPos($limit,$pos),$limit); // antes true
-			$this->pos_current = $pos;
+			$this->currentPos = $pos;
 	    }
 	}
 	
@@ -167,14 +171,15 @@ class bas_sqlx_datapointer{
 		      Acceso a los registros mediante el uso de ficheros.
   ############################################################################################################################################
 */
-	protected function acces_posfile($pos,$limit){ 
+/*	protected function acces_posfile($pos,$limit){ 
 	// TO-DO: Gestionar la posible inexistencia del fichero. Desidir el nombre y ubicación final
+		global $_LOG;
 	    $vector = unserialize(file_get_contents($this->fileName));
 // 	    global $_LOG;
 	    if (!isset($vector[$pos])) return NULL;
-	    
+		$this->new_acces($pos,$limit);
+		
 		if ($pos <= $this->size){
-
 			if ($limit == 1) return $vector[$pos];
 			
 			$register = "";
@@ -187,10 +192,61 @@ class bas_sqlx_datapointer{
 			return $register;
 		}
 		else{
-			global $_LOG;
 			$_LOG->log(get_class($this)."::acces_posfile. Se ha sobrepasado el maximo {$this->size}");
 			return array();
 		}
+	}*/
+	
+// 	protected function new_acces($pos,$limit){
+
+	protected function acces_posfile($pos,$limit){
+		global $_LOG;
+// 	    $_LOG->debug("######### 		Comienzo del unserialize		 #########",array());
+	    if (($pos >= 0) && ($pos <= $this->size)){
+			$file = fopen("/usr/local/imywa/temp/serialize.data","r");
+			
+			if ($this->currentPos <= $pos ){ // positive access.
+				fseek($file,$this->offset_PosFile); // ### Controlar el acceso correcto.
+				$numPos = $pos - $this->currentPos;
+				for($ind=0;$ind < $numPos; $ind++) fgets($file);
+				$this->offset_PosFile = ftell($file);
+				$this->currentPos = $pos;
+			}
+			else{ // negative access.
+			// ### Posible mejora: Para no realizar una relectura de los siguentes elementos a la nueva posicion. Podríamos saltarlos en la lectura final.
+				$gapPos = $this->currentPos - $pos;
+				$offset = $this->offset_PosFile - $this->sizeMax_record*4*($gapPos+1);
+				if ($offset < 0) $offset = 0;
+				fseek($file,$offset);
+				if ($offset != 0)fgets($file);
+				
+				$array_offset = array();
+				$array_offset[]  = ftell($file);
+				while ( (ftell($file) != $this->offset_PosFile)  and ( !feof($file) )  ) { 
+					fgets($file);
+					$array_offset[]  = ftell($file);
+				}
+// 				$_LOG->debug("PosAct:: {$this->currentPos} OffsetCur::{$this->offset_PosFile} OFFSET incial:: $offset Posicion $pos::GAP $gapPos:: INDICE::".(count($array_offset)-$gapPos),$array_offset);
+				$this->offset_PosFile = $array_offset[count($array_offset)-$gapPos-1]; 
+				$this->currentPos = $pos;
+				fseek($file,$this->offset_PosFile);
+			}
+			
+			for($ind=0;( ($ind < $limit) and (!feof($file)) ); $ind++) {
+				$register[$ind] =unserialize(fgets($file));
+// 				$_LOG->debug("Valor unserialize:: ",$contenido);
+			}
+			
+// 			while (!feof($file)) { 
+// 				$contenido = unserialize(fgets($file));
+// 				$_LOG->debug("Valor unserialize:: ",$contenido);
+// 			}
+			
+			fclose($file);
+			return $register;
+		}
+		$_LOG->log(get_class($this)."::acces_posfile. Se ha sobrepasado el maximo {$this->size}");
+		return array();
 	}
 	
 	protected function save_data(){ // almacenamos la informacion obtenida en fichero
@@ -199,11 +255,22 @@ class bas_sqlx_datapointer{
 	    if (!$file) $_LOG->log("Error durante la apertura de fichero. DataPointer::save_data");
 		$this->size = count($this->current);
 	    $data = serialize($this->current);
-
+	    
+	    
 	    if (fwrite($file,$data)===false) {
 			$_LOG->log("Error durante la escritura. DataPointer::save_data");
 	    }
 	    fclose($file);
+	    
+	    $file = fopen("/usr/local/imywa/temp/serialize.data","w");
+		foreach($this->current as $index => $row){
+			$content = serialize($row)."\n";
+			fwrite($file,serialize($row)."\n");
+			$size = strlen($content);
+			if ($size > $this->sizeMax_record)$this->sizeMax_record=$size;
+		}
+// 		$_LOG->debug("Tamaño max: {$this->sizeMax_record}",array());
+		fclose($file);
 	}
 	
 	public function load_data(){
@@ -221,12 +288,12 @@ class bas_sqlx_datapointer{
 	}
 	
 	public function next_file($limit){
-	    $pos = $this->pos_current + $limit;
+	    $pos = $this->currentPos + $limit;
 	    $this->data_posfile($pos,$limit);
 	}
 	
 	public function previous_file($limit){
-	    $pos = $this->pos_current - $limit;
+	    $pos = $this->currentPos - $limit;
 	    $this->data_posfile($pos,$limit);
 	}
 	
@@ -236,7 +303,7 @@ class bas_sqlx_datapointer{
 			if (isset($rows)){
 				$this->current = $rows;
 				$this->original = $rows;
-				$this->pos_current = $pos;
+				$this->currentPos = $pos;
 			}
 	    }
 	}
