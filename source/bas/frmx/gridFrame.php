@@ -43,29 +43,6 @@ class bas_frmx_gridFrame extends bas_frmx_frame{
 		$this->header= "";
 	}
 	
-	// ### A BORRRAR
-// 	public function setRecord(){
-// 	  	$this->record = new bas_sqlx_record($this->query);		
-// 		$this->record->load_data();
-// 		$this->record->first();
-// 	}
-// 	
-// 	public function initRecord(){
-// 	  	$this->record = new bas_sqlx_record($this->query);		
-// 		$this->record->initRecord();
-// 	}
-// 	
-// 	public function createRecord(){
-// 		$this->record = new bas_sqlx_record($this->query);
-// // 		$this->record->SetViewWidth($this->n_item);
-// 	}	
-// 	
-// 	public function Reload(){
-// 		$this->record->query = $this->query;
-// 		$this->record->load_data();
-// 		$this->record->first();
-// 	}
-	
 	public function uploadFile($id,$name){
 		global $_SESSION;	
 		$localDir = "/var/www/apps/upload/".$_SESSION->apps[$_SESSION->currentApp]->source."/docs/";

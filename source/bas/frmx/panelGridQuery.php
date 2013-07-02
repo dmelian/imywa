@@ -30,24 +30,28 @@ class bas_frmx_panelGridQuery extends bas_frmx_panelGrid {
 	
 	
 	
-	public function __construct($id,$grid="",$query="") {
+	public function __construct($id,$grid="") {
         parent::__construct($id,$grid);
-        if (!$query) $query = new bas_sqlx_querydef();
-        $this->query = $query;	
         $this->posFin = $this->posIni = 1;
         $this->type = "gridQuery";
     }
 	
-	public function setRecord(){
+	
+	public function setQuery($query){
+		$this->query = $query;
+		$this->buildRecord();
+	}
+	
+	private function buildRecord(){
 	  	$this->record = new bas_sqlx_dataview($this->query);	
 	  	$this->record->SetViewWidth($this->numItems()*100);
-//         $this->record->SetViewWidth(-1));
+//         $this->record->SetViewWidth(-1);
 	  	
 		$this->record->load_data();
 		$this->record->first();
 		$this->createGrid();
 	}
-	
+	/*
 	public function initRecord(){
 	  	$this->record = new bas_sqlx_dataview($this->query);	
 	  	$this->record->SetViewWidth($this->numItems()*100);
@@ -70,11 +74,11 @@ class bas_frmx_panelGridQuery extends bas_frmx_panelGrid {
 		$this->record->first();
 		$this->createGrid();
 	}
-	
+	*/
 
-    protected function createGrid(){
+    protected function createGrid(){  // ### TODO: improve variable names
         unset($this->components);
-        $this->component = array();
+        $this->components = array();
         $data = $this->record->current;
         global $_LOG;
 //         $_LOG->debug("valor del current: ",$data);
@@ -104,15 +108,12 @@ class bas_frmx_panelGridQuery extends bas_frmx_panelGrid {
                         $this->addComponent($y+1,$x+1,$data[$sig][$this->mainField],$data[$sig][$this->mainField]);
                         $ind++;
                     }
-                    
                 }
                 else
                     $aux=1;
             }
         }
         $this->posFin = $this->posIni +$ind;
-//         $this->previousView();
-//         $_LOG->log("Valor anterior al actual!!". $this->posIni);
     }
 	
 	
@@ -128,8 +129,8 @@ class bas_frmx_panelGridQuery extends bas_frmx_panelGrid {
 	
 	
 	protected function nextView(){
-        global $_LOG;
         $this->posIni = $this->posFin;	
+		global $_LOG;
         $_LOG->log("######### nextView: INI: ".$this->posIni);
         $this->createGrid();
 	}
