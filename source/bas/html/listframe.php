@@ -184,13 +184,18 @@ class bas_html_listframe{
 			global $_LOG;
 			$_LOG->log("html_listFrame::OnPaint - Se han solicitado un número inexistente de columnas fijas");
 		}
-
-
-
-		echo "<div class=\"ia_list\" style=\"position:relative;white-space:nowrap;height:";//TODO: A revisar correctamente (presentacion amedita)
+		
 		$nreg = $this->initialrowcount;//count($rows);
-		if( $nreg >= 5)echo (7+($this->frame->n_item+1)*($this->height+$this->top))."{$this->measure};width:100%;\">";
-		else  echo (7+($nreg+1)*($this->height+$this->top))."{$this->measure};width:100%;\">";
+		if( $nreg >= 5) $viewHeight = 7+($this->frame->n_item+1)*($this->height+$this->top);
+		else  $viewHeight = (7+($nreg+1)*($this->height+$this->top));
+		
+		$realDataSize = ($this->frame->getQuerySize()+1)*($this->height+$this->top);
+
+		echo "<div class=\"ia_mainScreen\" style=\"position:relative;top:0pt;overflow-x: hidden;overflow-y: scroll;height:$viewHeight{$this->measure};width:100%;\">";
+		echo "<div class=\"ia_contedorMAX\" style=\"overflow-x: hidden;height:$realDataSize{$this->measure};\">";
+		echo "<div class=\"ia_list\" style=\"position:relative;white-space:nowrap;height:$viewHeight{$this->measure};width:100%;\">";//TODO: A revisar correctamente (presentacion amedita)
+		
+		
 
 		if ($this->selector){
 			// Se crea el encapsulado de los selectores de fila.
@@ -206,11 +211,13 @@ class bas_html_listframe{
 		$this->OnPaintList($rows);
 		echo "</div>";
 
-		echo "<div class=\"scroll_List\"style=\"position:absolute;top:0px;right: 0px;overflow:auto;width:16{$this->measure};height:100%\">";//($this->frame->n_item+1)*$this->height."{$this->measure};\">";
-		echo "<div style=\"width:1px;height:".($this->frame->getQuerySize()+1)*($this->height+$this->top)."{$this->measure};\"></div>";
-		echo "</div>";
+// 		echo "<div class=\"scroll_List\"style=\"position:absolute;top:0px;right: 0px;overflow:scroll;width:16{$this->measure};height:100%\">";//($this->frame->n_item+1)*$this->height."{$this->measure};\">";
+// 		echo "<div style=\"width:1px;height:".($this->frame->getQuerySize()+1)*($this->height+$this->top)."{$this->measure};\"></div>";
+// 		echo "</div>";
 
 		echo "</div>";
+		
+		echo "</div>";		echo "</div>";
 
 	}
 
