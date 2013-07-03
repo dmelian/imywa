@@ -22,10 +22,46 @@ bas_frmx_listframe.prototype.CheckWidth= function(){
 };
 
 
+bas_frmx_listframe.prototype.scrollEvent= function(){
+	var current_top = $("#" + this.id).find(".ia_mainScreen").scrollTop();
+	var frameID = this.id;
+	if (current_top != this.scroll){
+// 			alert("Scroll Almacenado: "+this.scroll+ "  Scroll actual: "+current_top );
+			
+// 			$("#" + this.id).find(".ia_list").animate({ top: current_top+"px"},50,"swing",function(){
+// 				var heigthRow = 18;
+// 				var topRow = 4;
+// 				var posPt = ((3*current_top)/4); // transformacion de px a pt
+// 				var pos = Math.round(posPt/(heigthRow+topRow	)); //magic number ??
+// 				currentForm.sendAction('scroll_move',{"frameid":frameID,"pos": pos});
+// 			});
+			$("#" + this.id).find(".ia_list").css("top",current_top);
+// 			console.log("valor del top: "+current_top);
+			var heigthRow = 18;
+			var topRow = 4;
+			var posPt = ((3*current_top)/4); // transformacion de px a pt
+			var pos = Math.round(posPt/(heigthRow+topRow	)); //magic number ??
+			currentForm.sendAction('scroll_move',{"frameid":frameID,"pos": pos});
+			
+			this.scroll = current_top;
+	}
+	$("#" + this.id).find(".ia_list").css("top",current_top);
+};
+
+
+bas_frmx_listframe.prototype.sleep=function(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
+  }
+}
+
 bas_frmx_listframe.prototype.OnLoad= function(){
 
 	bas_frmx_frame.prototype.OnLoad.call(this);
-
+	this.scroll = 0;
 // 	this.Customer();
 	var mainThis = this;
 	var frameID= this.id ;
@@ -39,6 +75,15 @@ bas_frmx_listframe.prototype.OnLoad= function(){
 			var pos = Math.round(posPt/(heigthRow+topRow	)); //magic number ??
 			currentForm.sendAction('scroll_move',{"frameid":frameID,"pos": pos});
 		}
+	});
+	
+	// Scroll perteneciente al div principal (marco)
+	$("#" + this.id).find(".ia_mainScreen").scroll(function(event){
+	
+// 	event.stopImmediatePropagation();
+		mainThis.scrollEvent();
+// 		$("#" + frameID).find(".ia_mainScreen").animate({scrollTop: 0});
+		
 	});
 	
 	if ($("#" + this.id).find(".ia_listFixed").width() > $("#" + this.id).find(".ia_Colums_fixed").width()){
@@ -341,7 +386,8 @@ bas_frmx_listframe.prototype.Reload = function(data, selected, size, reset){
                     row.filter("."+field).html(" ");
                 }
         }
-        $("#" + this.id).find(".scroll_List")[0].childNodes[0].style.height = reset+"pt";
+//         $("#" + this.id).find(".scroll_List")[0].childNodes[0].style.height = reset+"pt";
+        $("#" + this.id).find(".ia_contedorMAX").height(reset+"pt");
 
         for (var i=0;i<nelem;i++){ // Recorremos los datos secuencialmente, insertando el contenido de cada fila en su columna correspondiente.
             row = $("#" + this.id).find(".row_"+pos); 

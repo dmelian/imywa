@@ -171,34 +171,7 @@ class bas_sqlx_datapointer{
 		      Acceso a los registros mediante el uso de ficheros.
   ############################################################################################################################################
 */
-/*	protected function acces_posfile($pos,$limit){ 
-	// TO-DO: Gestionar la posible inexistencia del fichero. Desidir el nombre y ubicación final
-		global $_LOG;
-	    $vector = unserialize(file_get_contents($this->fileName));
-// 	    global $_LOG;
-	    if (!isset($vector[$pos])) return NULL;
-		$this->new_acces($pos,$limit);
-		
-		if ($pos <= $this->size){
-			if ($limit == 1) return $vector[$pos];
-			
-			$register = "";
-			if (($pos+$limit) > $this->size){
-				$limit = $limit - ( ($pos+$limit) - $this->size);
-			}
-			for($index=$pos,$nelem=0;$nelem <$limit; $index++, $nelem++){ // Optimizable
-				$register[$nelem] = $vector[$index];
-			}
-			return $register;
-		}
-		else{
-			$_LOG->log(get_class($this)."::acces_posfile. Se ha sobrepasado el maximo {$this->size}");
-			return array();
-		}
-	}*/
 	
-// 	protected function new_acces($pos,$limit){
-
 	protected function acces_posfile($pos,$limit){
 		global $_LOG;
 // 	    $_LOG->debug("######### 		Comienzo del unserialize		 #########",array());
@@ -236,11 +209,6 @@ class bas_sqlx_datapointer{
 				$register[$ind] =unserialize(fgets($file));
 // 				$_LOG->debug("Valor unserialize:: ",$contenido);
 			}
-			
-// 			while (!feof($file)) { 
-// 				$contenido = unserialize(fgets($file));
-// 				$_LOG->debug("Valor unserialize:: ",$contenido);
-// 			}
 			
 			fclose($file);
 			return $register;
