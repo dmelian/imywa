@@ -33,12 +33,12 @@ class bas_sqlx_dataview extends bas_sqlx_datapointer{
 	}
 
 	public function next(){
-	    $this->prox_next($this->width,($this->pos_current+1));
+	    $this->prox_next($this->width,($this->currentPos+1));
 
 	}
 	
 	public function previous(){
-	    $this->prox_previous($this->width,($this->pos_current-1));
+	    $this->prox_previous($this->width,($this->currentPos-1));
 	}
 	
 	public function recorcount(){
@@ -78,7 +78,7 @@ class bas_sqlx_dataview extends bas_sqlx_datapointer{
 	//   Selección del elemento elegido.
 	public function setSelected($pos){
 		if ($this->current){		   
-			$real_pos = $this->pos_current+$pos;
+			$real_pos = $this->currentPos+$pos;
 // 		    $row = $this->current[$real_pos];
 		    $row = $this->get_dataRow($real_pos);
 	 	    $this->selected = $row; // ### Apaño
@@ -102,7 +102,7 @@ class bas_sqlx_dataview extends bas_sqlx_datapointer{
 	}
 	
 	public function selectedPosRelative(){
-		if (isset($this->selected["pos"]))		return ($this->selected["pos"] - $this->pos_current)+1;
+		if (isset($this->selected["pos"]))		return ($this->selected["pos"] - $this->currentPos)+1;
 		else return -1; // no se ha seleccionado ningún registro todavía.
 		
 	}

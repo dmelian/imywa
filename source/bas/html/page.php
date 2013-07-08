@@ -71,7 +71,8 @@ class bas_html_page{
 		//if (!isset($this->theme)) $this->addStyle("jquery/jqueryui.css");
 		switch($url){
 		case 'local':
-			$this->addScript('script/jquery/jquery-1.8.3.js');
+			$this->addScript('http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js');
+// 			$this->addScript('script/jquery/jquery-1.8.3.js');
 			$this->addScript('script/jquery/jquery-ui-1.9.2.custom.js');
 			
 // 			$this->addScript('http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js');
