@@ -174,23 +174,28 @@ class bas_sqlx_datapointer{
 	
 	protected function acces_posfile($pos,$limit){
 		global $_LOG;
-// 	    $_LOG->debug("######### 		Comienzo del unserialize		 #########",array());
+// 	    $_LOG->debug("######### 		Comienzo del acces_posfile pos:$pos limit:$limit. CurrentPos:{$this->currentPos}		 #########",array());
 	    if (($pos >= 0) && ($pos <= $this->size)){
+			$register = array();
 			$file = fopen("/usr/local/imywa/temp/serialize.data","r");
 			
 			if ($this->currentPos <= $pos ){ // positive access.
-				fseek($file,$this->offset_PosFile); // ### Controlar el acceso correcto.
+				
+				$this->fseek($file,$this->offset_PosFile); // ### Controlar el acceso correcto.
 				$numPos = $pos - $this->currentPos;
 				for($ind=0;$ind < $numPos; $ind++) fgets($file);
 				$this->offset_PosFile = ftell($file);
 				$this->currentPos = $pos;
+				
+// 				$_LOG->debug("######### 		Acceso Positivo limnit:$limit. numPos=$numPos. offset_PosFile={$this->offset_PosFile}. currentPos={$this->currentPos}  #########",array());
 			}
 			else{ // negative access.
 			// ### Posible mejora: Para no realizar una relectura de los siguentes elementos a la nueva posicion. Podríamos saltarlos en la lectura final.
+// 				$_LOG->debug("######### 		Acceso Negativo   #########",array());
 				$gapPos = $this->currentPos - $pos;
 				$offset = $this->offset_PosFile - $this->sizeMax_record*4*($gapPos+1);
 				if ($offset < 0) $offset = 0;
-				fseek($file,$offset);
+				$this->fseek($file,$offset);
 				if ($offset != 0)fgets($file);
 				
 				$array_offset = array();
@@ -202,18 +207,28 @@ class bas_sqlx_datapointer{
 // 				$_LOG->debug("PosAct:: {$this->currentPos} OffsetCur::{$this->offset_PosFile} OFFSET incial:: $offset Posicion $pos::GAP $gapPos:: INDICE::".(count($array_offset)-$gapPos),$array_offset);
 				$this->offset_PosFile = $array_offset[count($array_offset)-$gapPos-1]; 
 				$this->currentPos = $pos;
-				fseek($file,$this->offset_PosFile);
+				$this->fseek($file,$this->offset_PosFile);
 			}
 			
-			for($ind=0;( ($ind < $limit) and (!feof($file)) ); $ind++) {
-				$register[$ind] =unserialize(fgets($file));
+// 			for($ind=0;( ($ind < $limit) and (!feof($file)) ); $ind++) {
+// 				$contenido = fgets($file);
 // 				$_LOG->debug("Valor unserialize:: ",$contenido);
+// 				$register[$ind] =unserialize($contenido);
+// 			}
+			
+			for($ind=0;($ind < $limit); $ind++) {
+				$contenido = fgets($file);
+// 				$_LOG->debug("Valor unserialize:: ",$contenido);
+				$register[$ind] =unserialize($contenido);
+				if (feof($file)) break;
 			}
+			
+// 			if (!feof($file))$_LOG->debug("Fin de fichero!!",array());
 			
 			fclose($file);
 			return $register;
 		}
-		$_LOG->log(get_class($this)."::acces_posfile. Se ha sobrepasado el maximo {$this->size}");
+// 		$_LOG->log(get_class($this)."::acces_posfile. Se ha sobrepasado el maximo {$this->size}");
 		return array();
 	}
 	
@@ -244,6 +259,11 @@ class bas_sqlx_datapointer{
 	public function load_data(){
 	    $this->MySQL($this->createQueryPos(-1,0),-1);
 	    $this->save_data();
+	}
+	
+	protected function fseek($file,$offset){
+		usleep(20000);
+		fseek($file,$offset);
 	}
 	
 	public function first_file($limit){

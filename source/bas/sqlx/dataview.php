@@ -77,13 +77,17 @@ class bas_sqlx_dataview extends bas_sqlx_datapointer{
 	
 	//   Selección del elemento elegido.
 	public function setSelected($pos){
-		if ($this->current){		   
-			$real_pos = $this->currentPos+$pos;
+		$real_pos = $this->currentPos+$pos;
+// 		if (!is_null($this->current) and ($real_pos >= 0)){		   
+		if ($real_pos >= 0){
 // 		    $row = $this->current[$real_pos];
+// 			global $_LOG;
 		    $row = $this->get_dataRow($real_pos);
 	 	    $this->selected = $row; // ### Apaño
 	 	    	 	    
 	 	    $this->selected['pos'] = $real_pos;
+	 	    
+	 	   
 		    return true;
 		    
 		} else {
