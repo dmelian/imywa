@@ -186,12 +186,15 @@ class bas_html_listframe{
 		}
 		
 		$nreg = $this->initialrowcount;//count($rows);
+		$gap = 12;
 		if( $nreg >= 5) $viewHeight = 7+($this->frame->n_item+1)*($this->height+$this->top);
 		else  $viewHeight = (7+($nreg+1)*($this->height+$this->top));
 		
 		$realDataSize = ($this->frame->getQuerySize()+1)*($this->height+$this->top);
+		if ($realDataSize < 50) $realDataSize = $viewHeight;//($this->frame->n_item+1)*($this->height+$this->top);
 
-		echo "<div class=\"ia_mainScreen\" style=\"position:relative;top:0pt;overflow-x: hidden;overflow-y: scroll;height:$viewHeight{$this->measure};width:100%;\">";
+
+		echo "<div class=\"ia_mainScreen\" style=\"position:relative;top:0pt;overflow-x: hidden;overflow-y: auto;height:$viewHeight{$this->measure};width:100%;\">";
 		echo "<div class=\"ia_contedorMAX\" style=\"overflow-x: hidden;height:$realDataSize{$this->measure};\">";
 		echo "<div class=\"ia_list\" style=\"position:relative;white-space:nowrap;height:$viewHeight{$this->measure};width:100%;\">";//TODO: A revisar correctamente (presentacion amedita)
 		
