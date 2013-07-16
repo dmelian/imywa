@@ -191,7 +191,7 @@ class bas_html_listframe{
 		else  $viewHeight = (7+($nreg+1)*($this->height+$this->top));
 		
 		$realDataSize = ($this->frame->getQuerySize()+1)*($this->height+$this->top);
-		if ($realDataSize < 50) $realDataSize = $viewHeight;//($this->frame->n_item+1)*($this->height+$this->top);
+		if ($realDataSize < $viewHeight) $realDataSize = $viewHeight;//($this->frame->n_item+1)*($this->height+$this->top);
 
 
 		echo "<div class=\"ia_mainScreen\" style=\"position:relative;top:0pt;overflow-x: hidden;overflow-y: auto;height:$viewHeight{$this->measure};width:100%;\">";
