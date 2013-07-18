@@ -242,7 +242,8 @@ class bas_frmx_listframe extends bas_frmx_frame{
 	}
 	
 	public function getkeySelected(){
-		return $this->query->getautokeyRecord($this->getSelected());
+		$aux = $this->getSelected();
+		return $this->query->getautokeyRecord($aux[0]);
 	}
 	
 	public function existSelected(){

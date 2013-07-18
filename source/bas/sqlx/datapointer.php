@@ -171,6 +171,9 @@ class bas_sqlx_datapointer{
 		      Acceso a los registros mediante el uso de ficheros.
   ############################################################################################################################################
 */
+	private function get_line(&$file){
+		return stream_get_line ( $file, 99999,'\0\n');
+	}
 	
 	protected function acces_posfile($pos,$limit){
 		global $_LOG;

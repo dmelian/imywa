@@ -24,22 +24,32 @@ class bas_sqlx_record extends bas_sqlx_datapointer{
 	public function first(){
 	    //$this->first_pos(1);
 	    $this->first_file(1);
+	    $this->adjustmentIntelligenFile();
+	}
+	
+	// Funcion necesaria debido al cambio introducido en el acceso "inteligente" a fichero, en datapointer.php
+	private function adjustmentIntelligenFile(){
+		$this->current = $this->current[0];
+	    $this->original = $this->original[0];
 	}
 	
 	public function last(){
 	    //$this->last_pos(1);
 	    $this->last_file(1);
+	    $this->adjustmentIntelligenFile();
 	}
 
 
 	public function next(){
 	    //$this->prox_next(1);
 	    $this->next_file(1);
+	    $this->adjustmentIntelligenFile();
 	}
 	
 	public function previous(){
 	    //$this->prox_previous(1);
 	    $this->previous_file(1);	
+	    $this->adjustmentIntelligenFile();
 	}
 }
 

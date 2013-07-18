@@ -76,7 +76,7 @@ class bas_sqlx_dataview extends bas_sqlx_datapointer{
 	}
 	
 	//   Selección del elemento elegido.
-	public function setSelected($pos){
+	public function setSelected($pos){  // ### El setSelected está diseñado para 1 único elemento. Deberá cambiar para la multiseleccion.
 		$real_pos = $this->currentPos+$pos;
 // 		if (!is_null($this->current) and ($real_pos >= 0)){		   
 		if ($real_pos >= 0){
