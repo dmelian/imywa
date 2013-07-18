@@ -186,7 +186,7 @@ class bas_sqlx_datapointer{
 				
 				$this->fseek($file,$this->offset_PosFile); // ### Controlar el acceso correcto.
 				$numPos = $pos - $this->currentPos;
-				for($ind=0;$ind < $numPos; $ind++) fgets($file);
+				for($ind=0;$ind < $numPos; $ind++) $this->get_line($file);
 				$this->offset_PosFile = ftell($file);
 				$this->currentPos = $pos;
 				
@@ -199,12 +199,12 @@ class bas_sqlx_datapointer{
 				$offset = $this->offset_PosFile - $this->sizeMax_record*4*($gapPos+1);
 				if ($offset < 0) $offset = 0;
 				$this->fseek($file,$offset);
-				if ($offset != 0)fgets($file);
+				if ($offset != 0)$this->get_line($file);
 				
 				$array_offset = array();
 				$array_offset[]  = ftell($file);
 				while ( (ftell($file) != $this->offset_PosFile)  and ( !feof($file) )  ) { 
-					fgets($file);
+					$this->get_line($file);
 					$array_offset[]  = ftell($file);
 				}
 // 				$_LOG->debug("PosAct:: {$this->currentPos} OffsetCur::{$this->offset_PosFile} OFFSET incial:: $offset Posicion $pos::GAP $gapPos:: INDICE::".(count($array_offset)-$gapPos),$array_offset);
@@ -214,13 +214,13 @@ class bas_sqlx_datapointer{
 			}
 			
 // 			for($ind=0;( ($ind < $limit) and (!feof($file)) ); $ind++) {
-// 				$contenido = fgets($file);
+// 				$contenido = $this->get_line($file);
 // 				$_LOG->debug("Valor unserialize:: ",$contenido);
 // 				$register[$ind] =unserialize($contenido);
 // 			}
 			
 			for($ind=0;($ind < $limit); $ind++) {
-				$contenido = fgets($file);
+				$contenido = $this->get_line($file);
 // 				$_LOG->debug("Valor unserialize:: ",$contenido);
 				$register[$ind] =unserialize($contenido);
 				if (feof($file)) break;
@@ -250,8 +250,8 @@ class bas_sqlx_datapointer{
 	    
 	    $file = fopen("/usr/local/imywa/temp/serialize.data","w");
 		foreach($this->current as $index => $row){
-			$content = serialize($row)."\n";
-			fwrite($file,serialize($row)."\n");
+			$content = serialize($row);
+			fwrite($file,serialize($row)."\0\n");
 			$size = strlen($content);
 			if ($size > $this->sizeMax_record)$this->sizeMax_record=$size;
 		}
