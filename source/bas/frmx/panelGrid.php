@@ -117,8 +117,8 @@ class bas_frmx_panelGrid {
 	}
 	
 	public function getComponent($id){
-		for ($row = 0; $row < $this->grid["height"]; $row++){
-			for($column = 0; $column < $this->grid["width"]; $column++){
+		for ($row = 0; $row <= $this->grid["height"]; $row++){
+			for($column = 0; $column <= $this->grid["width"]; $column++){
 				if (isset($this->components[$row][$column])){
 					if($this->components[$row][$column]["id"] == $id){ 
 						$aux = array("row"=>$row,"column" =>$column);
@@ -138,7 +138,7 @@ class bas_frmx_panelGrid {
 		}
 		else{
 			global $_LOG;
-			$_LOG->log("No existe el componente $id. ".get_class($this)."::setAttrId");
+			$_LOG->log("No existe el componente $id. ".get_class($this)."::delComponent");
 			return false;
 		}
 	}

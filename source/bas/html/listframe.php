@@ -80,6 +80,9 @@ class bas_html_listframe{
 		echo "</label>";
 		echo "</div>";
 
+		global $_LOG;
+		$_LOG->debug("Valor del numero de elementos de la lista, $nelem",$rows);
+		
 		for($index= 0; $index < $nelem; $index++){
 			if ((isset($this->cssComp)) && ($rows[$index][$this->cssComp] != "")){
 				$classDyn= $rows[$index][$this->cssComp];
@@ -211,7 +214,7 @@ class bas_html_listframe{
 		if ($this->selector) echo "left:20px;";
 		else echo "left:0{$this->measure};";
 		echo "right:16{$this->measure};\">";
-		$this->OnPaintList($rows);
+			$this->OnPaintList($rows);
 		echo "</div>";
 
 // 		echo "<div class=\"scroll_List\"style=\"position:absolute;top:0px;right: 0px;overflow:scroll;width:16{$this->measure};height:100%\">";//($this->frame->n_item+1)*$this->height."{$this->measure};\">";
