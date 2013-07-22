@@ -80,8 +80,6 @@ class bas_html_listframe{
 		echo "</label>";
 		echo "</div>";
 
-		global $_LOG;
-		$_LOG->debug("Valor del numero de elementos de la lista, $nelem",$rows);
 		
 		for($index= 0; $index < $nelem; $index++){
 			if ((isset($this->cssComp)) && ($rows[$index][$this->cssComp] != "")){

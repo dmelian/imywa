@@ -41,7 +41,7 @@ class bas_sqlx_dataview extends bas_sqlx_datapointer{
 	    $this->prox_previous($this->width,($this->currentPos-1));
 	}
 	
-	public function recorcount(){
+	public function recordcount(){
 	    return $this->size;
 	}
 	

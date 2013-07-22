@@ -29,6 +29,9 @@ class bas_sqlx_datapointer{
 	protected $connect;
 	protected $pivot;			// Será un array asociativo donde pivot["pivot"] = campo pivotante y pivot["value"] = "campo contenedor del valor"
 	
+	
+	protected $delimiter='\0\n';
+	
 	protected $offset_PosFile=0;
 	protected $maxSize_Record=0;
 	protected $sizeMax_record=0;
@@ -172,7 +175,7 @@ class bas_sqlx_datapointer{
   ############################################################################################################################################
 */
 	private function get_line(&$file){
-		return stream_get_line ( $file, 99999,'\0\n');
+		return stream_get_line ( $file, 99999,$this->delimiter);
 	}
 	
 	protected function acces_posfile($pos,$limit){
@@ -251,7 +254,7 @@ class bas_sqlx_datapointer{
 	    $file = fopen("/usr/local/imywa/temp/serialize.data","w");
 		foreach($this->current as $index => $row){
 			$content = serialize($row);
-			fwrite($file,serialize($row)."\0\n");
+			fwrite($file,serialize($row).$this->delimiter);
 			$size = strlen($content);
 			if ($size > $this->sizeMax_record)$this->sizeMax_record=$size;
 		}
