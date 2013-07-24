@@ -80,6 +80,7 @@ class bas_html_listframe{
 		echo "</label>";
 		echo "</div>";
 
+		
 		for($index= 0; $index < $nelem; $index++){
 			if ((isset($this->cssComp)) && ($rows[$index][$this->cssComp] != "")){
 				$classDyn= $rows[$index][$this->cssComp];
@@ -186,12 +187,15 @@ class bas_html_listframe{
 		}
 		
 		$nreg = $this->initialrowcount;//count($rows);
+		$gap = 12;
 		if( $nreg >= 5) $viewHeight = 7+($this->frame->n_item+1)*($this->height+$this->top);
 		else  $viewHeight = (7+($nreg+1)*($this->height+$this->top));
 		
 		$realDataSize = ($this->frame->getQuerySize()+1)*($this->height+$this->top);
+		if ($realDataSize < $viewHeight) $realDataSize = $viewHeight;//($this->frame->n_item+1)*($this->height+$this->top);
 
-		echo "<div class=\"ia_mainScreen\" style=\"position:relative;top:0pt;overflow-x: hidden;overflow-y: scroll;height:$viewHeight{$this->measure};width:100%;\">";
+
+		echo "<div class=\"ia_mainScreen\" style=\"position:relative;top:0pt;overflow-x: hidden;overflow-y: auto;height:$viewHeight{$this->measure};width:100%;\">";
 		echo "<div class=\"ia_contedorMAX\" style=\"overflow-x: hidden;height:$realDataSize{$this->measure};\">";
 		echo "<div class=\"ia_list\" style=\"position:relative;white-space:nowrap;height:$viewHeight{$this->measure};width:100%;\">";//TODO: A revisar correctamente (presentacion amedita)
 		
@@ -208,7 +212,7 @@ class bas_html_listframe{
 		if ($this->selector) echo "left:20px;";
 		else echo "left:0{$this->measure};";
 		echo "right:16{$this->measure};\">";
-		$this->OnPaintList($rows);
+			$this->OnPaintList($rows);
 		echo "</div>";
 
 // 		echo "<div class=\"scroll_List\"style=\"position:absolute;top:0px;right: 0px;overflow:scroll;width:16{$this->measure};height:100%\">";//($this->frame->n_item+1)*$this->height."{$this->measure};\">";

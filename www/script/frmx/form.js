@@ -132,6 +132,21 @@ bas_frmx_form.prototype.OnLoad = function() {
 			}
 			submitlookup(parent, accion);
 		});
+		
+// 		$(window).resize(function() {
+// 			alert('Has cambiado el tamaño de la ventana');
+// 		});
+		
+		
+		$(document).keydown(function(tecla){
+// 			if ((tecla.keyCode== 27) || (tecla.keyCode == 8)){
+// 				alert("Close "+tecla.keyCode);
+// 				currentForm.sendAction("close"); 
+// 			}
+			if (tecla.keyCode== 27)	{
+				if ($("#toolbar_close").length != 0)	currentForm.sendAction("close");
+			}
+		});
 	}
 
 	// ############################################################################

@@ -41,7 +41,7 @@ class bas_sqlx_dataview extends bas_sqlx_datapointer{
 	    $this->prox_previous($this->width,($this->currentPos-1));
 	}
 	
-	public function recorcount(){
+	public function recordcount(){
 	    return $this->size;
 	}
 	
@@ -76,14 +76,18 @@ class bas_sqlx_dataview extends bas_sqlx_datapointer{
 	}
 	
 	//   Selección del elemento elegido.
-	public function setSelected($pos){
-		if ($this->current){		   
-			$real_pos = $this->currentPos+$pos;
+	public function setSelected($pos){  // ### El setSelected está diseñado para 1 único elemento. Deberá cambiar para la multiseleccion.
+		$real_pos = $this->currentPos+$pos;
+// 		if (!is_null($this->current) and ($real_pos >= 0)){		   
+		if ($real_pos >= 0){
 // 		    $row = $this->current[$real_pos];
+// 			global $_LOG;
 		    $row = $this->get_dataRow($real_pos);
 	 	    $this->selected = $row; // ### Apaño
 	 	    	 	    
 	 	    $this->selected['pos'] = $real_pos;
+	 	    
+	 	   
 		    return true;
 		    
 		} else {
