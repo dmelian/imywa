@@ -29,6 +29,9 @@ class bas_sqlx_datapointer{
 	protected $connect;
 	protected $pivot;			// Será un array asociativo donde pivot["pivot"] = campo pivotante y pivot["value"] = "campo contenedor del valor"
 	
+	
+	protected $delimiter='\0\n';
+	
 	protected $offset_PosFile=0;
 	protected $maxSize_Record=0;
 	protected $sizeMax_record=0;
@@ -171,49 +174,67 @@ class bas_sqlx_datapointer{
 		      Acceso a los registros mediante el uso de ficheros.
   ############################################################################################################################################
 */
+	private function get_line(&$file){
+		return stream_get_line ( $file, 99999,$this->delimiter);
+	}
 	
 	protected function acces_posfile($pos,$limit){
 		global $_LOG;
-// 	    $_LOG->debug("######### 		Comienzo del unserialize		 #########",array());
+// 	    $_LOG->debug("######### 		Comienzo del acces_posfile pos:$pos limit:$limit. CurrentPos:{$this->currentPos}		 #########",array());
 	    if (($pos >= 0) && ($pos <= $this->size)){
+			$register = array();
 			$file = fopen("/usr/local/imywa/temp/serialize.data","r");
 			
 			if ($this->currentPos <= $pos ){ // positive access.
-				fseek($file,$this->offset_PosFile); // ### Controlar el acceso correcto.
+				
+				$this->fseek($file,$this->offset_PosFile); // ### Controlar el acceso correcto.
 				$numPos = $pos - $this->currentPos;
-				for($ind=0;$ind < $numPos; $ind++) fgets($file);
+				for($ind=0;$ind < $numPos; $ind++) $this->get_line($file);
 				$this->offset_PosFile = ftell($file);
 				$this->currentPos = $pos;
+				
+// 				$_LOG->debug("######### 		Acceso Positivo limnit:$limit. numPos=$numPos. offset_PosFile={$this->offset_PosFile}. currentPos={$this->currentPos}  #########",array());
 			}
 			else{ // negative access.
 			// ### Posible mejora: Para no realizar una relectura de los siguentes elementos a la nueva posicion. Podríamos saltarlos en la lectura final.
+// 				$_LOG->debug("######### 		Acceso Negativo   #########",array());
 				$gapPos = $this->currentPos - $pos;
 				$offset = $this->offset_PosFile - $this->sizeMax_record*4*($gapPos+1);
 				if ($offset < 0) $offset = 0;
-				fseek($file,$offset);
-				if ($offset != 0)fgets($file);
+				$this->fseek($file,$offset);
+				if ($offset != 0)$this->get_line($file);
 				
 				$array_offset = array();
 				$array_offset[]  = ftell($file);
 				while ( (ftell($file) != $this->offset_PosFile)  and ( !feof($file) )  ) { 
-					fgets($file);
+					$this->get_line($file);
 					$array_offset[]  = ftell($file);
 				}
 // 				$_LOG->debug("PosAct:: {$this->currentPos} OffsetCur::{$this->offset_PosFile} OFFSET incial:: $offset Posicion $pos::GAP $gapPos:: INDICE::".(count($array_offset)-$gapPos),$array_offset);
 				$this->offset_PosFile = $array_offset[count($array_offset)-$gapPos-1]; 
 				$this->currentPos = $pos;
-				fseek($file,$this->offset_PosFile);
+				$this->fseek($file,$this->offset_PosFile);
 			}
 			
-			for($ind=0;( ($ind < $limit) and (!feof($file)) ); $ind++) {
-				$register[$ind] =unserialize(fgets($file));
+// 			for($ind=0;( ($ind < $limit) and (!feof($file)) ); $ind++) {
+// 				$contenido = $this->get_line($file);
 // 				$_LOG->debug("Valor unserialize:: ",$contenido);
+// 				$register[$ind] =unserialize($contenido);
+// 			}
+			
+			for($ind=0;($ind < $limit); $ind++) {
+				$contenido = $this->get_line($file);
+// 				$_LOG->debug("Valor unserialize:: ",$contenido);
+				$register[$ind] =unserialize($contenido);
+				if (feof($file)) break;
 			}
+			
+// 			if (!feof($file))$_LOG->debug("Fin de fichero!!",array());
 			
 			fclose($file);
 			return $register;
 		}
-		$_LOG->log(get_class($this)."::acces_posfile. Se ha sobrepasado el maximo {$this->size}");
+// 		$_LOG->log(get_class($this)."::acces_posfile. Se ha sobrepasado el maximo {$this->size}");
 		return array();
 	}
 	
@@ -232,8 +253,8 @@ class bas_sqlx_datapointer{
 	    
 	    $file = fopen("/usr/local/imywa/temp/serialize.data","w");
 		foreach($this->current as $index => $row){
-			$content = serialize($row)."\n";
-			fwrite($file,serialize($row)."\n");
+			$content = serialize($row);
+			fwrite($file,serialize($row).$this->delimiter);
 			$size = strlen($content);
 			if ($size > $this->sizeMax_record)$this->sizeMax_record=$size;
 		}
@@ -244,6 +265,11 @@ class bas_sqlx_datapointer{
 	public function load_data(){
 	    $this->MySQL($this->createQueryPos(-1,0),-1);
 	    $this->save_data();
+	}
+	
+	protected function fseek($file,$offset){
+		usleep(20000);
+		fseek($file,$offset);
 	}
 	
 	public function first_file($limit){

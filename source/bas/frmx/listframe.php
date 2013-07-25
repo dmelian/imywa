@@ -174,11 +174,13 @@ class bas_frmx_listframe extends bas_frmx_frame{
 		if (!$config= $this->loadConfigFile()) return;
 		$aux = array();
 		for($ix=0; $ix<count($this->components); $ix++){
-			if (isset($config[$this->components[$ix]['id']])){
-				foreach($config[$this->components[$ix]['id']] as $property => $value) {
-					$this->components[$ix][$property]= $value;
+			if (isset( $this->components[$ix]['id'] )){
+				if (isset($config[$this->components[$ix]['id']])){
+					foreach($config[$this->components[$ix]['id']] as $property => $value) {
+						$this->components[$ix][$property]= $value;
+					}
+					$aux[$this->components[$ix]['select-order']]= $this->components[$ix];
 				}
-				$aux[$this->components[$ix]['select-order']]= $this->components[$ix];
 			}
 		}
 		unset($this->components);
@@ -240,7 +242,8 @@ class bas_frmx_listframe extends bas_frmx_frame{
 	}
 	
 	public function getkeySelected(){
-		return $this->query->getautokeyRecord($this->getSelected());
+		$aux = $this->getSelected();
+		return $this->query->getautokeyRecord($aux[0]);
 	}
 	
 	public function existSelected(){
