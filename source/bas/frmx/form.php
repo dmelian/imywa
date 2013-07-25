@@ -127,9 +127,14 @@ class bas_frmx_form extends bas_html_page{
 			$ret['#myscript']= ob_get_contents();
 		}
 		ob_end_clean();
+		$ret = array_merge($ret,$this->getCustomContent());
 		return $ret;
 		
 	}	
+	
+	protected function getCustomContent(){
+		return array();
+	}
 	
 	function OnPaint($mode= 'html', $dash=NULL){
 		
