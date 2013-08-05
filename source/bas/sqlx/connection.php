@@ -43,7 +43,7 @@ class bas_sqlx_connection{
 	protected $host;
 	protected $database;
 	
-	protected $message;
+	public $message;
 	protected $closed= true;
 	protected $unfinishedTransaction= false;
 	
@@ -99,6 +99,10 @@ class bas_sqlx_connection{
     
 	public function getMessageBox(){
 		return new bas_html_messageBox($this->message['module'], $this->message['id'], $this->message['texts']);
+	}
+	
+	public function getMessage(){
+		return $this->message['texts'];
 	}
 		
 	public function commit(){

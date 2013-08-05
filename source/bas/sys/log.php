@@ -42,7 +42,7 @@ class bas_sys_log{
 				chmod($filename, 0666);
 			} else $fp= fopen($filename, 'a');
 			
-			$prefix= $this->prefix.date('Y-m-d H:i:s');
+			$prefix= @($this->prefix.date('Y-m-d H:i:s'));
 			if (is_array($msg)){
 				fwrite($fp, $prefix." ARRAY:\n");
 				foreach($msg as $key => $value){
