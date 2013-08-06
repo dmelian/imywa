@@ -42,7 +42,8 @@ class bas_sys_log{
 				chmod($filename, 0666);
 			} else $fp= fopen($filename, 'a');
 			
-			$prefix= @($this->prefix.date('Y-m-d H:i:s'));
+			$prefix= ($this->prefix.gmdate('Y-m-d H:i:s'));
+// 			$prefix= @($this->prefix.date('Y-m-d H:i:s'));
 			if (is_array($msg)){
 				fwrite($fp, $prefix." ARRAY:\n");
 				foreach($msg as $key => $value){
@@ -71,7 +72,9 @@ class bas_sys_log{
 		} else $fp= fopen($filename, 'a');
 		
 		$msg= strtr($this->indent.print_r($object, TRUE), array("\n"=>"\n{$this->indent}"));
-		fwrite($fp, $this->prefix.date('Y-m-d H:i:s')." $caption\n$msg\n");
+		
+		fwrite($fp, $this->prefix.gmdate('Y-m-d H:i:s')." $caption\n$msg\n");
+// 		fwrite($fp, $this->prefix.date('Y-m-d H:i:s')." $caption\n$msg\n");
 
 		fclose($fp);
 	}

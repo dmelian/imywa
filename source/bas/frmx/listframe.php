@@ -238,12 +238,14 @@ class bas_frmx_listframe extends bas_frmx_frame{
 
 	}
 	public function getSelected(){
-	    return $this->dataset->getSelected();
+		$aux = $this->dataset->getSelected();
+		if (isset($aux[0])) return $aux[0];
+		return array();
 	}
 	
 	public function getkeySelected(){
 		$aux = $this->getSelected();
-		return $this->query->getautokeyRecord($aux[0]);
+		return $this->query->getautokeyRecord($aux);
 	}
 	
 	public function existSelected(){
@@ -263,9 +265,7 @@ class bas_frmx_listframe extends bas_frmx_frame{
 				$ds= new bas_sql_myqrydataset($this->tabledef);
 				echo "JSON:[\"setData\",". json_encode($ds->export()). ']';
 				break;
-			
 		}
-	
 	}
 		
 	
