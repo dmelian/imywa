@@ -56,13 +56,18 @@ class bas_html_panelGrid{
                         $component = $this->card->components[$row][$colom];
                         
                         $onclick = "onclick=\"ajaxaction('{$component["event"]}', {'idPanel':'{$this->card->id}','idFrame':'{$this->parentFrameId}','item':'{$component["id"]}'});\"";
-                        echo "<button style=\"height:100%;width:100%;position:relative;\" $onclick value=\"".$component["id"]."\">".
+//                         $class = (is_null($component["itemClass"]))?$component["itemClass"]:$this->card->gnrClass;
+
+                        if ($component["itemClass"] == "") $class = $this->card->gnrClass;
+                        else $class = $component["itemClass"];
+                        
+                        echo "<button class=\"$class\" style=\"height:100%;width:100%;position:relative;\" $onclick value=\"".$component["id"]."\">".
 								"<label style=\"position: absolute;top: 0px;left: 50%;\"> {$component["subItem"]} </label>".
 								"<label >{$component["caption"]}</label>".
 								" </button>";
                     }
                     else{
-                        echo "<button style=\"height:100%;width:100%;\"> </button>";
+                        echo "<button class=\"{$this->card->gnrClass}\" style=\"height:100%;width:100%;\"> </button>";
                     }
                 echo "</div>";                
 			}

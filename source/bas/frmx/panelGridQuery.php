@@ -90,7 +90,7 @@ class bas_frmx_panelGridQuery extends bas_frmx_panelGrid {
         else {
             $ajuste = 1;
             $aux=0;
-            $this->addComponent(1,1,"#","#","prevGrid");
+            $this->addComponent(1,1,"#","#","prevGrid","","empty");
         }
         if ($nelem >= ($this->posIni+$this->numItems()-1)) $ultimo = 1;
         else $ultimo = 0;
@@ -103,7 +103,7 @@ class bas_frmx_panelGridQuery extends bas_frmx_panelGrid {
                 if ($aux == 1 ) {
                     $sig = $this->posIni + (($y*$this->grid["width"]) +($x-$ajuste)) -1;
                     if (! isset($data[$sig])) break;
-                    if (($ultimo== 1) and ( (($y*$this->grid["width"]) +$x) == ($this->numItems()-1)))$this->addComponent($this->grid["height"],$this->grid["width"],"#","#","nextGrid");
+                    if (($ultimo== 1) and ( (($y*$this->grid["width"]) +$x) == ($this->numItems()-1)))$this->addComponent($this->grid["height"],$this->grid["width"],"#","#","nextGrid","","empty");
                     else  {
                         $this->addComponent($y+1,$x+1,$data[$sig][$this->mainField],$data[$sig][$this->mainField]);
                         $ind++;
