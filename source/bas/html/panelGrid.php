@@ -36,7 +36,7 @@ class bas_html_panelGrid{
 	
 	public function OnPaint($parentFrameId=""){
 		$this->parentFrameId = $parentFrameId;
-		echo "<div style=\"width:100%;height:100%;\">";
+		echo "<div class=\"ia_containerGrid\"style=\"position: absolute;width:100%;height:100%;\">";
             $this->paintComponents();
 		echo "</div>";
 	}
