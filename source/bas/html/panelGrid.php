@@ -36,7 +36,7 @@ class bas_html_panelGrid{
 	
 	public function OnPaint($parentFrameId=""){
 		$this->parentFrameId = $parentFrameId;
-		echo "<div style=\"width:100%;height:100%;\">";
+		echo "<div class=\"ia_containerGrid\"style=\"position: absolute;width:100%;height:100%;\">";
             $this->paintComponents();
 		echo "</div>";
 	}
@@ -56,13 +56,18 @@ class bas_html_panelGrid{
                         $component = $this->card->components[$row][$colom];
                         
                         $onclick = "onclick=\"ajaxaction('{$component["event"]}', {'idPanel':'{$this->card->id}','idFrame':'{$this->parentFrameId}','item':'{$component["id"]}'});\"";
-                        echo "<button style=\"height:100%;width:100%;position:relative;\" $onclick value=\"".$component["id"]."\">".
+//                         $class = (is_null($component["itemClass"]))?$component["itemClass"]:$this->card->gnrClass;
+
+                        if ($component["itemClass"] == "") $class = $this->card->gnrClass;
+                        else $class = $component["itemClass"];
+                        
+                        echo "<button class=\"$class\" style=\"height:100%;width:100%;position:relative;\" $onclick value=\"".$component["id"]."\">".
 								"<label style=\"position: absolute;top: 0px;left: 50%;\"> {$component["subItem"]} </label>".
 								"<label >{$component["caption"]}</label>".
 								" </button>";
                     }
                     else{
-                        echo "<button style=\"height:100%;width:100%;\"> </button>";
+                        echo "<button class=\"{$this->card->gnrClass}\" style=\"height:100%;width:100%;\"> </button>";
                     }
                 echo "</div>";                
 			}

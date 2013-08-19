@@ -12,7 +12,61 @@
 
 .errorrow {background: rgba(255,0,0,0.7);color: white;}
 
+.menuPOS{
+	border: @pos_border_type;
+	border-color: @pos_border_color;
+	background-color: #8FB26B;//#CCFF99;
+	
+	>label{
+		//color: #CCFF99;
+		color:@pos_border_color;
+		font-weight:bold;
+	}
 
+	&:active{ 
+		border-style: inset;
+	}
+}
+
+.itemPOS{
+	border: @pos_border_type;
+	border-width: @pos_border_with;
+	border-color: @pos_border_color;
+	background-color: #B2E6FF;// #66CCFF
+	&:active{ 
+		border-style: inset;
+	}
+}
+
+.select_itemPOS{
+	border: @pos_border_type;
+	border-width: @pos_border_with;
+	border-color: @pos_border_color;
+	background-color: #66CCFF;
+	&:active{ 
+		border-style: inset;
+	}
+}
+
+.numPOS{
+	border: @pos_border_type;
+	border-width: @pos_border_with;
+	border-color: @pos_border_color;
+	background-color: #CCFF99;
+	&:active{ 
+		border-style: inset;
+	}
+}
+
+.actionPOS{
+	border: @pos_border_type;
+	border-width: @pos_border_with;
+	border-color: @pos_border_color;
+	background-color: #CCFF99;
+	&:active{ 
+		border-style: inset;
+	}
+}
 
 .dashvencido{
 	color:@dash_vto_color;

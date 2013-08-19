@@ -30,6 +30,7 @@ class bas_frmx_panelGrid {
 	protected $mode;
 	public $type;
 	protected $gnrEvent;
+	public $gnrClass="";
 	
 	public function __construct($id,$grid="",$event=null) {
 		$this->id = $id;
@@ -74,6 +75,9 @@ class bas_frmx_panelGrid {
         $this->gnrEvent = $event;
     }
 	
+	public function setGnralClass($class){
+		$this->gnrClass= $class;
+	}
 	
 	
 	public function OnPaint($mainGrid=""){ // ¿que es maingrid? Parece ser el identificador del FrameGrid al que pertenece el PanelGrid
@@ -81,9 +85,10 @@ class bas_frmx_panelGrid {
 		$html->OnPaint($mainGrid);	
 	}
 	
-	public function addComponent($y=0, $x=0, $field_id,$caption,$event="",$subItem=""){
+	
+	public function addComponent($y=0, $x=0, $field_id,$caption,$event="",$subItem="",$itemClass=""){
         if (!$event) $event = $this->gnrEvent;
-		$this->components[$y][$x] = array("x"=>$x,"y"=>$y,"id"=>$field_id,"caption"=>$caption,"subItem"=>$subItem,"event"=>$event);
+		$this->components[$y][$x] = array("x"=>$x,"y"=>$y,"id"=>$field_id,"caption"=>$caption,"subItem"=>$subItem,"itemClass"=>$itemClass,"event"=>$event);
 	}
 	
 	public function setAttrPos($x,$y,$attr,$value){
