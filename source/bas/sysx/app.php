@@ -43,6 +43,7 @@ class bas_sysx_app{
 	public $startClass;
 	public $state;
 	public $breadCrumb=array();
+	private $stacktop=0;
 	
 	private $appDir;
 	
