@@ -29,24 +29,25 @@
 }
 
 .itemPOS{
-	border: @pos_border_type;
-	border-width: @pos_border_with;
-	border-color: @pos_border_color;
+	border: 6px solid;
+	border-image: url("images/posbutton.png") 6 repeat stretch;
 	background-color: #B2E6FF;// #66CCFF
 	&:active{ 
-		border-style: inset;
+		border: 9px solid;
+		border-image: url("images/posbutton-active.png") 9 repeat stretch;
 	}
 }
 
 .select_itemPOS{
-	border: @pos_border_type;
-	border-width: @pos_border_with;
-	border-color: @pos_border_color;
+	border: 6px solid;
+	border-image: url("images/posbutton.png") 6 repeat stretch;
 	background-color: #66CCFF;
 	&:active{ 
-		border-style: inset;
+		border: 9px solid;
+		border-image: url("images/posbutton-active.png") 9 repeat stretch;
 	}
 }
+
 
 .numPOS{
 	border: @pos_border_type;
