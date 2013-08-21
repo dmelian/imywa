@@ -30,23 +30,27 @@ class bas_frmx_buttonbar {
 	}
 	
 	private function addElement($id,$frame=NULL,$menu=NULL,$caption="", $type="ajax",$action=""){
-		if ($caption == ""){
-		    $caption = $id;
-		}
-		if ($action == ""){
-		    $action = $id;
-		}
+		if ($caption == "") $caption = $id;
+		if ($action == "") $action = $id;
+		
 		if (!isset($this->actions[$id])){
 		    $this->actions[$id]["caption"]=$caption;
 // 		    $this->actions[$id]["action"]=$action;
 		    $this->actions[$id]["frame"]=$frame;
 		    $this->actions[$id]["menu"]=$menu;
 		    $this->actions[$id]["type"]=$type;
-		}
-		else{  // el identificador ya se utiliza.
+		} else {  // el identificador ya se utiliza.
 			global $_LOG;
-				$_LOG->log(get_class()."::addElement. Identificador $id");
+				$_LOG->log(get_class()."::addElement. El Identificador $id ya existe");
 		}
+	}
+	
+	public function setCaption($id,$caption){
+		global $_LOG;
+		
+		if (isset($this->actions[$id])) $this->actions[$id]["caption"]=$caption;
+		else $_LOG->log(get_class()."::setCaption. El Identificador $id no existe");
+		
 	}
 	
 	public function addAction($id,$caption="", $action=""){
