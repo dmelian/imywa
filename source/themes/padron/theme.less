@@ -13,18 +13,24 @@
 .errorrow {background: rgba(255,0,0,0.7);color: white;}
 
 .menuPOS{
-	border: @pos_border_type;
-	border-color: @pos_border_color;
-	background-color: #8FB26B;//#CCFF99;
-	
-	>label{
-		//color: #CCFF99;
-		color:@pos_border_color;
-		font-weight:bold;
-	}
-
+	color: white;
+	border: 6px solid;
+	border-image: url("images/posbutton.png") 6 repeat stretch;
+	background-color: blue;
 	&:active{ 
-		border-style: inset;
+		border: 9px solid;
+		border-image: url("images/posbutton-active.png") 9 repeat stretch;
+	}
+}
+
+.select_menuPOS{
+	color: white;
+	border: 6px solid;
+	border-image: url("images/posbutton.png") 6 repeat stretch;
+	background-color: navy;
+	&:active{ 
+		border: 9px solid;
+		border-image: url("images/posbutton-active.png") 9 repeat stretch;
 	}
 }
 
@@ -47,7 +53,6 @@
 		border-image: url("images/posbutton-active.png") 9 repeat stretch;
 	}
 }
-
 
 .numPOS{
 	border: @pos_border_type;

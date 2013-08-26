@@ -27,7 +27,7 @@ class bas_frmx_panelGrid {
 	
 	public $id;
 	
-	protected $mode;
+	protected $mode; //(enable, disable)
 	public $type;
 	protected $gnrEvent;
 	public $gnrClass="";
