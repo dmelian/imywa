@@ -4,8 +4,8 @@ function bas_frmx_form() {
 
 bas_frmx_form.prototype.OnLoad = function() {
 
-	$(".ia_menuframe").menu();
-	$(".ia_menubar").menu({
+	$(".ia_menuframe").menu(); // bas_frmx_menu - frame menu
+	$(".ia_menubar").menu({ // bas_frmx_menubox
 		position : {
 			my : "right bottom",
 			at : "left bottom"
