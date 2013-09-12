@@ -222,7 +222,7 @@ bas_frmx_form.prototype.loadDashboard= function(){
 };
 
 
- bas_frmx_form.prototype.sendAction= function(action, params, type){//frameid,action, params){
+bas_frmx_form.prototype.sendAction= function(action, params, type){//frameid,action, params){
 	var data=  new FormData();
 
 	// what is type: undefined or ???. Like a class of destination or destination type of the action?
