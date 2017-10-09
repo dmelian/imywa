@@ -37,5 +37,3 @@ This must be changed.
 ### Debugging.
 For a better debug. A history of open forms and actions request and responses with their data, will be stored to watch to them.
 
-### Include the theme padron
-Include the orange-red theme of padron group.
