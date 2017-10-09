@@ -37,3 +37,5 @@ This must be changed.
 ### Debugging.
 For a better debug. A history of open forms and actions request and responses with their data, will be stored to watch to them.
 
+### 2017
+Simplify the old code to use in a modern form.
